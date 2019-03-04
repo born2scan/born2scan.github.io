@@ -1,0 +1,3 @@
+[submodule "assets/vendor/spoiler-alert"]
+	path = assets/vendor/spoiler-alert
+	url = https://github.com/joshbuddy/spoiler-alert.git
