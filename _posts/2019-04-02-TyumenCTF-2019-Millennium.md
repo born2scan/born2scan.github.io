@@ -241,7 +241,7 @@ _**Insanity**: doing the same thing over and over again and expecting a differen
 
 The archive contained some QR codes named after Windows releases.
 
-![Chronology QRs](/assets/img/TyumenCTF/chronology.png)
+![Chronology QRs](/assets/img/TyumenCTF_2019/chronology.png)
 
 Renaming them to be in [the correct order](https://en.wikipedia.org/wiki/Timeline_of_Microsoft_Windows) allowed them to be decoded as a Base64 string and thus revealed the flag.
 
@@ -272,7 +272,7 @@ Hiding information in audio files is typically done via LSB/parity/phase coding 
 $ sox ringtone.wav -n spectrogram
 ```
 
-![Ringtone's spectrum](/assets/img/TyumenCTF/synesthesia.png)
+![Ringtone's spectrum](/assets/img/TyumenCTF_2019/synesthesia.png)
 
 `TyumenCTF{w0w_u_h3ard_th3_flag1}`{: .spoiler}
 
