@@ -1,3 +1,6 @@
 [submodule "assets/vendor/spoiler-alert"]
 	path = assets/vendor/spoiler-alert
 	url = https://github.com/joshbuddy/spoiler-alert.git
+[submodule "assets/vendor/highlightjs-solidity"]
+	path = assets/vendor/highlightjs-solidity
+	url = https://github.com/highlightjs/highlightjs-solidity
