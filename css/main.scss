@@ -16,6 +16,27 @@ $cloudy: #828282;
     "404"
 ;
 
+/* Custom shadow for images */
 p img {
   box-shadow: 5px 5px 5px grey;
+}
+
+/* Custom anchor_links style
+ * http://blog.parkermoore.de/2014/08/01/header-anchor-links-in-vanilla-javascript-for-github-pages-and-jekyll/
+ */
+.header-link {
+  position: relative;
+  left: 0.5em;
+  opacity: 0;
+  font-size: 0.8em;
+
+  transition: opacity 0.2s ease-in-out 0.15s;
+  -webkit-transition: opacity 0.2s ease-in-out 0.15s;
+  -moz-transition: opacity 0.2s ease-in-out 0.15s;
+  -ms-transition: opacity 0.2s ease-in-out 0.15s;
+}
+h1:hover .header-link,
+h2:hover .header-link,
+h3:hover .header-link {
+  opacity: 1;
 }

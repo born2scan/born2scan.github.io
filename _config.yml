@@ -20,3 +20,7 @@ exclude: ["README.md", "README.html"]
 # Build settings
 highlighter: null
 markdown: kramdown
+
+# Custom settings for anchor_links
+kramdown:
+  auto_ids: true
