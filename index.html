@@ -13,6 +13,8 @@ sitemap:
     {% endfor %}
 </ul>
 
+<hr>
+
 <ul class="list-posts">
     {% assign postsByYear = site.posts | group_by_exp:"post", "post.date | date: '%Y'" %}
     {% for year in postsByYear %}
