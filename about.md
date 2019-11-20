@@ -12,3 +12,7 @@ Founded in 2019 at University of Florence with the occasion of [CyberChallenge.I
 For the time being, we'll use this site to write detailed writeups of challenges we solved in CTFs.
 
 ## Contacts
+
+Feel free to contact us.
+
+email: b2s.born2scan (at) gmail.com
