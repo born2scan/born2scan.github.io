@@ -6,13 +6,22 @@ sitemap:
   priority: 0.9
 ---
 
+<ul class="list-years">
+    {% assign postsByYear = site.posts | group_by_exp:"post", "post.date | date: '%Y'" %}
+    {% for year in postsByYear %}
+        <li><a href="#year{{ year.name }}">{{ year.name }}</a></li>
+    {% endfor %}
+</ul>
+
 <ul class="list-posts">
-    {% for post in site.posts %}
-        <li class="post-teaser">
-            <a href="{{ post.url | prepend: site.baseurl }}">
-                <span class="post-teaser__title">{{ post.title }}</span>
+    {% assign postsByYear = site.posts | group_by_exp:"post", "post.date | date: '%Y'" %}
+    {% for year in postsByYear %}
+        <h1 id="year{{ year.name }}" class="align-center">{{ year.name }}</h1>
+        {% for post in year.items %}
+            <li class="post-teaser">
+                <span class="post-teaser__title"><a href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a></span>
                 <span class="post-teaser__date">{{ post.date | date: "%d %B %Y" }}</span>
-            </a>
-        </li>
+            </li>
+        {% endfor %}
     {% endfor %}
 </ul>

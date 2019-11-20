@@ -9,10 +9,6 @@ a {
     color: $cloudy;
     font-weight: bold;
     text-decoration: underline;
-
-    &:hover {
-
-    }
 }
 
 p {
@@ -98,10 +94,9 @@ strong {
 
 .menu__entry {
     display: inline-block;
-    margin-right: 35px;
 
-    &:last-child {
-        margin-right: 0px;
+    &:not(:last-child)::after {
+        content: ' / ';
     }
 }
 
@@ -118,7 +113,24 @@ strong {
 
 .social-links__entry {
     display: inline-block;
-    margin-left: 10px;
+
+    &:not(:first-child) {
+        margin-left: 10px;
+    }
+}
+
+/* =Index */
+.list-years {
+    li {
+        display: inline-block;
+
+        &:not(:last-child)::after {
+            content: ',';
+        }
+    }
+
+    list-style-type: none;
+    font-size: 18px;
 }
 
 /* =Titles */
@@ -165,6 +177,10 @@ strong {
 
 .post-teaser__title {
     font-size: 22px;
+    color: $iron;
+}
+
+.post-teaser__title a {
     color: $iron;
 }
 
