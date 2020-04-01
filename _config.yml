@@ -1,7 +1,7 @@
 # Site settings
 title: born2scan
 description: >
-  born2scan Team - CyberChallenge 2019
+  born2scan Team
 
 baseurl: "" # the subpath of your site, e.g. /blog/
 url: "https://born2scan.github.io" # the base hostname & protocol for your site
