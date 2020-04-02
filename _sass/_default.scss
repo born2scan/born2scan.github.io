@@ -34,6 +34,7 @@ blockquote {
     padding: 0px;
     text-align: center;
     position: relative;
+    overflow-wrap: break-word;
 
     footer {
         position: absolute;
@@ -246,6 +247,12 @@ strong {
 
 
 /* =Post page */
+.content-post h2 { /* Challenge name in posts */
+    display: list-item;
+    list-style-position: inside;
+    list-style-type: disc;
+}
+
 .about {
     color: $cloudy;
     margin-top: 70px;
