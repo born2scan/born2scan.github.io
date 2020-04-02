@@ -109,6 +109,7 @@ Select command:
     2) See user information
     3) Quit
 ```
+
 ```no-highlight
 >> 2
 
@@ -228,10 +229,6 @@ _**Insanity**: doing the same thing over and over again and expecting a differen
 
 ---
 
-# Crypto
-
----
-
 # Misc
 
 ## Chronology
@@ -253,10 +250,6 @@ TyumenCTF{n0w_u_know_all_ab0ut_version_c0ntrol}
 
 ---
 
-# Reverse
-
----
-
 # Stegano
 
 ## Synesthesia
@@ -275,19 +268,3 @@ $ sox ringtone.wav -n spectrogram
 ![Ringtone's spectrum](/assets/img/TyumenCTF_2019/synesthesia.png)
 
 `TyumenCTF{w0w_u_h3ard_th3_flag1}`{: .spoiler}
-
----
-
-# Web
-
----
-
-# PPC
-
----
-
-# Forensic
-
----
-
-# OSInt
