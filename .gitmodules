@@ -1,3 +1,6 @@
 [submodule "assets/vendor/spoiler-alert"]
 	path = assets/vendor/spoiler-alert
 	url = https://github.com/joshbuddy/spoiler-alert.git
+[submodule "assets/vendor/cheet"]
+	path = assets/vendor/cheet
+	url = https://github.com/namuol/cheet.js.git
