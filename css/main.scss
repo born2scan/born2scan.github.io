@@ -6,19 +6,20 @@ sitemap:
 @charset "utf-8";
 
 /* =Colors */
-$dorian: #F5F5F5;
-$iron: #333333;
-$cloudy: #757575;
+$primary: #ebebeb;
+$intermediate: #c2c2c2;
+$secondary: #999999;
 
 @import
     "mixins",
+    "animations",
     "default",
     "404"
 ;
 
 /* Custom shadow for images */
 p img {
-  box-shadow: 5px 5px 5px grey;
+  box-shadow: 2px 2px 10px grey;
 }
 
 /* Custom anchor_links style
@@ -48,4 +49,9 @@ h3:hover .header-link {
 }
 .categories-index {
   font-size: 1.2em;
+}
+
+/* Larger spacing between post section/challenges */
+.content.content-post hr {
+  margin: 4em 0;
 }

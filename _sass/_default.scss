@@ -1,17 +1,17 @@
 /* =Base */
 body {
     font-family: 'Inconsolata', ;
-    color: $iron;
+    color: $primary;
     background-image:
-        linear-gradient(rgba(0, 0, 0, 0.95), rgba(0, 0, 0, 0.95)),
+        linear-gradient(rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.85)),
         url("/assets/img/background.jpg");
     background-size: cover;
-    backdrop-filter: sepia(1) invert(1);
+    backdrop-filter: grayscale(1);
     background-attachment: fixed;
 }
 
 a {
-    color: $cloudy;
+    color: $intermediate;
     font-weight: bold;
     text-decoration: underline;
 }
@@ -45,7 +45,7 @@ blockquote {
         position: absolute;
         bottom: -35px;
         font-size: 15px;
-        color: $iron;
+        color: $secondary;
         letter-spacing: 0px;
         left:0px;
         right: 0px;
@@ -57,7 +57,7 @@ blockquote {
     p {
         display: inline;
         font-size: 20px;
-        color: $cloudy;
+        color: $intermediate;
         font-weight: 400;
         &:before { content: "“ "; }
         &:after { content: " ”"; }
@@ -65,7 +65,7 @@ blockquote {
 }
 
 strong {
-    color: $iron;
+    color: $secondary;
 }
 
 /* =Header */
@@ -87,12 +87,12 @@ strong {
 .logo {
     font-size: 50px;
     font-weight: 700;
-    color: $iron;
+    color: $intermediate;
     display: block;
 }
 
 .menu {
-    color: $cloudy;
+    color: $intermediate;
     font-size: 18px;
     margin:0px;
     margin-top: 6px;
@@ -115,7 +115,7 @@ strong {
 .social-links {
     float:right;
     font-size: 24px;
-    color: $cloudy;
+    color: $intermediate;
     list-style-type: none;
 }
 
@@ -158,7 +158,7 @@ strong {
 .page-title__subtitle {
     font-weight: 400;
     font-size: 22px;
-    color: $cloudy;
+    color: $intermediate;
 }
 
 .post-title {
@@ -187,31 +187,31 @@ strong {
 
 .post-teaser__title {
     font-size: 22px;
-    color: $iron;
+    color: $secondary;
 }
 
 .post-teaser__title a {
-    color: $iron;
+    color: $secondary;
 }
 
 .post-teaser__date {
     font-size: 16px;
     float: right;
     vertical-align: middle;
-    color: $cloudy;
+    color: $intermediate;
 }
 
 .empty-post-list {
     font-size: 22px;
     font-weight: 700;
-    color: $iron;
+    color: $secondary;
     text-align: center;
 }
 
 /* =Explore */
 .explore {
     text-align: center;
-    color: $cloudy;
+    color: $intermediate;
     margin-top: 140px;
 }
 
@@ -238,13 +238,13 @@ strong {
 }
 
 .categories__item a {
-    color: $iron;
+    color: $secondary;
 }
 
 .categories__item:after {
     content: "/";
     margin-left: 6px;
-    color: $cloudy;
+    color: $intermediate;
 }
 
 .categories__item:last-child:after {
@@ -261,7 +261,7 @@ strong {
 }
 
 .about {
-    color: $cloudy;
+    color: $intermediate;
     margin-top: 70px;
     text-align: center;
     line-height: 24px;

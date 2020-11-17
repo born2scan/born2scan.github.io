@@ -1,6 +1,40 @@
 <header class="header">
     <div class="navigation">
-        <a href="/" class="logo">{{ site.title }}</a>
+        <a href="/" id="logo-text" class="logo narrow-glitch" onmouseenter="logoMouseOver(true)" onmouseleave="logoMouseOver(false)" data-text="b0rn25c4n">{{ site.title }}</a>
+        <script>
+        setTimeout(function() {  // Intermittently animate logo after 6s
+            animateLogo(false);
+            setInterval(function() {
+                animateLogo(true);
+                animateLogo(false, 1500);
+            }, 6000);
+        }, 6000);
+
+        function animateLogo(yn, delay) {
+            if (delay) {
+                setTimeout(function() { animateLogo(yn) }, delay);
+                return;
+            }
+            const logoElement = document.getElementById('logo-text');
+            if (yn) {
+                logoElement.classList.add('narrow-glitch');
+            } else {
+                if (logoElement.dataset.mouseover == undefined) {
+                    logoElement.classList.remove('narrow-glitch');
+                }
+            }
+        }
+
+        function logoMouseOver(yn) {
+            const logoElement = document.getElementById('logo-text');
+            if (yn) {
+                logoElement.dataset.mouseover = "";
+            } else {
+                delete logoElement.dataset.mouseover;
+            }
+            animateLogo(yn, yn ? null : 500);
+        }
+        </script>
 
         <ul class="menu">
             <li class="menu__entry"><a href="{{ '/about' | prepend: site.baseurl }}">About</a></li>

@@ -1,11 +1,11 @@
 /* Source: http://codepen.io/bulby97/pen/fcvay */
 
-.glitch {
+.wide-glitch {
   position: relative;
-  animation: glitch 2s steps(100) infinite;
+  animation: wide-glitch 2s steps(100) infinite;
 }
 
-@keyframes glitch {
+@keyframes wide-glitch {
   0% {
     text-shadow: 1px 0 0 red, -1px 0 0 blue;
   }
