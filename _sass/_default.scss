@@ -2,7 +2,12 @@
 body {
     font-family: 'Inconsolata', ;
     color: $iron;
-    background-color: $dorian;
+    background-image:
+        linear-gradient(rgba(0, 0, 0, 0.95), rgba(0, 0, 0, 0.95)),
+        url("/assets/img/background.jpg");
+    background-size: cover;
+    backdrop-filter: sepia(1) invert(1);
+    background-attachment: fixed;
 }
 
 a {
@@ -66,7 +71,9 @@ strong {
 /* =Header */
 .wrapper {
     max-width: 800px;
-    margin: 100px auto;
+    padding: 100px 0;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .header {
