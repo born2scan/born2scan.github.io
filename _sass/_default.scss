@@ -3,10 +3,10 @@ body {
     font-family: 'Inconsolata', ;
     color: $primary;
     background-image:
-        linear-gradient(rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.85)),
+        linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.55)),
         url("/assets/img/background.jpg");
     background-size: cover;
-    backdrop-filter: grayscale(1);
+    backdrop-filter: saturate(0.8);
     background-attachment: fixed;
 }
 
