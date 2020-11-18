@@ -2,11 +2,8 @@
 body {
     font-family: 'Inconsolata', ;
     color: $primary;
-    background-image:
-        linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.55)),
-        url("/assets/img/background.jpg");
+    background-color: rgb(0, 0, 0);
     background-size: cover;
-    backdrop-filter: saturate(0.8);
     background-attachment: fixed;
 }
 

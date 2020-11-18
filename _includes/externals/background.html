@@ -1,0 +1,26 @@
+<script>
+(function() {
+    const backgrounds = [
+        {
+            backgroundColor: "",
+            backgroundImage: "linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.55)), url('/assets/img/backgrounds/1.jpg')",
+            backdropFilter: "saturate(0.8)"
+        },
+        {
+            backgroundColor: "",
+            backgroundImage: "url('/assets/img/backgrounds/2.jpg')",
+            backdropFilter: ""
+        },
+        {
+            backgroundColor: "",
+            backgroundImage: "url('/assets/img/backgrounds/2.jpg')",
+            backdropFilter: "sepia(1)"
+        },
+    ];
+    const rand = Math.floor(Math.random() * backgrounds.length);
+    const body = document.querySelector('body');
+    for (let prop of Object.getOwnPropertyNames(backgrounds[rand])) {
+        body.style[prop] = backgrounds[rand][prop];
+    }
+})();
+</script>
