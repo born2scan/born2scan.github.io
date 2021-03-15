@@ -1,6 +1,7 @@
 ---
 layout: post
-title: "VolgaCTF 2020 Qualifiers"
+title: "VolgaCTF 2020"
+subtitle: "Qualifiers"
 date: 2020-03-29
 ---
 
