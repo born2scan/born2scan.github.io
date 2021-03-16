@@ -12,7 +12,7 @@
 ## Conventions
 
 + The filename format is **YYYY-MM-DD-{event_name}.md**
-+ Put images in a subfolder in [assets/img](assets/img).
++ Put images and videos in a subfolder in [assets/img](assets/img).
 + Start your posts with the appropriate front matter (see [below](#reference-post)).
 + First level headers (`#`) are reserved for categories, and second level ones (`##`) for single challenges' names. Use `---` to separate categories.
 + Use this syntax to blur flags:
@@ -56,8 +56,10 @@ I did a lot of things. Some worked out, some did not.
 
 ## GotAnyMoreOfThoseChallenges
 
+...
+
 ![Such screenshot, much image](/assets/img/RandomCTF_1970/cool_pic.png)
 
-...
+{% video /assets/img/RandomCTF_1970/epic_video.webm 720 480 %}
 
 ```
