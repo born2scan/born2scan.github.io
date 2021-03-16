@@ -4,3 +4,6 @@
 [submodule "assets/vendor/cheet"]
 	path = assets/vendor/cheet
 	url = https://github.com/namuol/cheet.js.git
+[submodule "assets/vendor/mathjax"]
+	path = assets/vendor/mathjax
+	url = https://github.com/mathjax/MathJax

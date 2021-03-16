@@ -1,6 +1,6 @@
 # born2scan.github.io
 
-> https://born2scan.github.io/
+> <https://born2scan.github.io/>
 
 ## Contributing
 
@@ -15,15 +15,18 @@
 + Put images and videos in a subfolder in [assets/img](assets/img).
 + Start your posts with the appropriate front matter (see [below](#reference-post)).
 + First level headers (`#`) are reserved for categories, and second level ones (`##`) for single challenges' names. Use `---` to separate categories.
++ TeX Math formulae are supported with the MathJax 3 engine. Use `$ ... $` for inline mode and `$$ ... $$` for display mode.
 + Use this syntax to blur flags:
-    ```
-    🏁 _<FLAG_HERE>_{: .spoiler}
-    ```
+
+  ```text
+  🏁 _<FLAG_HERE>_{: .spoiler}
+  ```
+
 + **Don't take yourself too seriously!** Tasteful use of memes and other silly things is encouraged 🤪
 
-### Reference post:
+### Reference post
 
-```
+```markdown
 ---
 layout: post
 title: "RandomCTF 1970"
@@ -61,5 +64,4 @@ I did a lot of things. Some worked out, some did not.
 ![Such screenshot, much image](/assets/img/RandomCTF_1970/cool_pic.png)
 
 {% include mixins/video_webm.html path="/assets/img/RandomCTF_1970/epic_video.webm" width="720" height="480" %}
-
 ```

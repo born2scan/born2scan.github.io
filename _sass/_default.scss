@@ -278,6 +278,11 @@ strong {
     margin-top: 100px;
 }
 
+/* Mathjax formulae */
+mjx-container[jax="CHTML"][display="true"] {
+    font-size: 140% !important;
+}
+
 @media (max-width: 800px) {
     /* =Base */
     p {

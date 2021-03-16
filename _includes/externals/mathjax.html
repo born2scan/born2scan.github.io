@@ -1,0 +1,20 @@
+<script id="MathJax-script" async src="{{ "/assets/vendor/mathjax/es5/tex-chtml.js" | prepend: site.baseurl }}"></script>
+<script>
+    // defining custom macros
+    window.MathJax = {
+        tex: {
+            macros: {
+                Mod: ["{\\ \\ (\\mathrm{mod}\\ #1)}", 1]
+            },
+            inlineMath: [['$', '$'], ["\\(", "\\)"]], // enable inline syntax with dollar signs
+            processEscapes: true,      // use \$ to produce a literal dollar sign
+        },
+        // Would be better if we could distinct between display and inline ones. For now adding some css in _defaults.scss even if it's not suggested to do so.
+        // chtml: {
+        //     scale: 1.3
+        // },
+        // svg: {
+        //     scale: 1.3
+        // }
+    };
+</script>
