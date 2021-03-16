@@ -60,6 +60,6 @@ I did a lot of things. Some worked out, some did not.
 
 ![Such screenshot, much image](/assets/img/RandomCTF_1970/cool_pic.png)
 
-{% video /assets/img/RandomCTF_1970/epic_video.webm 720 480 %}
+{% include mixins/video_webm.html path="/assets/img/RandomCTF_1970/epic_video.webm" width="720" height="480" %}
 
 ```
