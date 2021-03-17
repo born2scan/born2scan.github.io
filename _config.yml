@@ -18,7 +18,7 @@ styles: [a11y-dark, a11y-light, agate, androidstudio, an-old-hope, arduino-light
 exclude: ["README.md", "README.html"]
 
 # Build settings
-highlighter: none
+highlighter: null
 markdown: kramdown
 kramdown:
   auto_ids: true # Custom settings for anchor_links
