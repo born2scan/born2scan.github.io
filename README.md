@@ -1,6 +1,6 @@
 # born2scan.github.io
 
-> <https://born2scan.github.io/>
+> https://born2scan.github.io/
 
 ## Contributing
 

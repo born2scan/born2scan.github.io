@@ -279,8 +279,15 @@ strong {
 }
 
 /* Mathjax formulae */
+mjx-container[jax="CHTML"] {
+    background-color: rgba(128,128,128,0.7);
+    padding: 6px 6px 8px 6px;
+    border-radius: 6px;
+}
 mjx-container[jax="CHTML"][display="true"] {
     font-size: 140% !important;
+    display: inline-block !important;
+    margin: 0.5em 0 !important;
 }
 
 @media (max-width: 800px) {
