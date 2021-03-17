@@ -7,3 +7,6 @@
 [submodule "assets/vendor/mathjax"]
 	path = assets/vendor/mathjax
 	url = https://github.com/mathjax/MathJax
+[submodule "assets/vendor/highlightjs"]
+	path = assets/vendor/highlightjs
+	url = https://github.com/highlightjs/cdn-release
