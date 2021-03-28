@@ -274,10 +274,6 @@ strong {
     font-size: 18px;
 }
 
-#disqus_thread {
-    margin-top: 100px;
-}
-
 /* Mathjax formulae */
 mjx-container[jax="CHTML"] {
     background-color: rgba(128,128,128,0.7);
@@ -288,6 +284,13 @@ mjx-container[jax="CHTML"][display="true"] {
     font-size: 140% !important;
     display: inline-block !important;
     margin: 0.5em 0 !important;
+}
+
+code:not(.hljs) {
+    background-color: rgb(80,80,80);
+    padding: 3px;
+    border-radius: 0.2em;
+    font-size: 1rem;
 }
 
 @media (max-width: 800px) {
