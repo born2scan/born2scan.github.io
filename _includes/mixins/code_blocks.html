@@ -1,0 +1,20 @@
+<script>
+    let codeBlocks = document.body.querySelectorAll("pre > code");
+    codeBlocks.forEach((value) => {
+        let tagName = value.className
+            .split(' ')
+            .find(v => v.includes('language'))
+            .split(':')
+            ?.[1];
+        if (tagName) {
+            let tagContent = document.createElement('span');
+            tagContent.innerText = tagName;
+
+            let tag = document.createElement('span');
+            tag.classList = "codeblock-tag hljs";
+            tag.appendChild(tagContent);
+
+            value.parentElement.insertBefore(tag, value);
+        }
+    });
+</script>

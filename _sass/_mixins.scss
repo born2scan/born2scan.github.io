@@ -3,3 +3,16 @@
     text-align: center;
     width: 100%;
 }
+
+// custom filename in code blocks
+pre > span.hljs.codeblock-tag {
+    margin: 0;
+    padding: 6px 0px 2px 12px;
+
+    span {
+        background-color: whitesmoke;
+        color: black;
+        padding: 6px 12px 2px;
+        border-radius: 0 0 10px 10px;
+    }
+}
