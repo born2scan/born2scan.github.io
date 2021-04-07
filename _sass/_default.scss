@@ -1,3 +1,8 @@
+$fa-font-path: "/assets/vendor/font-awesome/webfonts";
+@import "../assets/vendor/font-awesome/scss/fontawesome.scss";
+@import "../assets/vendor/font-awesome/scss/brands.scss";
+@import "../assets/vendor/font-awesome/scss/solid.scss";
+
 /* =Base */
 body {
     font-family: 'Inconsolata', ;
