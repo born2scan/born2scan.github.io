@@ -5,14 +5,35 @@ subtitle: Meet the team
 permalink: /about/
 ---
 
-**born2scan** is an Italian team of students passionate of IT Security related topics and CTFs competitions.
+![born2scan logo](/assets/img/logo.png){: width="250" class="team-logo-about-margin team-logo-shadow" }
 
-Founded in 2019 at University of Florence with the occasion of [CyberChallenge.IT](https://www.cyberchallenge.it).
+**born2scan** is a team of students, IT Security and CTF enthusiasts from Tuscany, Italy.
 
-For the time being, we'll use this site to write detailed writeups of challenges we solved in CTFs.
+We formed in 2019 at University of Florence under the [CyberChallenge.IT](https://www.cyberchallenge.it) program.
+
+This is our shared blog that we'll use to write detailed CTF writeups of challenges we solved, misc articles, team news and announce upcoming events.
+
+## Team members
+
+### Residents
+
+<i class="fas fa-cookie-bite" style="margin-right: 10px"></i> Ion Farima `ionno`
+<br>
+<i class="fas fa-undo-alt" style="margin-right: 10px"></i> Lorenzo Coppi `beryxz`
+<br>
+<i class="fas fa-network-wired" style="margin-right: 5px"></i> Niccolò Maggioni `synack42`
+
+### Academy
+
+20+ CyberChallenge cadets & CTF enthusiasts
+
+<hr>
 
 ## Contacts
 
-Feel free to contact us.
+<i class="fas fa-envelope fa-spin-on-hover" style="margin-right: 10px"></i> b2s.born2scan _(at)_ gmail.com
+<br>
+<i class="fas fa-flag fa-spin-on-hover" style="margin-right: 10px"></i> [CTFtime](https://ctftime.org/team/73973)
+<br>
+<i class="fas fa-school fa-spin-on-hover" style="margin-right: 5px"></i> [C3T](https://cyberchallenge.it/venues/c3t)
 
-email: b2s.born2scan (at) gmail.com
