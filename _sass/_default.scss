@@ -356,3 +356,46 @@ code:not(.hljs) {
         font-size: 18px;
     }
 }
+
+/* Custom shadow for images */
+div.content-post p img {
+    box-shadow: 2px 2px 10px grey;
+}
+
+/* Custom anchor_links style
+* http://blog.parkermoore.de/2014/08/01/header-anchor-links-in-vanilla-javascript-for-github-pages-and-jekyll/
+*/
+.header-link {
+    position: relative;
+    left: 0.5em;
+    opacity: 0;
+    font-size: 0.8em;
+
+    transition: opacity 0.2s ease-in-out 0.15s;
+    -webkit-transition: opacity 0.2s ease-in-out 0.15s;
+    -moz-transition: opacity 0.2s ease-in-out 0.15s;
+    -ms-transition: opacity 0.2s ease-in-out 0.15s;
+}
+h1:hover .header-link,
+h2:hover .header-link,
+h3:hover .header-link {
+    opacity: 1;
+}
+
+/* Custom style for categories index */
+.align-center {
+    display: block;
+    text-align: center;
+}
+.categories-index {
+    font-size: 1.2em;
+}
+
+/* Larger spacing between post section/challenges */
+.content.content-post hr {
+    margin: 4em 0;
+}
+
+i.fas.fa-spin-on-hover:hover {
+    animation: fa-spin 1s 1 cubic-bezier(.51,-0.55,0,.43);
+}
