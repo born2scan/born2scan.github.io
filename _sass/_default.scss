@@ -113,6 +113,10 @@ strong {
         box-shadow: 0px 7px 12px -7px #2a2a2a;
         z-index: 10;
         padding-bottom: 10px;
+        margin-top: -30px;
+
+        /* Set min height to always display shadow, even when div is empty*/
+        min-height: 1rem;
 
         .head-message {
             margin-bottom: 50px;
@@ -183,7 +187,7 @@ strong {
     }
 
     .post-title {
-        margin-bottom: 110px;
+        margin-bottom: 80px;
 
         .post-title__text {
             font-size: 40px;
@@ -299,6 +303,7 @@ strong {
 
     .menu__entry {
         display: inline-block;
+        font-size: 20px;
 
         &:not(:last-child)::after {
             content: ' / ';
@@ -458,7 +463,7 @@ code:not(.hljs) {
     }
 
     code:not(.hljs) {
-        font-size: 0.92rem;
+        font-size: 0.86rem;
     }
 }
 
