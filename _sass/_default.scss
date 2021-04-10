@@ -17,7 +17,7 @@ a {
 }
 
 p, li {
-    font-size: 20px;
+    font-size: 1.25rem;
     line-height: 32px;
 }
 
@@ -25,6 +25,7 @@ img {
     margin: 40px auto;
     display: block;
     max-width: 100%;
+    border-radius: 5px;
 }
 
 th, td {
@@ -33,9 +34,9 @@ th, td {
 
 blockquote {
     letter-spacing: 3px;
-    margin:0px;
+    margin: 0px;
     margin-top: 40px;
-    margin-bottom: 70px;
+    margin-bottom: 60px;
     padding: 0px;
     text-align: center;
     position: relative;
@@ -56,7 +57,7 @@ blockquote {
 
     p {
         display: inline;
-        font-size: 20px;
+        font-size: 1.25em;
         color: $intermediate;
         font-weight: 400;
         &:before { content: "“ "; }
@@ -102,7 +103,7 @@ strong {
         grid-template-areas: "gaps centered";
         grid-template-columns: auto $content-width auto;
 
-        div {
+        & > div {
             grid-area: centered;
         }
     }
@@ -130,6 +131,10 @@ strong {
 
         hr {
             margin: 55px 0;
+        }
+
+        .content {
+            font-size: 16px;
         }
     }
 
@@ -363,7 +368,7 @@ code:not(.hljs) {
 
 @media (max-width: $content-width+200) {
     /* =Base */
-    p {
+    p, li {
         font-size: 16px;
         line-height: 1.6;
     }
@@ -373,17 +378,11 @@ code:not(.hljs) {
     }
 
     .wrapper {
-        .content-page {
+        .content-page, .content-post {
             .content {
-                width: 75%;
+                width: $content-width-mobile;
                 margin: auto;
-            }
-        }
-
-        .content-post {
-            .content {
-                width: 75%;
-                margin: auto;
+                font-size: 14px;
             }
         }
 
@@ -453,9 +452,13 @@ code:not(.hljs) {
         }
 
         .about__text, .explore__label {
-            width: 85%;
+            width: $content-width-mobile;
             margin: auto;
         }
+    }
+
+    code:not(.hljs) {
+        font-size: 0.92rem;
     }
 }
 
@@ -497,7 +500,6 @@ h3:hover .header-link {
 .image-full {
     width: 100%;
     height: auto;
-    border-radius: 5px;
 }
 
 
