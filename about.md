@@ -5,7 +5,7 @@ subtitle: Meet the team
 permalink: /about/
 sitemap:
   priority: 0.9
-head_message: "<img src=\"/assets/img/logo.png\" alt=\"born2scan logo\" width=\"250\" class=\"team-logo-about-margin team-logo-shadow\" />"
+head_message: "<img src=\"/assets/img/logo.png\" alt=\"born2scan logo\" width=\"250\" class=\"team-logo\" />"
 ---
 
 **born2scan** is a team of students, IT Security and CTF enthusiasts from Tuscany, Italy.

@@ -25,12 +25,6 @@ img {
     margin: 40px auto;
     display: block;
     max-width: 100%;
-    &.team-logo-shadow {
-        filter: drop-shadow(0px 0px 75px #ffffff7f);
-    }
-    &.team-logo-about-margin {
-        margin-top: -50px;
-    }
 }
 
 th, td {
@@ -273,6 +267,14 @@ strong {
             font-size: 18px;
         }
     }
+
+    .team-logo {
+        margin: auto;
+        padding: 30px 0 20px;
+
+        filter: drop-shadow(0px 0px 40px #a2a2a26f);
+        margin-top: -50px;
+    }
 }
 
 .logo {
@@ -359,62 +361,101 @@ code:not(.hljs) {
 }
 
 
-@media (max-width: 800px) {
+@media (max-width: $content-width+200) {
     /* =Base */
     p {
         font-size: 16px;
         line-height: 1.6;
     }
 
+    img {
+        margin: 30px auto;
+    }
+
     .wrapper {
-        width: 80%;
-    }
-
-    .navigation,
-    .social-links {
-        @include centered-block();
-    }
-
-    .social-links {
-        font-size: 30px;
-        margin-top: 35px;
-    }
-
-    .page-title {
-        margin-top: 80px;
-        margin-bottom: 60px;
-
-        .page-title__text {
-            font-size: 40px;
+        .content-page {
+            .content {
+                width: 75%;
+                margin: auto;
+            }
         }
 
-        .page-title__subtitle {
-            font-size: 18px;
+        .content-post {
+            .content {
+                width: 75%;
+                margin: auto;
+            }
         }
-    }
 
-    .post-teaser__title {
-        font-size: 18px;
-        @include centered-block();
-    }
+        .grid-center {
+            display: flex;
+            justify-content: center;
+        }
 
-    .post-teaser__date {
-        font-size: 16px;
-        margin-top: 10px;
-        float: none;
-        @include centered-block();
-    }
+        .page-title {
+            margin-top: 80px;
+            margin-bottom: 60px;
 
-    .explore {
-        margin-top: 80px;
-    }
+            .page-title__text {
+                font-size: 40px;
+            }
 
-    .post-title__text {
-        font-size: 28px;
-    }
+            .page-title__subtitle {
+                font-size: 18px;
+            }
+        }
 
-    .post-title__subtitle {
-        font-size: 18px;
+        .list-posts {
+            .post-teaser {
+                margin-bottom: 25px;
+
+                .post-teaser__title {
+                    font-size: 18px;
+                    @include centered-block();
+                }
+
+                .post-teaser__date {
+                    font-size: 16px;
+                    float: none;
+                    @include centered-block();
+                }
+            }
+        }
+
+        .navigation,
+        .social-links {
+            @include centered-block();
+        }
+
+        .social-links {
+            font-size: 30px;
+            margin-top: 35px;
+        }
+
+        .post-title {
+            .post-title__text {
+                font-size: 28px;
+            }
+
+            .post-title__subtitle {
+                font-size: 18px;
+            }
+        }
+
+        .team-logo {
+            margin: 10px 0 10px;
+        }
+
+        .explore {
+            .explore__label {
+                font-size: 16px;
+            }
+        }
+
+        .about__text, .explore__label {
+            width: 85%;
+            margin: auto;
+        }
     }
 }
 
@@ -437,6 +478,11 @@ h1:hover .header-link,
 h2:hover .header-link,
 h3:hover .header-link {
     opacity: 1;
+}
+
+
+.spoiler {
+    overflow-wrap: break-word;
 }
 
 
