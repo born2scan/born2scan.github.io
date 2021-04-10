@@ -6,24 +6,30 @@ sitemap:
   priority: 0.9
 ---
 
-<ul class="list-years">
-    {% assign postsByYear = site.posts | group_by_exp:"post", "post.date | date: '%Y'" %}
-    {% for year in postsByYear %}
-        <li><a href="#year{{ year.name }}">{{ year.name }}</a></li>
-    {% endfor %}
-</ul>
+<div class="content-head content-center">
+    <div class="content">
+        <ul class="list-years">
+            {% assign postsByYear = site.posts | group_by_exp:"post", "post.date | date: '%Y'" %}
+            {% for year in postsByYear %}
+                <li><a href="#year{{ year.name }}">{{ year.name }}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
 
-<hr>
-
-<ul class="list-posts">
-    {% assign postsByYear = site.posts | group_by_exp:"post", "post.date | date: '%Y'" %}
-    {% for year in postsByYear %}
-        <h1 id="year{{ year.name }}" class="align-center">{{ year.name }}</h1>
-        {% for post in year.items %}
-            <li class="post-teaser">
-                <span class="post-teaser__title"><a href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a></span>
-                <span class="post-teaser__date">{{ post.date | date: "%d %B %Y" }}</span>
-            </li>
-        {% endfor %}
-    {% endfor %}
-</ul>
+<div class="content-page content-center">
+    <div class="content">
+        <ul class="list-posts">
+            {% assign postsByYear = site.posts | group_by_exp:"post", "post.date | date: '%Y'" %}
+            {% for year in postsByYear %}
+                <h1 id="year{{ year.name }}" class="align-center">{{ year.name }}</h1>
+                {% for post in year.items %}
+                    <li class="post-teaser">
+                        <span class="post-teaser__title"><a href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a></span>
+                        <span class="post-teaser__date">{{ post.date | date: "%d %B %Y" }}</span>
+                    </li>
+                {% endfor %}
+            {% endfor %}
+        </ul>
+    </div>
+</div>

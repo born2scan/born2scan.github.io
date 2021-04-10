@@ -3,15 +3,9 @@ layout: post
 title: "VolgaCTF 2020"
 subtitle: "Qualifiers"
 date: 2020-03-29
----
-
-<span class="align-center" markdown="1">
-    <span class="categories-index">
-        **Categories index**<br>
-        [Crypto](#crypto) - [Forensics](#forensics)
-    </span>
-</span>
-
+head_ctf_categories:
+  - crypto
+  - forensics
 ---
 
 # Crypto

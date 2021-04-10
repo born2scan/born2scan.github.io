@@ -3,8 +3,33 @@ layout: default
 ---
 {% include post/title.html %}
 
-<div class="content content-post">
-    {{ content }}
+
+<div class="content-center content-head">
+    <div class="content">
+
+        <div>
+            {{ page.head_message }}
+        </div>
+
+        {% if page.head_ctf_categories %}
+            <span class="categories-index">
+                <b>Categories index</b>
+                <br>
+                {% for category in page.head_ctf_categories %}
+                <!--TODO: Name all in caps or at least first letter uppercase -->
+                <!--TODO: Add back style, separator between categories -->
+                    <a href="#{{ category }}">{{ category }}</a>
+                {% endfor %}
+            </span>
+        {% endif %}
+
+    </div>
+</div>
+
+<div class="content-center content-post">
+    <div class="content">
+        {{ content }}
+    </div>
 </div>
 
 {% include mixins/code_blocks.html %}

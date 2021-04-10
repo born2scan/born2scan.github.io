@@ -3,15 +3,9 @@ layout: post
 title: "VolgaCTF 2021"
 subtitle: "Qualifiers"
 date: 2021-03-28
----
-
-<span class="align-center" markdown="1">
-    <span class="categories-index">
-        **Categories index**<br>
-        [Crypto](#crypto) - [Web](#web)
-    </span>
-</span>
-
+head_ctf_categories:
+  - web
+  - crypto
 ---
 
 # Web

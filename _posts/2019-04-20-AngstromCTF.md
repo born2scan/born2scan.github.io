@@ -2,16 +2,13 @@
 layout: post
 title:  "AngstromCTF 2019"
 date: 2019-04-20
----
-
-<span class="align-center" markdown="1">
-    This is the partial writeup for the challenges presented in this year's [AngstromCTF](https://angstromctf.com/).<br><br>
-    <span class="categories-index">
-        **Categories index**<br>
-        [Misc](#misc) - [Rev](#rev) - [Web](#web) - [Crypto](#crypto) - [Binary](#binary)
-    </span>
-</span>
-
+head_message: "This is the partial writeup for the challenges presented in this year's <a href=\"https://angstromctf.com/\">AngstromCTF</a>."
+head_ctf_categories:
+  - misc
+  - rev
+  - web
+  - crypto
+  - binary
 ---
 
 # Misc

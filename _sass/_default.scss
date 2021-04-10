@@ -1,15 +1,13 @@
-$fa-font-path: "/assets/vendor/font-awesome/webfonts";
-@import "../assets/vendor/font-awesome/scss/fontawesome.scss";
-@import "../assets/vendor/font-awesome/scss/brands.scss";
-@import "../assets/vendor/font-awesome/scss/solid.scss";
+// $fa-font-path: "/assets/vendor/font-awesome/webfonts";
+// @import "../assets/vendor/font-awesome/scss/fontawesome.scss";
+// @import "../assets/vendor/font-awesome/scss/brands.scss";
+// @import "../assets/vendor/font-awesome/scss/solid.scss";
 
 /* =Base */
 body {
     font-family: 'Inconsolata', ;
     color: $primary;
-    background-color: rgb(0, 0, 0);
-    background-size: cover;
-    background-attachment: fixed;
+    background-color: $background;
 }
 
 a {
@@ -76,20 +74,151 @@ strong {
     color: $secondary;
 }
 
-/* =Header */
 .wrapper {
-    max-width: 800px;
-    padding: 100px 0;
-    margin-left: auto;
-    margin-right: auto;
-}
+    display: flex;
+    flex-flow: column;
+    padding: 64px 0;
 
-.header {
-    overflow: hidden;
-}
+    /* =Header */
+    .header {
+        overflow: hidden;
 
-.navigation {
-    float:left;
+        .navigation {
+            float:left;
+        }
+
+        .social-links {
+            float:right;
+            font-size: 24px;
+            color: $intermediate;
+            list-style-type: none;
+        }
+        .social-links__entry {
+            display: inline-block;
+
+            &:not(:first-child) {
+                margin-left: 10px;
+            }
+        }
+    }
+
+    .content-center {
+        display: grid;
+        grid-template-areas: "gaps content";
+        grid-template-columns: auto $content-width auto;
+    }
+
+    .content-head {
+        background-color: $background;
+    }
+
+    .content-page, .content-post {
+        background-color: $on-background;
+    }
+
+    .content {
+        grid-area: content;
+    }
+
+    /* =Index */
+    .list-years {
+        li {
+            display: inline-block;
+
+            &:not(:last-child)::after {
+                content: ',';
+            }
+        }
+
+        text-align: center;
+        padding-left: 0px;
+        list-style-type: none;
+        font-size: 20px;
+    }
+
+    /* =Titles */
+    .page-title {
+        margin-top:100px;
+        margin-bottom:125px;
+        text-align: center;
+    }
+
+    .page-title__text {
+        font-weight: 700;
+        font-size: 70px;
+    }
+
+    .page-title__subtitle {
+        font-weight: 400;
+        font-size: 22px;
+        color: $intermediate;
+    }
+
+    .post-title {
+        margin-bottom: 110px;
+    }
+
+    .post-title__text {
+        font-size: 40px;
+    }
+
+    .post-title__subtitle {
+        font-size: 20px;
+    }
+
+    /* =Post teasers */
+
+    .list-posts {
+        list-style-type: none;
+        padding: 0px;
+    }
+
+    .post-teaser {
+        margin-bottom: 35px;
+        font-weight: 700;
+    }
+
+    .post-teaser__title {
+        font-size: 22px;
+        color: $secondary;
+    }
+
+    .post-teaser__title a {
+        color: $secondary;
+    }
+
+    .post-teaser__date {
+        font-size: 16px;
+        float: right;
+        vertical-align: middle;
+        color: $intermediate;
+    }
+
+    .empty-post-list {
+        font-size: 22px;
+        font-weight: 700;
+        color: $secondary;
+        text-align: center;
+    }
+
+    /* =Explore */
+    .explore {
+        text-align: center;
+        color: $intermediate;
+        margin-top: 140px;
+    }
+
+    .explore__devider {
+        font-size: 18px;
+        letter-spacing: 8.18px;
+    }
+
+    .explore__label {
+        font-size: 14px;
+        margin-top: 15px;
+    }
+
+
 }
 
 .logo {
@@ -118,119 +247,6 @@ strong {
 
 .menu__entry a {
     font-weight: 400;
-}
-
-.social-links {
-    float:right;
-    font-size: 24px;
-    color: $intermediate;
-    list-style-type: none;
-}
-
-.social-links__entry {
-    display: inline-block;
-
-    &:not(:first-child) {
-        margin-left: 10px;
-    }
-}
-
-/* =Index */
-.list-years {
-    li {
-        display: inline-block;
-
-        &:not(:last-child)::after {
-            content: ',';
-        }
-    }
-
-    text-align: center;
-    padding-left: 0px;
-    list-style-type: none;
-    font-size: 20px;
-}
-
-/* =Titles */
-.page-title {
-    margin-top:100px;
-    margin-bottom:125px;
-    text-align: center;
-}
-
-.page-title__text {
-    font-weight: 700;
-    font-size: 70px;
-}
-
-.page-title__subtitle {
-    font-weight: 400;
-    font-size: 22px;
-    color: $intermediate;
-}
-
-.post-title {
-    margin-bottom: 110px;
-}
-
-.post-title__text {
-    font-size: 40px;
-}
-
-.post-title__subtitle {
-    font-size: 20px;
-}
-
-/* =Post teasers */
-
-.list-posts {
-    list-style-type: none;
-    padding: 0px;
-}
-
-.post-teaser {
-    margin-bottom: 35px;
-    font-weight: 700;
-}
-
-.post-teaser__title {
-    font-size: 22px;
-    color: $secondary;
-}
-
-.post-teaser__title a {
-    color: $secondary;
-}
-
-.post-teaser__date {
-    font-size: 16px;
-    float: right;
-    vertical-align: middle;
-    color: $intermediate;
-}
-
-.empty-post-list {
-    font-size: 22px;
-    font-weight: 700;
-    color: $secondary;
-    text-align: center;
-}
-
-/* =Explore */
-.explore {
-    text-align: center;
-    color: $intermediate;
-    margin-top: 140px;
-}
-
-.explore__devider {
-    font-size: 18px;
-    letter-spacing: 8.18px;
-}
-
-.explore__label {
-    font-size: 14px;
-    margin-top: 15px;
 }
 
 .categories {
@@ -368,6 +384,7 @@ div.content-post p img {
     box-shadow: 2px 2px 10px grey;
 }
 
+
 /* Custom anchor_links style
 * http://blog.parkermoore.de/2014/08/01/header-anchor-links-in-vanilla-javascript-for-github-pages-and-jekyll/
 */
@@ -388,6 +405,7 @@ h3:hover .header-link {
     opacity: 1;
 }
 
+
 /* Custom style for categories index */
 .align-center {
     display: block;
@@ -397,14 +415,12 @@ h3:hover .header-link {
     font-size: 1.2em;
 }
 
-/* Larger spacing between post section/challenges */
-.content.content-post hr {
-    margin: 4em 0;
-}
 
 i.fas.fa-spin-on-hover:hover {
     animation: fa-spin 1s 1 cubic-bezier(.51,-0.55,0,.43);
 }
+
+
 pre {
     tab-size: 4;
 }

