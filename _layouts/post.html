@@ -5,22 +5,20 @@ layout: default
 
 
 <div class="content-center content-head">
-    <div class="content">
+    <div class="content align-center">
 
-        <div>
-            {{ page.head_message }}
-        </div>
+        {%- if page.head_message -%}
+            <p class="head-message">{{ page.head_message }}</p>
+        {%- endif -%}
 
         {% if page.head_ctf_categories %}
-            <span class="categories-index">
+            <p class="categories-index" id="categories-index">
                 <b>Categories index</b>
                 <br>
-                {% for category in page.head_ctf_categories %}
-                <!--TODO: Name all in caps or at least first letter uppercase -->
-                <!--TODO: Add back style, separator between categories -->
-                    <a href="#{{ category }}">{{ category }}</a>
-                {% endfor %}
-            </span>
+                {%- for category in page.head_ctf_categories -%}
+                    <a href="#{{ category | downcase }}">{{ category | capitalize }}</a>{% unless forloop.last %} - {% endunless %}
+                {%- endfor -%}
+            </p>
         {% endif %}
 
     </div>

@@ -5,7 +5,6 @@ subtitle: "Qualifiers"
 date: 2021-03-28
 head_ctf_categories:
   - web
-  - crypto
 ---
 
 # Web

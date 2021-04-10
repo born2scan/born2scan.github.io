@@ -74,6 +74,7 @@ strong {
     color: $secondary;
 }
 
+/* =Wrapper */
 .wrapper {
     display: flex;
     flex-flow: column;
@@ -102,6 +103,10 @@ strong {
         }
     }
 
+    .content {
+        grid-area: content;
+    }
+
     .content-center {
         display: grid;
         grid-template-areas: "gaps content";
@@ -110,14 +115,42 @@ strong {
 
     .content-head {
         background-color: $background;
+        box-shadow: 0px 7px 12px -7px #2a2a2a;
+        z-index: 10;
+        padding-bottom: 10px;
+
+        .head-message {
+            margin-bottom: 50px;
+            margin-top: 0px;
+        }
+
+        .categories-index {
+            font-size: 1.4rem;
+        }
     }
 
     .content-page, .content-post {
         background-color: $on-background;
+        padding-top: 25px;
+
+        hr {
+            margin: 55px 0;
+        }
     }
 
-    .content {
-        grid-area: content;
+    /* =Post page */
+    .content-post {
+        /* Challenge name in posts */
+        h2 {
+            display: list-item;
+            list-style-position: inside;
+            list-style-type: disc;
+        }
+
+        /* Custom shadow for images */
+        p img {
+            box-shadow: 2px 2px 10px grey;
+        }
     }
 
     /* =Index */
@@ -141,57 +174,56 @@ strong {
         margin-top:100px;
         margin-bottom:125px;
         text-align: center;
-    }
 
-    .page-title__text {
-        font-weight: 700;
-        font-size: 70px;
-    }
+        .page-title__text {
+            font-weight: 700;
+            font-size: 70px;
+        }
 
-    .page-title__subtitle {
-        font-weight: 400;
-        font-size: 22px;
-        color: $intermediate;
+        .page-title__subtitle {
+            font-weight: 400;
+            font-size: 22px;
+            color: $intermediate;
+        }
     }
 
     .post-title {
         margin-bottom: 110px;
-    }
 
-    .post-title__text {
-        font-size: 40px;
-    }
+        .post-title__text {
+            font-size: 40px;
+        }
 
-    .post-title__subtitle {
-        font-size: 20px;
+        .post-title__subtitle {
+            font-size: 20px;
+        }
     }
 
     /* =Post teasers */
-
     .list-posts {
         list-style-type: none;
         padding: 0px;
-    }
 
-    .post-teaser {
-        margin-bottom: 35px;
-        font-weight: 700;
-    }
+        .post-teaser {
+            margin-bottom: 35px;
+            font-weight: 700;
 
-    .post-teaser__title {
-        font-size: 22px;
-        color: $secondary;
-    }
+            .post-teaser__title {
+                font-size: 22px;
+                color: $secondary;
+            }
 
-    .post-teaser__title a {
-        color: $secondary;
-    }
+            .post-teaser__title a {
+                color: $secondary;
+            }
 
-    .post-teaser__date {
-        font-size: 16px;
-        float: right;
-        vertical-align: middle;
-        color: $intermediate;
+            .post-teaser__date {
+                font-size: 16px;
+                float: right;
+                vertical-align: middle;
+                color: $intermediate;
+            }
+        }
     }
 
     .empty-post-list {
@@ -206,19 +238,17 @@ strong {
         text-align: center;
         color: $intermediate;
         margin-top: 140px;
+
+        .explore__devider {
+            font-size: 18px;
+            letter-spacing: 8.18px;
+        }
+
+        .explore__label {
+            font-size: 14px;
+            margin-top: 15px;
+        }
     }
-
-    .explore__devider {
-        font-size: 18px;
-        letter-spacing: 8.18px;
-    }
-
-    .explore__label {
-        font-size: 14px;
-        margin-top: 15px;
-    }
-
-
 }
 
 .logo {
@@ -235,53 +265,45 @@ strong {
     margin-top: 6px;
     padding: 0px;
     list-style-type: none;
-}
 
-.menu__entry {
-    display: inline-block;
+    .menu__entry {
+        display: inline-block;
 
-    &:not(:last-child)::after {
-        content: ' / ';
+        &:not(:last-child)::after {
+            content: ' / ';
+        }
     }
-}
 
-.menu__entry a {
-    font-weight: 400;
+    .menu__entry a {
+        font-weight: 400;
+    }
 }
 
 .categories {
     list-style-type: none;
     margin-top: 15px;
     padding: 0px;
-}
 
-.categories__item {
-    display: inline-block;
-    font-weight: 700;
-    font-size: 18px;
-}
+    .categories__item {
+        display: inline-block;
+        font-weight: 700;
+        font-size: 18px;
+    }
 
-.categories__item a {
-    color: $secondary;
-}
+    .categories__item a {
+        color: $secondary;
+    }
 
-.categories__item:after {
-    content: "/";
-    margin-left: 6px;
-    color: $intermediate;
-}
+    .categories__item:after {
+        content: "/";
+        margin-left: 6px;
+        color: $intermediate;
+    }
 
-.categories__item:last-child:after {
-    content: "";
-    margin-left: 0px;
-}
-
-
-/* =Post page */
-.content-post h2 { /* Challenge name in posts */
-    display: list-item;
-    list-style-position: inside;
-    list-style-type: disc;
+    .categories__item:last-child:after {
+        content: "";
+        margin-left: 0px;
+    }
 }
 
 .about {
@@ -289,17 +311,18 @@ strong {
     margin-top: 70px;
     text-align: center;
     line-height: 24px;
+
+    .about__devider {
+        font-size: 20px;
+        margin-bottom: 50px;
+        letter-spacing: 9.09px;
+    }
+
+    .about__text {
+        font-size: 18px;
+    }
 }
 
-.about__devider {
-    font-size: 20px;
-    margin-bottom: 50px;
-    letter-spacing: 9.09px;
-}
-
-.about__text {
-    font-size: 18px;
-}
 
 /* Mathjax formulae */
 mjx-container[jax="CHTML"] {
@@ -313,12 +336,21 @@ mjx-container[jax="CHTML"][display="true"] {
     margin: 0.5em 0 !important;
 }
 
+/* Code Blocks */
+pre {
+    tab-size: 4;
+
+    code {
+        border-radius: 5px;
+    }
+}
 code:not(.hljs) {
     background-color: rgb(80,80,80);
     padding: 3px;
     border-radius: 0.2em;
     font-size: 1rem;
 }
+
 
 @media (max-width: 800px) {
     /* =Base */
@@ -344,14 +376,14 @@ code:not(.hljs) {
     .page-title {
         margin-top: 80px;
         margin-bottom: 60px;
-    }
 
-    .page-title__text {
-        font-size: 40px;
-    }
+        .page-title__text {
+            font-size: 40px;
+        }
 
-    .page-title__subtitle {
-        font-size: 18px;
+        .page-title__subtitle {
+            font-size: 18px;
+        }
     }
 
     .post-teaser__title {
@@ -377,11 +409,6 @@ code:not(.hljs) {
     .post-title__subtitle {
         font-size: 18px;
     }
-}
-
-/* Custom shadow for images */
-div.content-post p img {
-    box-shadow: 2px 2px 10px grey;
 }
 
 
@@ -411,16 +438,8 @@ h3:hover .header-link {
     display: block;
     text-align: center;
 }
-.categories-index {
-    font-size: 1.2em;
-}
 
 
 i.fas.fa-spin-on-hover:hover {
     animation: fa-spin 1s 1 cubic-bezier(.51,-0.55,0,.43);
-}
-
-
-pre {
-    tab-size: 4;
 }
