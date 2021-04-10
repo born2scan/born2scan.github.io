@@ -147,11 +147,6 @@ strong {
             list-style-position: inside;
             list-style-type: disc;
         }
-
-        /* Custom shadow for images */
-        p img {
-            box-shadow: 2px 2px 10px grey;
-        }
     }
 
     /* =Index */
@@ -449,6 +444,14 @@ h3:hover .header-link {
 .align-center {
     display: block;
     text-align: center;
+}
+
+
+/* Custom style for post images */
+.image-full {
+    width: 100%;
+    height: auto;
+    border-radius: 5px;
 }
 
 

