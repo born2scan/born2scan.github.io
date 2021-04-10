@@ -1,12 +1,14 @@
 ---
-layout: page
+layout: default
 title: Writeups
 subtitle: CTF Writeups
 sitemap:
   priority: 0.9
 ---
 
-<div class="content-head content-center">
+{% include page/title.html %}
+
+<div class="content-head grid-center">
     <div class="content">
         <ul class="list-years">
             {% assign postsByYear = site.posts | group_by_exp:"post", "post.date | date: '%Y'" %}
@@ -17,7 +19,7 @@ sitemap:
     </div>
 </div>
 
-<div class="content-page content-center">
+<div class="content-page grid-center">
     <div class="content">
         <ul class="list-posts">
             {% assign postsByYear = site.posts | group_by_exp:"post", "post.date | date: '%Y'" %}
@@ -33,3 +35,5 @@ sitemap:
         </ul>
     </div>
 </div>
+
+{% include page/explore.html %}

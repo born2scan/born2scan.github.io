@@ -16,6 +16,18 @@
 + Start your posts with the appropriate front matter (see [below](#reference-post)).
 + First level headers (`#`) are reserved for categories, and second level ones (`##`) for single challenges' names. Use `---` to separate categories.
 + TeX Math formulae are supported with the MathJax 3 engine. Use `$ ... $` for inline mode and `$$ ... $$` for display mode.
++ Bold text using `**...**`
++ Italic text using `_..._`
++ Use this sytax to add filename to codeblocks
+
+  ````markdown
+    ```language:filename
+
+        ... language specific code ...
+
+    ```
+  ````
+
 + Use this syntax to blur flags:
 
   ```text
