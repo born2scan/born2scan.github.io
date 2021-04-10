@@ -1,5 +1,5 @@
 <div class="about">
-    <p class="about__text">© 2021 born2scan</p>
+    <p class="about__text">&copy; {{ site.time | date: '%Y' }} born2scan</p>
     <div class="about__text">
         Written by <strong> {% if page.author.fullname %} {{ page.author.fullname }} {% else %} {{ site.author.fullname }} {% endif %}</strong>
         on <strong>{{ page.date | date: "%d %B %Y" }}</strong>
