@@ -205,6 +205,26 @@ strong {
         list-style-type: none;
         padding: 0px;
 
+        .post-teaser-title {
+            display: flex;
+            flex-flow: row;
+            justify-content: center;
+            align-items: center;
+
+            .year-divider {
+                width: 130px;
+                height: 2px;
+                margin: 0 15px;
+
+                &.year-divider-left {
+                    background: linear-gradient(to left, white 15%, transparent);
+                }
+                &.year-divider-right {
+                    background: linear-gradient(to right, white 15%, transparent);
+                }
+            }
+        }
+
         .post-teaser {
             margin-bottom: 35px;
             font-weight: 700;

@@ -24,7 +24,11 @@ sitemap:
         <ul class="list-posts">
             {% assign postsByYear = site.posts | group_by_exp:"post", "post.date | date: '%Y'" %}
             {% for year in postsByYear %}
-                <h1 id="year{{ year.name }}" class="align-center">{{ year.name }}</h1>
+                <div class="post-teaser-title">
+                    <span class="year-divider year-divider-left"></span>
+                    <h1 id="year{{ year.name }}" class="align-center">{{ year.name }}</h1>
+                    <span class="year-divider year-divider-right"></span>
+                </div>
                 {% for post in year.items %}
                     <li class="post-teaser">
                         <span class="post-teaser__title"><a href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a></span>
