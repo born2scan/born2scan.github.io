@@ -19,7 +19,7 @@ p, li {
     line-height: 32px;
 }
 
-i.mdi {
+span.mdi {
     font-size: 1.45rem;
 }
 
@@ -99,7 +99,7 @@ strong {
                 margin-left: 10px;
             }
 
-            i.mdi {
+            span.mdi {
                 font-size: inherit;
             }
         }
@@ -514,7 +514,7 @@ h3:hover .header-link {
     height: auto;
 }
 
-i.mdi.mdi-spin-on-hover:hover {
+span.mdi.mdi-spin-on-hover:hover {
     &:before {
         -webkit-animation: mdi-spin 1s 1 cubic-bezier(.51,-0.55,0,.43);
         animation: mdi-spin 1s 1 cubic-bezier(.51,-0.55,0,.43);

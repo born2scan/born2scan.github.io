@@ -18,11 +18,11 @@ This is our shared blog that we'll use to write detailed CTF writeups of challen
 
 ### Residents
 
-<i class="mdi mdi-cookie"></i> Ion Farima `ionno`
+<span class="mdi mdi-cookie"></span> Ion Farima `ionno`
 <br>
-<i class="mdi mdi-undo-variant"></i> Lorenzo Coppi `beryxz`
+<span class="mdi mdi-matrix"></span> Lorenzo Coppi `beryxz`
 <br>
-<i class="mdi mdi-server-network"></i> Niccolò Maggioni `synack42`
+<span class="mdi mdi-server-network"></span> Niccolò Maggioni `synack42`
 
 ### Academy
 
@@ -32,8 +32,8 @@ This is our shared blog that we'll use to write detailed CTF writeups of challen
 
 ## Contacts
 
-<i class="mdi mdi-at mdi-spin-on-hover"></i> b2s.born2scan _(at)_ gmail.com
+<span class="mdi mdi-at mdi-spin-on-hover"></span> b2s.born2scan _(at)_ gmail.com
 <br>
-<i class="mdi mdi-flag mdi-spin-on-hover"></i> [CTFtime](https://ctftime.org/team/73973)
+<span class="mdi mdi-flag mdi-spin-on-hover"></span> [CTFtime](https://ctftime.org/team/73973)
 <br>
-<i class="mdi mdi-school mdi-spin-on-hover"></i> [C3T](https://cyberchallenge.it/venues/c3t)
+<span class="mdi mdi-school mdi-spin-on-hover"></span> [C3T](https://cyberchallenge.it/venues/c3t)
