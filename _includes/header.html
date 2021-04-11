@@ -1,56 +1,58 @@
-<header class="header">
-    <div class="navigation">
-        <a href="/" id="logo-text" class="logo narrow-glitch" onmouseenter="logoMouseOver(true)" onmouseleave="logoMouseOver(false)" data-text="b0rn25c4n">{{ site.title }}</a>
-        <script>
-        setTimeout(function() {  // Intermittently animate logo after 6s
-            animateLogo(false);
-            setInterval(function() {
-                animateLogo(true);
-                animateLogo(false, 1500);
+<header class="grid-center">
+    <div class="header">
+        <div class="navigation">
+            <a href="/" id="logo-text" class="logo narrow-glitch" onmouseenter="logoMouseOver(true)" onmouseleave="logoMouseOver(false)" data-text="b0rn25c4n">{{ site.title }}</a>
+            <script>
+            setTimeout(function() {  // Intermittently animate logo after 6s
+                animateLogo(false);
+                setInterval(function() {
+                    animateLogo(true);
+                    animateLogo(false, 1500);
+                }, 6000);
             }, 6000);
-        }, 6000);
 
-        function animateLogo(yn, delay) {
-            if (delay) {
-                setTimeout(function() { animateLogo(yn) }, delay);
-                return;
-            }
-            const logoElement = document.getElementById('logo-text');
-            if (yn) {
-                logoElement.classList.add('narrow-glitch');
-            } else {
-                if (logoElement.dataset.mouseover == undefined) {
-                    logoElement.classList.remove('narrow-glitch');
+            function animateLogo(yn, delay) {
+                if (delay) {
+                    setTimeout(function() { animateLogo(yn) }, delay);
+                    return;
+                }
+                const logoElement = document.getElementById('logo-text');
+                if (yn) {
+                    logoElement.classList.add('narrow-glitch');
+                } else {
+                    if (logoElement.dataset.mouseover == undefined) {
+                        logoElement.classList.remove('narrow-glitch');
+                    }
                 }
             }
-        }
 
-        function logoMouseOver(yn) {
-            const logoElement = document.getElementById('logo-text');
-            if (yn) {
-                logoElement.dataset.mouseover = "";
-            } else {
-                delete logoElement.dataset.mouseover;
+            function logoMouseOver(yn) {
+                const logoElement = document.getElementById('logo-text');
+                if (yn) {
+                    logoElement.dataset.mouseover = "";
+                } else {
+                    delete logoElement.dataset.mouseover;
+                }
+                animateLogo(yn, yn ? null : 500);
             }
-            animateLogo(yn, yn ? null : 500);
-        }
-        </script>
+            </script>
 
-        <ul class="menu">
-            <li class="menu__entry"><a href="{{ '/about' | prepend: site.baseurl }}">About</a></li>
-            <li class="menu__entry"><a href="{{ '/' | prepend: site.baseurl }}">Writeups</a></li>
+            <ul class="menu">
+                <li class="menu__entry"><a href="{{ '/about' | prepend: site.baseurl }}">About</a></li>
+                <li class="menu__entry"><a href="{{ '/' | prepend: site.baseurl }}">Writeups</a></li>
+            </ul>
+        </div>
+
+        <ul class="social-links">
+            {% if site.author.github %}
+                <a href="https://github.com/{{ site.author.github }}" class="social-links__entry" target="_blank">
+                    <span class="mdi mdi-github" ></span>
+                </a>
+            {% endif %}
+
+            <a href="/feed.xml" class="social-links__entry" style="margin-left: 5px;" target="_blank">
+                <span class="mdi mdi-rss" ></span>
+            </a>
         </ul>
     </div>
-
-    <ul class="social-links">
-        {% if site.author.github %}
-            <a href="https://github.com/{{ site.author.github }}" class="social-links__entry" target="_blank">
-                <i class="fab fa-github"></i>
-            </a>
-        {% endif %}
-
-        <a href="/feed.xml" class="social-links__entry" target="_blank">
-            <i class="fas fa-rss"></i>
-        </a>
-    </ul>
 </header>

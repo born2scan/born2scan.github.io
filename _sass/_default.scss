@@ -1,15 +1,11 @@
-$fa-font-path: "/assets/vendor/font-awesome/webfonts";
-@import "../assets/vendor/font-awesome/scss/fontawesome.scss";
-@import "../assets/vendor/font-awesome/scss/brands.scss";
-@import "../assets/vendor/font-awesome/scss/solid.scss";
+$mdi-font-path: "/assets/vendor/materialdesignicons/fonts";
+@import "../assets/vendor/materialdesignicons/scss/materialdesignicons.scss";
 
 /* =Base */
 body {
     font-family: 'Inconsolata', ;
     color: $primary;
-    background-color: rgb(0, 0, 0);
-    background-size: cover;
-    background-attachment: fixed;
+    background-color: $background;
 }
 
 a {
@@ -19,20 +15,19 @@ a {
 }
 
 p, li {
-    font-size: 20px;
+    font-size: 1.25rem;
     line-height: 32px;
+}
+
+span.mdi {
+    font-size: 1.45rem;
 }
 
 img {
     margin: 40px auto;
     display: block;
     max-width: 100%;
-    &.team-logo-shadow {
-        filter: drop-shadow(0px 0px 75px #ffffff7f);
-    }
-    &.team-logo-about-margin {
-        margin-top: -50px;
-    }
+    border-radius: 5px;
 }
 
 th, td {
@@ -41,9 +36,9 @@ th, td {
 
 blockquote {
     letter-spacing: 3px;
-    margin:0px;
+    margin: 0px;
     margin-top: 40px;
-    margin-bottom: 70px;
+    margin-bottom: 60px;
     padding: 0px;
     text-align: center;
     position: relative;
@@ -64,7 +59,7 @@ blockquote {
 
     p {
         display: inline;
-        font-size: 20px;
+        font-size: 1.25em;
         color: $intermediate;
         font-weight: 400;
         &:before { content: "“ "; }
@@ -76,20 +71,226 @@ strong {
     color: $secondary;
 }
 
-/* =Header */
+/* =Wrapper */
 .wrapper {
-    max-width: 800px;
-    padding: 100px 0;
-    margin-left: auto;
-    margin-right: auto;
-}
+    display: flex;
+    flex-flow: column;
+    padding: 64px 0 80px;
 
-.header {
-    overflow: hidden;
-}
+    /* =Header */
+    .header {
+        overflow: hidden;
 
-.navigation {
-    float:left;
+        .navigation {
+            float:left;
+        }
+
+        .social-links {
+            float:right;
+            font-size: 32px;
+            color: $intermediate;
+            list-style-type: none;
+        }
+        .social-links__entry {
+            display: inline-block;
+            font-size: inherit;
+
+            &:not(:first-child) {
+                margin-left: 10px;
+            }
+
+            span.mdi {
+                font-size: inherit;
+            }
+        }
+    }
+
+    .grid-center {
+        display: grid;
+        grid-template-areas: "gaps centered";
+        grid-template-columns: auto $content-width auto;
+
+        & > div {
+            grid-area: centered;
+        }
+    }
+
+    .content-head {
+        background-color: $background;
+        box-shadow: 0px 7px 12px -7px #2a2a2a;
+        z-index: 10;
+        padding-bottom: 10px;
+        margin-top: -30px;
+
+        /* Set min height to always display shadow, even when div is empty*/
+        min-height: 1rem;
+
+        .head-message {
+            margin-bottom: 50px;
+            margin-top: 0px;
+        }
+
+        .categories-index {
+            font-size: 1.4rem;
+        }
+    }
+
+    .content-page, .content-post {
+        background-color: $on-background;
+        padding-top: 25px;
+        padding-bottom: 55px;
+
+        hr {
+            margin: 55px 0;
+        }
+
+        .content {
+            font-size: 16px;
+        }
+    }
+
+    /* =Post page */
+    .content-post {
+        /* Challenge name in posts */
+        h2 {
+            display: list-item;
+            list-style-position: inside;
+            list-style-type: disc;
+        }
+    }
+
+    /* =Index */
+    .list-years {
+        li {
+            display: inline-block;
+
+            &:not(:last-child)::after {
+                content: ',';
+            }
+        }
+
+        text-align: center;
+        padding-left: 0px;
+        list-style-type: none;
+        font-size: 20px;
+    }
+
+    /* =Titles */
+    .page-title {
+        margin-top:100px;
+        margin-bottom:125px;
+        text-align: center;
+
+        .page-title__text {
+            font-weight: 700;
+            font-size: 70px;
+        }
+
+        .page-title__subtitle {
+            font-weight: 400;
+            font-size: 22px;
+            color: $intermediate;
+        }
+    }
+
+    .post-title {
+        margin-bottom: 80px;
+
+        .post-title__text {
+            font-size: 40px;
+        }
+
+        .post-title__subtitle {
+            font-size: 20px;
+        }
+    }
+
+    /* =Post teasers */
+    .list-posts {
+        list-style-type: none;
+        padding: 0px;
+
+        .post-teaser-title {
+            display: flex;
+            flex-flow: row;
+            justify-content: center;
+            align-items: center;
+
+            .year-divider {
+                width: 130px;
+                height: 2px;
+                margin: 0 15px;
+
+                &.year-divider-left {
+                    background: linear-gradient(to left, white 15%, transparent);
+                }
+                &.year-divider-right {
+                    background: linear-gradient(to right, white 15%, transparent);
+                }
+            }
+        }
+
+        .post-teaser {
+            margin-bottom: 35px;
+            font-weight: 700;
+
+            .post-teaser__title {
+                font-size: 22px;
+                color: $secondary;
+            }
+
+            .post-teaser__title a {
+                color: $secondary;
+            }
+
+            .post-teaser__date {
+                font-size: 16px;
+                float: right;
+                vertical-align: middle;
+                color: $intermediate;
+            }
+        }
+    }
+
+    .empty-post-list {
+        font-size: 22px;
+        font-weight: 700;
+        color: $secondary;
+        text-align: center;
+    }
+
+    /* =Explore section of pages */
+    .explore {
+        text-align: center;
+        color: $intermediate;
+        padding-top: 70px;
+        box-shadow: 0px -7px 12px -7px #2a2a2a;
+
+        .explore__label {
+            font-size: 18px;
+        }
+    }
+
+    /* =About section of posts */
+    .about {
+        color: $intermediate;
+        padding-top: 70px;
+        text-align: center;
+        line-height: 24px;
+        box-shadow: 0px -7px 12px -7px #2a2a2a;
+
+        .about__text {
+            font-size: 18px;
+        }
+    }
+
+    .team-logo {
+        margin: auto;
+        padding: 30px 0 20px;
+
+        filter: drop-shadow(0px 0px 40px #a2a2a26f);
+        margin-top: -50px;
+    }
 }
 
 .logo {
@@ -106,184 +307,48 @@ strong {
     margin-top: 6px;
     padding: 0px;
     list-style-type: none;
-}
 
-.menu__entry {
-    display: inline-block;
-
-    &:not(:last-child)::after {
-        content: ' / ';
-    }
-}
-
-.menu__entry a {
-    font-weight: 400;
-}
-
-.social-links {
-    float:right;
-    font-size: 24px;
-    color: $intermediate;
-    list-style-type: none;
-}
-
-.social-links__entry {
-    display: inline-block;
-
-    &:not(:first-child) {
-        margin-left: 10px;
-    }
-}
-
-/* =Index */
-.list-years {
-    li {
+    .menu__entry {
         display: inline-block;
+        font-size: 20px;
 
         &:not(:last-child)::after {
-            content: ',';
+            content: ' / ';
         }
     }
 
-    text-align: center;
-    padding-left: 0px;
-    list-style-type: none;
-    font-size: 20px;
-}
-
-/* =Titles */
-.page-title {
-    margin-top:100px;
-    margin-bottom:125px;
-    text-align: center;
-}
-
-.page-title__text {
-    font-weight: 700;
-    font-size: 70px;
-}
-
-.page-title__subtitle {
-    font-weight: 400;
-    font-size: 22px;
-    color: $intermediate;
-}
-
-.post-title {
-    margin-bottom: 110px;
-}
-
-.post-title__text {
-    font-size: 40px;
-}
-
-.post-title__subtitle {
-    font-size: 20px;
-}
-
-/* =Post teasers */
-
-.list-posts {
-    list-style-type: none;
-    padding: 0px;
-}
-
-.post-teaser {
-    margin-bottom: 35px;
-    font-weight: 700;
-}
-
-.post-teaser__title {
-    font-size: 22px;
-    color: $secondary;
-}
-
-.post-teaser__title a {
-    color: $secondary;
-}
-
-.post-teaser__date {
-    font-size: 16px;
-    float: right;
-    vertical-align: middle;
-    color: $intermediate;
-}
-
-.empty-post-list {
-    font-size: 22px;
-    font-weight: 700;
-    color: $secondary;
-    text-align: center;
-}
-
-/* =Explore */
-.explore {
-    text-align: center;
-    color: $intermediate;
-    margin-top: 140px;
-}
-
-.explore__devider {
-    font-size: 18px;
-    letter-spacing: 8.18px;
-}
-
-.explore__label {
-    font-size: 14px;
-    margin-top: 15px;
+    .menu__entry a {
+        font-weight: 400;
+    }
 }
 
 .categories {
     list-style-type: none;
     margin-top: 15px;
     padding: 0px;
+
+    .categories__item {
+        display: inline-block;
+        font-weight: 700;
+        font-size: 18px;
+    }
+
+    .categories__item a {
+        color: $secondary;
+    }
+
+    .categories__item:after {
+        content: "/";
+        margin-left: 6px;
+        color: $intermediate;
+    }
+
+    .categories__item:last-child:after {
+        content: "";
+        margin-left: 0px;
+    }
 }
 
-.categories__item {
-    display: inline-block;
-    font-weight: 700;
-    font-size: 18px;
-}
-
-.categories__item a {
-    color: $secondary;
-}
-
-.categories__item:after {
-    content: "/";
-    margin-left: 6px;
-    color: $intermediate;
-}
-
-.categories__item:last-child:after {
-    content: "";
-    margin-left: 0px;
-}
-
-
-/* =Post page */
-.content-post h2 { /* Challenge name in posts */
-    display: list-item;
-    list-style-position: inside;
-    list-style-type: disc;
-}
-
-.about {
-    color: $intermediate;
-    margin-top: 70px;
-    text-align: center;
-    line-height: 24px;
-}
-
-.about__devider {
-    font-size: 20px;
-    margin-bottom: 50px;
-    letter-spacing: 9.09px;
-}
-
-.about__text {
-    font-size: 18px;
-}
 
 /* Mathjax formulae */
 mjx-container[jax="CHTML"] {
@@ -297,6 +362,14 @@ mjx-container[jax="CHTML"][display="true"] {
     margin: 0.5em 0 !important;
 }
 
+/* Code Blocks */
+pre {
+    tab-size: 4;
+
+    code {
+        border-radius: 5px;
+    }
+}
 code:not(.hljs) {
     background-color: rgb(80,80,80);
     padding: 3px;
@@ -304,69 +377,103 @@ code:not(.hljs) {
     font-size: 1rem;
 }
 
-@media (max-width: 800px) {
+
+@media (max-width: $content-width+200) {
     /* =Base */
-    p {
+    p, li {
         font-size: 16px;
         line-height: 1.6;
     }
 
+    img {
+        margin: 30px auto;
+    }
+
     .wrapper {
-        width: 80%;
+        .content-page, .content-post {
+            .content {
+                width: $content-width-mobile;
+                margin: auto;
+                font-size: 14px;
+            }
+        }
+
+        .grid-center {
+            display: flex;
+            justify-content: center;
+        }
+
+        .page-title {
+            margin-top: 80px;
+            margin-bottom: 60px;
+
+            .page-title__text {
+                font-size: 40px;
+            }
+
+            .page-title__subtitle {
+                font-size: 18px;
+            }
+        }
+
+        .list-posts {
+            .post-teaser {
+                margin-bottom: 25px;
+
+                .post-teaser__title {
+                    font-size: 18px;
+                    @include centered-block();
+                }
+
+                .post-teaser__date {
+                    font-size: 16px;
+                    float: none;
+                    @include centered-block();
+                }
+            }
+        }
+
+        .navigation,
+        .social-links {
+            @include centered-block();
+        }
+
+        .social-links {
+            font-size: 30px;
+            margin-top: 35px;
+        }
+
+        .post-title {
+            .post-title__text {
+                font-size: 28px;
+            }
+
+            .post-title__subtitle {
+                font-size: 18px;
+            }
+        }
+
+        .team-logo {
+            margin: 10px 0 10px;
+        }
+
+        .explore {
+            .explore__label {
+                font-size: 16px;
+            }
+        }
+
+        .about__text, .explore__label {
+            width: $content-width-mobile;
+            margin: auto;
+        }
     }
 
-    .navigation,
-    .social-links {
-        @include centered-block();
-    }
-
-    .social-links {
-        font-size: 30px;
-        margin-top: 35px;
-    }
-
-    .page-title {
-        margin-top: 80px;
-        margin-bottom: 60px;
-    }
-
-    .page-title__text {
-        font-size: 40px;
-    }
-
-    .page-title__subtitle {
-        font-size: 18px;
-    }
-
-    .post-teaser__title {
-        font-size: 18px;
-        @include centered-block();
-    }
-
-    .post-teaser__date {
-        font-size: 16px;
-        margin-top: 10px;
-        float: none;
-        @include centered-block();
-    }
-
-    .explore {
-        margin-top: 80px;
-    }
-
-    .post-title__text {
-        font-size: 28px;
-    }
-
-    .post-title__subtitle {
-        font-size: 18px;
+    code:not(.hljs) {
+        font-size: 0.86rem;
     }
 }
 
-/* Custom shadow for images */
-div.content-post p img {
-    box-shadow: 2px 2px 10px grey;
-}
 
 /* Custom anchor_links style
 * http://blog.parkermoore.de/2014/08/01/header-anchor-links-in-vanilla-javascript-for-github-pages-and-jekyll/
@@ -388,23 +495,28 @@ h3:hover .header-link {
     opacity: 1;
 }
 
+
+.spoiler {
+    overflow-wrap: break-word;
+}
+
+
 /* Custom style for categories index */
 .align-center {
     display: block;
     text-align: center;
 }
-.categories-index {
-    font-size: 1.2em;
+
+
+/* Custom style for post images */
+.image-full {
+    width: 100%;
+    height: auto;
 }
 
-/* Larger spacing between post section/challenges */
-.content.content-post hr {
-    margin: 4em 0;
-}
-
-i.fas.fa-spin-on-hover:hover {
-    animation: fa-spin 1s 1 cubic-bezier(.51,-0.55,0,.43);
-}
-pre {
-    tab-size: 4;
+span.mdi.mdi-spin-on-hover:hover {
+    &:before {
+        -webkit-animation: mdi-spin 1s 1 cubic-bezier(.51,-0.55,0,.43);
+        animation: mdi-spin 1s 1 cubic-bezier(.51,-0.55,0,.43);
+    }
 }

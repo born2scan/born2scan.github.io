@@ -4,7 +4,7 @@ description: >
   born2scan Team
 
 baseurl: "" # the subpath of your site, e.g. /blog/
-url: "https://born2scan.github.io" # the base hostname & protocol for your site
+url: "https://born2scan.run" # the base hostname & protocol for your site
 
 author:
   fullname: born2scan Team

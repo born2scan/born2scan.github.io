@@ -1,6 +1,6 @@
 # born2scan.github.io
 
-> https://born2scan.github.io/
+> https://born2scan.run/ (https://born2scan.github.io/)
 
 ## Contributing
 
@@ -16,9 +16,27 @@
 + Start your posts with the appropriate front matter (see [below](#reference-post)).
 + First level headers (`#`) are reserved for categories, and second level ones (`##`) for single challenges' names. Use `---` to separate categories.
 + TeX Math formulae are supported with the MathJax 3 engine. Use `$ ... $` for inline mode and `$$ ... $$` for display mode.
++ Bold text using `**...**`
++ Italic text using `_..._`
++ Use this sytax to add a tagname to codeblocks
+
+  ````markdown
+    ```language:tagname
+
+      Your amazing snippet!
+
+    ```
+  ````
+
++ Use this syntax to set images width to 100% of available space:
+
+  ```markdown
+  ![img_name](/assets/img/...){: .image-full }
+  ```
+
 + Use this syntax to blur flags:
 
-  ```text
+  ```markdown
   🏁 _<FLAG_HERE>_{: .spoiler}
   ```
 

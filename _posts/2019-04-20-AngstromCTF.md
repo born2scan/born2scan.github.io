@@ -2,16 +2,13 @@
 layout: post
 title:  "AngstromCTF 2019"
 date: 2019-04-20
----
-
-<span class="align-center" markdown="1">
-    This is the partial writeup for the challenges presented in this year's [AngstromCTF](https://angstromctf.com/).<br><br>
-    <span class="categories-index">
-        **Categories index**<br>
-        [Misc](#misc) - [Rev](#rev) - [Web](#web) - [Crypto](#crypto) - [Binary](#binary)
-    </span>
-</span>
-
+head_message: "These are our writeups for the challenges presented in this year's <a href=\"https://angstromctf.com/\">AngstromCTF</a>."
+head_ctf_categories:
+  - misc
+  - rev
+  - web
+  - crypto
+  - binary
 ---
 
 # Misc
@@ -186,7 +183,7 @@ There were two ways to solve this challenge - as most problems in the programmin
 
 Read from memory, print out a char, advance to next memory slot. Manually repeat as needed.
 
-```
+```text
 GCLSGCLSGCLS...
 ```
 
@@ -201,7 +198,7 @@ GCLSGCLSGCLS...
 
 Variant of the following **Right** solution, but iterating over a number given through user input. Discarded because input wasn't really working on the hosted interpreter.
 
-```
+```text
 KGCLShxZYSZOZUSSSS
 ```
 
@@ -221,7 +218,7 @@ Read from memory, print out a char, advance to next memory slot. Loop as long as
 
 ![watch out for that terminator](/assets/img/AngstromCTF_2019/terminator.jpg)
 
-```
+```text
 GCLShyZYZOZUSSS
 ```
 
@@ -477,7 +474,7 @@ flag = decrypt(enc, ord(':')-ord('a'))
 > but it seems to have been encrypted with this Really Secure Algorithm!<br><br>
 > Author: lamchcl
 
-```no-highlight
+```text
 p = 8337989838551614633430029371803892077156162494012474856684174381868510024755832450406936717727195184311114937042673575494843631977970586746618123352329889
 q = 7755060911995462151580541927524289685569492828780752345560845093073545403776129013139174889414744570087561926915046519199304042166351530778365529171009493
 e = 65537
@@ -528,7 +525,7 @@ The length of the flag is just twice the length of the resulting xor. That is 24
 
 Being xor a function that, if applied twice with the same value cancels itself: _`A ⨁ B ⨁ B = A`_, to start off, flag format characters ( **"actf{}"** ) can be used to retrieve a few others.
 
-```
+```text
 a c t f { ? ? ? ? ? ? _
 t a s t e ? ? ? ? ? ? }
 
@@ -539,10 +536,11 @@ As the challenge description suggests, the word **coffee** can be tried seeing t
 
 That was indeed the right word, so the entire flag is revealed.
 
-```no-highlight
+```text
 a c t f { c o f f e e _
 t a s t e s _ g o o d }
 
 🏁 actf{coffee_tastes_good}
 ```
+
 {: .spoiler}

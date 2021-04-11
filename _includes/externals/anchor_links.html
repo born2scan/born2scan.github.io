@@ -1,11 +1,11 @@
 <script>
   // http://blog.parkermoore.de/2014/08/01/header-anchor-links-in-vanilla-javascript-for-github-pages-and-jekyll/
-  
+
   var anchorForId = function (id) {
     var anchor = document.createElement("a");
     anchor.className = "header-link";
     anchor.href      = "#" + id;
-    anchor.innerHTML = "<i class=\"fa fa-link\"></i>";
+    anchor.innerHTML = "<span class=\"mdi mdi-link-variant\"></span>";
     return anchor;
   };
 
@@ -22,12 +22,11 @@
 
   document.onreadystatechange = function () {
     if (this.readyState === "complete") {
-      var contentBlock = document.getElementsByClassName("content")[0];
-      if (!contentBlock) {
-        return;
-      }
-      for (var level = 1; level <= 3; level++) {
-        linkifyAnchors(level, contentBlock);
+      let contentBlocks = document.getElementsByClassName("content");
+      for (const contentBlock of contentBlocks) {
+        for (var level = 1; level <= 3; level++) {
+          linkifyAnchors(level, contentBlock);
+        }
       }
     }
   };

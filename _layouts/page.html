@@ -3,6 +3,18 @@ layout: default
 ---
 {% include page/title.html %}
 
-{{ content }}
+<div class="grid-center content-head">
+    <div class="content align-center">
+        {%- if page.head_message -%}
+            <p class="head-message">{{ page.head_message }}</p>
+        {%- endif -%}
+    </div>
+</div>
+
+<div class="grid-center content-page">
+    <div class="content">
+        {{ content }}
+    </div>
+</div>
 
 {% include page/explore.html %}
