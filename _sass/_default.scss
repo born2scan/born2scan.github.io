@@ -19,6 +19,10 @@ p, li {
     line-height: 32px;
 }
 
+i.mdi {
+    font-size: 1.45rem;
+}
+
 img {
     margin: 40px auto;
     display: block;
@@ -83,15 +87,20 @@ strong {
 
         .social-links {
             float:right;
-            font-size: 24px;
+            font-size: 32px;
             color: $intermediate;
             list-style-type: none;
         }
         .social-links__entry {
             display: inline-block;
+            font-size: inherit;
 
             &:not(:first-child) {
                 margin-left: 10px;
+            }
+
+            i.mdi {
+                font-size: inherit;
             }
         }
     }
@@ -503,4 +512,11 @@ h3:hover .header-link {
 .image-full {
     width: 100%;
     height: auto;
+}
+
+i.mdi.mdi-spin-on-hover:hover {
+    &:before {
+        -webkit-animation: mdi-spin 1s 1 cubic-bezier(.51,-0.55,0,.43);
+        animation: mdi-spin 1s 1 cubic-bezier(.51,-0.55,0,.43);
+    }
 }

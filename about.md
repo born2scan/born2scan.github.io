@@ -32,8 +32,8 @@ This is our shared blog that we'll use to write detailed CTF writeups of challen
 
 ## Contacts
 
-<i class="mdi mdi-at"></i> b2s.born2scan _(at)_ gmail.com
+<i class="mdi mdi-at mdi-spin-on-hover"></i> b2s.born2scan _(at)_ gmail.com
 <br>
-<i class="mdi mdi-flag"></i> [CTFtime](https://ctftime.org/team/73973)
+<i class="mdi mdi-flag mdi-spin-on-hover"></i> [CTFtime](https://ctftime.org/team/73973)
 <br>
-<i class="mdi mdi-school"></i> [C3T](https://cyberchallenge.it/venues/c3t)
+<i class="mdi mdi-school mdi-spin-on-hover"></i> [C3T](https://cyberchallenge.it/venues/c3t)
