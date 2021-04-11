@@ -18,19 +18,25 @@
 + TeX Math formulae are supported with the MathJax 3 engine. Use `$ ... $` for inline mode and `$$ ... $$` for display mode.
 + Bold text using `**...**`
 + Italic text using `_..._`
-+ Use this sytax to add filename to codeblocks
++ Use this sytax to add a tagname to codeblocks
 
   ````markdown
-    ```language:filename
+    ```language:tagname
 
-        ... language specific code ...
+      Your amazing snippet!
 
     ```
   ````
 
++ Use this syntax to set images width to 100% of available space:
+
+  ```markdown
+  ![img_name](/assets/img/...){: .image-full }
+  ```
+
 + Use this syntax to blur flags:
 
-  ```text
+  ```markdown
   🏁 _<FLAG_HERE>_{: .spoiler}
   ```
 
