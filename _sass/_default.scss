@@ -1,7 +1,5 @@
-$fa-font-path: "/assets/vendor/font-awesome/webfonts";
-@import "../assets/vendor/font-awesome/scss/fontawesome.scss";
-@import "../assets/vendor/font-awesome/scss/brands.scss";
-@import "../assets/vendor/font-awesome/scss/solid.scss";
+$mdi-font-path: "/assets/vendor/materialdesignicons/fonts";
+@import "../assets/vendor/materialdesignicons/scss/materialdesignicons.scss";
 
 /* =Base */
 body {
@@ -505,9 +503,4 @@ h3:hover .header-link {
 .image-full {
     width: 100%;
     height: auto;
-}
-
-
-i.fas.fa-spin-on-hover:hover {
-    animation: fa-spin 1s 1 cubic-bezier(.51,-0.55,0,.43);
 }
