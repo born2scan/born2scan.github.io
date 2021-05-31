@@ -13,3 +13,6 @@
 [submodule "assets/vendor/materialdesignicons"]
 	path = assets/vendor/materialdesignicons
 	url = https://github.com/Templarian/MaterialDesign-Webfont.git
+[submodule "assets/vendor/highlightjs-line-number"]
+	path = assets/vendor/highlightjs-line-number
+	url = https://github.com/wcoder/highlightjs-line-numbers.js/

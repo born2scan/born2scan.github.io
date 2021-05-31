@@ -1,2 +1,24 @@
 <script src="{{ "/assets/vendor/highlightjs/build/highlight.min.js" | prepend: site.baseurl }}"></script>
-<script>hljs.initHighlightingOnLoad();</script>
+<script src="{{ "/assets/vendor/highlightjs-line-number/src/highlightjs-line-numbers.js" | prepend: site.baseurl }}"></script>
+
+<script>
+// load hilightjs
+hljs.initHighlightingOnLoad();
+
+// load line numbers plugin for code blocks that have pre tag with `linenumber` class
+var loadLinenumbers = function () {
+    let blocks = document.querySelectorAll('pre.linenumber > code.hljs')
+
+    for (let i in blocks)
+        hljs.lineNumbersBlock(blocks[i]);
+}
+
+if (document.readyState === 'interactive' || document.readyState === 'complete') {
+    loadLinenumbers();
+} else {
+    window.addEventListener('DOMContentLoaded', function () {
+        loadLinenumbers();
+    });
+}
+
+</script>

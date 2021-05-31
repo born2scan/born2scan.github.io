@@ -34,6 +34,15 @@
   ![img_name](/assets/img/...){: .image-full }
   ```
 
++ Use this syntax to add line numbers to code blocks
+
+  ````markdown
+    {:.linenumber}
+    ```language
+      Awesome stuff!
+    ```
+  ````
+
 + Use this syntax to blur flags:
 
   ```markdown

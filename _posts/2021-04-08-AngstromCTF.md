@@ -14,6 +14,7 @@ head_ctf_categories:
 
 The link leads us to an weird webpage containing an image of a gigantic jar of pickles. We're also given the source code of the application.
 
+{:.linenumber}
 ```python
 from flask import Flask, send_file, request, make_response, redirect
 import random

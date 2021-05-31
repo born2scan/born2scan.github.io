@@ -16,3 +16,24 @@ pre > span.hljs.codeblock-tag {
         border-radius: 0 0 10px 10px;
     }
 }
+
+/* hljs-linenumbers-js for block of numbers */
+.hljs-ln-numbers {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+
+    text-align: right;
+    color: #ccc;
+    border-right: 1px solid #CCC;
+    vertical-align: top;
+    padding-right: 3px !important;
+}
+
+/* hljs-linenumbers-js for block of code */
+.hljs-ln-code {
+    padding-left: 6px !important;
+}
