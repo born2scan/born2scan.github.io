@@ -2,6 +2,10 @@ $mdi-font-path: "/assets/vendor/materialdesignicons/fonts";
 @import "../assets/vendor/materialdesignicons/scss/materialdesignicons.scss";
 
 /* =Base */
+html {
+    scroll-behavior: smooth;
+}
+
 body {
     font-family: 'Inconsolata', ;
     color: $primary;
