@@ -560,6 +560,13 @@ code:not(.hljs) {
     }
 }
 
+details > summary:first-of-type {
+    display: list-item
+}
+
+details[open] > summary:first-of-type {
+    margin-bottom: 0.5em;
+}
 
 /* Custom anchor_links style
 * http://blog.parkermoore.de/2014/08/01/header-anchor-links-in-vanilla-javascript-for-github-pages-and-jekyll/
