@@ -1,0 +1,47 @@
+<script>
+  // Create a <li> tag with inside an anchor
+  function createTocListItem(id, content) {
+    let anchor = document.createElement('a');
+    anchor.href      = '#' + id;
+    anchor.innerHTML = content;
+
+    let li = document.createElement('li');
+    li.appendChild(anchor);
+    return li;
+  };
+
+  // populate #toc section with h1 and h2 headers list
+  function generateToc() {
+    const list = document.querySelectorAll('.content-post h1, .content-post h2');
+    const toc = document.querySelector('#toc > nav > ul');
+
+    let firstChild;
+    let parentCategory;
+    let childrenList;
+    for (var i = 0; i < list.length; i++) {
+      let header = list[i];
+
+      if (header.tagName == 'H1') {
+        firstChild = true;
+        parentCategory = createTocListItem(header.id, header.textContent);
+        toc.appendChild(parentCategory);
+      } else {
+        // create <ul> only for first child
+        if (firstChild) {
+          childrenList = document.createElement('ul');
+          childrenList.classList = "nav"
+          parentCategory.appendChild(childrenList);
+          firstChild = false;
+        }
+
+        childrenList.appendChild(createTocListItem(header.id, header.textContent))
+      }
+    }
+  }
+
+  document.onreadystatechange = function() {
+    if (this.readyState === "complete") {
+      generateToc();
+    }
+  };
+</script>
