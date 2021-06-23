@@ -560,6 +560,13 @@ code:not(.hljs) {
     }
 }
 
+details > summary:first-of-type {
+    display: list-item
+}
+
+details[open] > summary:first-of-type {
+    margin-bottom: 0.5em;
+}
 
 /* Custom anchor_links style
 * http://blog.parkermoore.de/2014/08/01/header-anchor-links-in-vanilla-javascript-for-github-pages-and-jekyll/
@@ -607,6 +614,14 @@ span.mdi.mdi-spin-on-hover:hover {
     }
 }
 
+pre.linenumber > code {
+    padding: 0.5em 0;
+
+    .hljs-ln tr td.hljs-ln-numbers {
+        padding-left: 0.5em;
+    }
+}
+
 // custom filename in code blocks
 pre > span.hljs.codeblock-tag {
     margin: 0;
@@ -634,9 +649,10 @@ pre > span.hljs.codeblock-tag {
     border-right: 1px solid #CCC;
     vertical-align: top;
     padding-right: 3px !important;
+    background-color: #676767;
 }
 
 /* hljs-linenumbers-js for block of code */
 .hljs-ln-code {
-    padding-left: 6px !important;
+    padding-left: 9px !important;
 }
