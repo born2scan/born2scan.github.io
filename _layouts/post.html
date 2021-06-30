@@ -7,11 +7,19 @@ layout: default
 <div class="grid-center content-head">
     <div class="content align-center">
 
-        {%- if page.head_message -%}
+        {% if page.head_message -%}
             <p class="head-message">{{ page.head_message }}</p>
         {%- endif -%}
 
-        {% if page.head_ctf_categories %}
+        {% if page.author %}
+        {% comment %} Use the date of the post to balance the author text on the opposite side {% endcomment %}
+            <div style="display: flex; justify-content: space-between;">
+                <p class="head-message" style="display: inline-block;">Author: {{ page.author }}</p>
+                <p class="head-message" style="display: inline-block;">Date: {{ page.date | date: "%-d %B %Y" }}</p>
+            </div>
+        {%- endif -%}
+
+        {% if page.head_ctf_categories -%}
             <p class="categories-index" id="categories-index">
                 <b>Categories index</b>
                 <br>
@@ -19,7 +27,7 @@ layout: default
                     <a href="#{{ category | downcase }}">{{ category | capitalize }}</a>{% unless forloop.last %} - {% endunless %}
                 {%- endfor -%}
             </p>
-        {% endif %}
+        {%- endif %}
 
     </div>
 </div>

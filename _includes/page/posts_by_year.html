@@ -1,0 +1,37 @@
+{% comment %}
+
+Remember to assign the `posts` variable before including this template:
+{% assign posts = site.posts %}
+
+{% endcomment %}
+
+<div class="content-head grid-center">
+    <div class="content">
+        <ul class="list-years">
+            {% assign postsByYear = posts | group_by_exp:"post", "post.date | date: '%Y'" %}
+            {% for year in postsByYear %}
+                <li><a href="#year{{ year.name }}">{{ year.name }}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+
+<div class="content-page grid-center">
+    <div class="content">
+        <ul class="list-posts">
+            {% for year in postsByYear %}
+                <div class="post-teaser-title">
+                    <span class="year-divider year-divider-left"></span>
+                    <h1 id="year{{ year.name }}" class="align-center">{{ year.name }}</h1>
+                    <span class="year-divider year-divider-right"></span>
+                </div>
+                {% for post in year.items %}
+                    <li class="post-teaser">
+                        <span class="post-teaser__title"><a href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a></span>
+                        <span class="post-teaser__date">{{ post.date | date: "%d %B %Y" }}</span>
+                    </li>
+                {% endfor %}
+            {% endfor %}
+        </ul>
+    </div>
+</div>

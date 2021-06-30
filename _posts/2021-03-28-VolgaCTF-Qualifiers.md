@@ -1,5 +1,6 @@
 ---
 layout: post
+category: writeups
 title: "VolgaCTF 2021"
 subtitle: "Qualifiers"
 date: 2021-03-28

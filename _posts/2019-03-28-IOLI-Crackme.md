@@ -1,5 +1,6 @@
 ---
 layout: post
+category: writeups
 title:  "IOLI Crackme"
 subtitle: "Introduction to disassembly"
 date: 2019-03-28

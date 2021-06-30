@@ -22,7 +22,7 @@ This is our shared blog that we'll use to write detailed CTF writeups of challen
 <br>
 <span class="mdi mdi-matrix"></span> Lorenzo Coppi `beryxz`
 <br>
-<span class="mdi mdi-server-network"></span> Niccolò Maggioni `synack42`
+<span class="mdi mdi-server-network"></span> Niccolò Maggioni `synack`
 
 ### Academy
 

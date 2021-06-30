@@ -1,5 +1,6 @@
 ---
 layout: post
+category: writeups
 title: "ångstromCTF 2021"
 date: 2021-04-08
 head_ctf_categories:
