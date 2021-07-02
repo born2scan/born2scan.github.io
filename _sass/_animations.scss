@@ -11,6 +11,8 @@
     position: relative;
     display: inline-block;
 
+	text-decoration: underline !important;
+
     &::before,
     &::after  {
         content: attr(data-text);

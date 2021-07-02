@@ -288,7 +288,7 @@ strong {
         box-shadow: 0px -7px 12px -7px #2a2a2a;
 
         .explore__label {
-            font-size: 18px;
+            font-size: 1.1rem;
         }
     }
 
@@ -301,7 +301,7 @@ strong {
         box-shadow: 0px -7px 12px -7px #2a2a2a;
 
         .about__text {
-            font-size: 18px;
+            font-size: 1.1rem;
         }
     }
 
@@ -370,6 +370,7 @@ strong {
     font-weight: 700;
     color: $intermediate;
     display: block;
+    text-decoration: none;
 }
 
 .menu {
@@ -387,10 +388,15 @@ strong {
         &:not(:last-child)::after {
             content: ' / ';
         }
+
+        &.menu__selected a {
+            text-decoration: underline;
+        }
     }
 
     .menu__entry a {
         font-weight: 400;
+        text-decoration: none;
     }
 }
 
