@@ -1,5 +1,6 @@
 ---
 layout: post
+category: writeups
 title:  "TyumenCTF 2019"
 subtitle: "Millennium"
 date: 2019-04-02
