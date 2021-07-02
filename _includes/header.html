@@ -39,8 +39,8 @@
 
             <ul class="menu">
                 <li class="menu__entry{% if page.title == 'About' %} menu__selected{% endif %}"><a href="{{ '/about' | prepend: site.baseurl }}">About</a></li>
-                <li class="menu__entry{% if page.title == 'Writeups' %} menu__selected{% endif %}"><a href="{{ '/' | prepend: site.baseurl }}">Writeups</a></li>
-                <li class="menu__entry{% if page.title == 'Articles' %} menu__selected{% endif %}"><a href="{{ '/articles' | prepend: site.baseurl }}">Articles</a></li>
+                <li class="menu__entry{% if page.title == 'Writeups' or page.categories contains 'writeups' %} menu__selected{% endif %}"><a href="{{ '/' | prepend: site.baseurl }}">Writeups</a></li>
+                <li class="menu__entry{% if page.title == 'Articles' or page.categories contains 'articles' %} menu__selected{% endif %}"><a href="{{ '/articles' | prepend: site.baseurl }}">Articles</a></li>
             </ul>
         </div>
 
