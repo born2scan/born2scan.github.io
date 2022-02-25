@@ -362,6 +362,20 @@ strong {
             margin-bottom: 0;
             list-style: none;
         }
+
+        .nav a {
+            opacity: 0.6;
+            transition: opacity 0.18s ease-in-out;
+
+            &:hover {
+                opacity: 1 !important;
+                transition: opacity 0.12s ease-in-out;
+                text-decoration: underline dotted;
+            }
+        }
+        .nav a.toc-element-active {
+            opacity: 1;
+        }
     }
 }
 

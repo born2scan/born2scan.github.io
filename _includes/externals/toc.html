@@ -39,9 +39,26 @@
     }
   }
 
+  function tocUpdateStatus(tocElements, tocPointedElements) {
+      tocPointedElements.forEach((el, idx) => {
+        let elTopDistance = el.getBoundingClientRect().top;
+        if (elTopDistance <= 150) {
+          tocElements[idx].classList.add('toc-element-active');
+        } else {
+          tocElements[idx].classList.remove('toc-element-active');
+        }
+      });
+  }
+
   document.onreadystatechange = function() {
     if (this.readyState === "complete") {
       generateToc();
+
+      let tocElements = document.querySelectorAll('#toc .nav a');
+      let tocPointedElements = []
+      tocElements.forEach(el => tocPointedElements.push(document.querySelector(el.attributes.href.value)));
+      window.addEventListener("scroll", () => { tocUpdateStatus(tocElements, tocPointedElements); });
+      tocUpdateStatus(tocElements, tocPointedElements);
     }
   };
 </script>
