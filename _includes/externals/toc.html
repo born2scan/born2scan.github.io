@@ -56,7 +56,7 @@
 
       let tocElements = document.querySelectorAll('#toc .nav a');
       let tocPointedElements = []
-      tocElements.forEach(el => tocPointedElements.push(document.querySelector(el.attributes.href.value)));
+      tocElements.forEach(el => tocPointedElements.push(document.querySelector('#' + CSS.escape(el.attributes.href.value.substr(1)))));
       window.addEventListener("scroll", () => { tocUpdateStatus(tocElements, tocPointedElements); });
       tocUpdateStatus(tocElements, tocPointedElements);
     }
