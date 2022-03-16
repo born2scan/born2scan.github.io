@@ -2,9 +2,9 @@
     let codeBlocks = document.body.querySelectorAll("pre > code");
     codeBlocks.forEach((value) => {
         let tagName = value.className
-            .split(' ')
-            .find(v => v.includes('language'))
-            .split(':')
+            ?.split(' ')
+            ?.find(v => v.includes('language'))
+            ?.split(':')
             ?.[1];
         if (tagName) {
             let tagContent = document.createElement('span');

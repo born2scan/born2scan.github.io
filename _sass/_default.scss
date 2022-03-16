@@ -472,6 +472,10 @@ code:not(.hljs) {
     border-radius: 0.2em;
     font-size: 1rem;
 }
+// pre tags inside li take the relative size from the li instead of the .wrapper - correct this
+li pre {
+    font-size: 16px;
+}
 
 /* hide TOC if there's not enough space */
 @media (max-width: $content-width+($gaps-max-size)+($toc-min-width)) {
@@ -575,6 +579,10 @@ code:not(.hljs) {
         }
     }
 
+    // pre tags inside li take the relative size from the li instead of the .wrapper - correct this
+    li pre {
+        font-size: 14px;
+    }
     code:not(.hljs) {
         font-size: 0.86rem;
     }
