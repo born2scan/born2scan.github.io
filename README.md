@@ -28,11 +28,13 @@
     ```
   ````
 
-+ Use this syntax to set images width to 100% of available space:
++ Use this syntax to set images width to percentages (100%, 66%, 50%, 33%, 25%) of available space:
 
   ```markdown
-  ![img_name](/assets/img/...){: .image-full }
+  ![img_name](/assets/img/...){: .image-100 }
   ```
+  
+  **Remember to compress your images and gifs!**
 
 + Use this syntax to add line numbers to code blocks
 

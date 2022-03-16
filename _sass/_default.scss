@@ -34,10 +34,6 @@ img {
     border-radius: 5px;
 }
 
-img.half-width {
-    max-width: 50%;
-}
-
 th, td {
     padding: 5px;
 }
@@ -626,9 +622,25 @@ h3:hover .header-link {
 
 
 /* Custom style for post images */
-.image-full {
+img.image-100 {
     width: 100%;
     height: auto;
+}
+
+img.image-66 {
+    max-width: 66%;
+}
+
+img.image-50 {
+    max-width: 50%;
+}
+
+img.image-33 {
+    max-width: 33%;
+}
+
+img.image-25 {
+    max-width: 25%;
 }
 
 span.mdi.mdi-spin-on-hover:hover {

