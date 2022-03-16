@@ -15,7 +15,7 @@ Since we didn't expect a massive influx of users for this first edition of the D
 
 # Topology
 
-![Infrastructure overview](/assets/img/DanteCTF_2021/infra/infra.png){: .half-width}
+![Infrastructure overview](/assets/img/DanteCTF_2021/infra/infra.png){: .image-50}
 
 > Hey, what did you expect? We told you we wanted to keep it simple :)
 
@@ -33,7 +33,7 @@ Complex multi-host building blocks like K8S were already right out of the questi
 
 Something that ticked all our boxes was [Nomad](https://www.nomadproject.io/). HashiCorp's products are usually enjoyable to use and don't require extensive knowledge to have an MVP up and running, so we dived into it and in a matter of hours a first crude setup of CTFd plus a single challenge was indeed brought up with just the right amount of research.
 
-[![HashiCorp Nomad](/assets/img/DanteCTF_2021/infra/nomad_logo.png){: .half-width}](https://www.nomadproject.io/)
+[![HashiCorp Nomad](/assets/img/DanteCTF_2021/infra/nomad_logo.png){: .image-50}](https://www.nomadproject.io/)
 
 Usually there are pretty solid reasons for the official docs of something to tell you that you need at least _N_ hosts with _X_, _Y_ and _Z_ capabilities, but we were pleasantly surprised by how... _uneventful_ consciously going against such recommendations has been with Nomad. By running on a single host we were basically only giving up horizontal scalability, and there have been no memorable hiccups during configuration. Try to run some half-serious distro of K8S in this setup and let me know if you didn't get stuck at least once in some tricky situation where internal services got deadlocked due to not expecting to be running onto the same host.
 
