@@ -320,7 +320,15 @@ strong {
             overflow-wrap: anywhere;
             display: block;
             margin-top: 0;
-            padding: 20px 40px;
+            padding: 20px 20px 20px 40px;
+            /* make toc sidebar independently scrollable, for when it's very long */
+            overflow-y: scroll;
+            height: calc(100vh - 40px);
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            &::-webkit-scrollbar {
+                display: none;
+            }
 
             /* remove strange padding on the top of the toc list */
             & > ul.nav {
