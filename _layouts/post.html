@@ -24,7 +24,7 @@ layout: default
                 <b>Categories index</b>
                 <br>
                 {%- for category in page.head_ctf_categories -%}
-                    <a href="#{{ category | downcase }}">{{ category | capitalize }}</a>{% unless forloop.last %} - {% endunless %}
+                    <a href="#{{ category | remove: '/' | downcase }}">{{ category | capitalize }}</a>{% unless forloop.last %} - {% endunless %}
                 {%- endfor -%}
             </p>
         {%- endif %}
