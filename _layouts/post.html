@@ -19,11 +19,11 @@ layout: default
             </div>
         {%- endif -%}
 
-        {% if page.head_ctf_categories -%}
+        {% if page.ctf_categories -%}
             <p class="categories-index" id="categories-index">
                 <b>Categories index</b>
                 <br>
-                {%- for category in page.head_ctf_categories -%}
+                {%- for category in page.ctf_categories -%}
                     <a href="#{{ category | remove: '/' | downcase }}">{{ category | capitalize }}</a>{% unless forloop.last %} - {% endunless %}
                 {%- endfor -%}
             </p>
