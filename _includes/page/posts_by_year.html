@@ -35,6 +35,10 @@ Remember to assign the `posts` variable before including this template:
                             <div>
                                 <span class="post-teaser__subtitle">$ [{{ post.ctf_categories | join: ', ' }}]</span>
                             </div>
+                        {% else if post.subtitle %}
+                            <div>
+                                <span class="post-teaser__subtitle">{{ post.subtitle}}</span>
+                            </div>
                         {% endif %}
                     </li>
                 {% endfor %}

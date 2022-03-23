@@ -2,8 +2,9 @@
 layout: post
 category: articles
 title: "How we hosted DanteCTF 2021"
+subtitle: "A brief tour of the infrastructure that supported the first edition of DanteCTF"
 date: 2021-06-29
-head_message: "A brief tour of the infrastructure that supported the first edition of DanteCTF"
+head_message: "A brief tour of the infrastructure that supported the first edition of DanteCTF."
 author: synack
 ---
 
