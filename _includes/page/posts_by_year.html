@@ -27,8 +27,19 @@ Remember to assign the `posts` variable before including this template:
                 </div>
                 {% for post in year.items %}
                     <li class="post-teaser">
-                        <span class="post-teaser__title"><a href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a></span>
-                        <span class="post-teaser__date">{{ post.date | date: "%d %B %Y" }}</span>
+                        <div>
+                            <span class="post-teaser__title"><a href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a></span>
+                            <span class="post-teaser__date">{{ post.date | date: "%d %B %Y" }}</span>
+                        </div>
+                        {% if post.ctf_categories %}
+                            <div>
+                                <span class="post-teaser__subtitle">$ [{{ post.ctf_categories | join: ', ' }}]</span>
+                            </div>
+                        {% else if post.subtitle %}
+                            <div>
+                                <span class="post-teaser__subtitle">{{ post.subtitle }}</span>
+                            </div>
+                        {% endif %}
                     </li>
                 {% endfor %}
             {% endfor %}

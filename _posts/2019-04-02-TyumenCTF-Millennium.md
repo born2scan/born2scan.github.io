@@ -5,7 +5,7 @@ title:  "TyumenCTF 2019"
 subtitle: "Millennium"
 date: 2019-04-02
 head_message: "These are our writeups for the challenges presented in this year's <a href=\"https://tyumenctf.ru/\">TyumenCTF</a>."
-head_ctf_categories:
+ctf_categories:
   - pwn
   - joy
   - misc

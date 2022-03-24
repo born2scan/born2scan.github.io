@@ -4,7 +4,7 @@ category: writeups
 title: "VolgaCTF 2021"
 subtitle: "Qualifiers"
 date: 2021-03-28
-head_ctf_categories:
+ctf_categories:
   - web
 ---
 

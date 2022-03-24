@@ -4,7 +4,7 @@ category: writeups
 title:  "AngstromCTF 2019"
 date: 2019-04-20
 head_message: "These are our writeups for the challenges presented in this year's <a href=\"https://angstromctf.com/\">AngstromCTF</a>."
-head_ctf_categories:
+ctf_categories:
   - misc
   - rev
   - web
