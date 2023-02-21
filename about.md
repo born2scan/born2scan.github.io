@@ -14,9 +14,9 @@ We formed in 2019 at University of Florence under the [CyberChallenge.IT](https:
 
 This is our shared blog that we'll use to write detailed CTF writeups of challenges we solved, misc articles, team news and announce upcoming events.
 
-## Team members
+## Meet the team
 
-### Residents
+### Founders
 
 <span class="mdi mdi-cookie"></span> Ion Farima `ionno`
 <br>
@@ -24,9 +24,9 @@ This is our shared blog that we'll use to write detailed CTF writeups of challen
 <br>
 <span class="mdi mdi-server-network"></span> Niccolò Maggioni `synack`
 
-### Academy
+### Members
 
-20+ CyberChallenge cadets & CTF enthusiasts
+CyberChallenge cadets of each year & the ones that were so enthusiastic about CTFs to keep rolling with us.
 
 <hr>
 
