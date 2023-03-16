@@ -76,7 +76,9 @@ date: 1970-01-01
 
 ## HackYouBackInTime
 
-> Challenge description, hints & co.
+> Challenge description (needs a manual line break)<br>
+> Optional second line for hints & co. (needs two line breaks)<br><br>
+> Last row with addresses, attachments, etc. (no need for line breaks)
 
 I did a lot of things. Some worked out, some did not.
 
