@@ -251,7 +251,7 @@ Note that in the second line we have to specify the file name so I had to rename
 
 Running the `tt.exs` file will return the decompiled earlang file:
 
-```earlang
+```erlang
 Retrieving code for Elixir_Bananas
 -file("lib/bananas.ex", 1).
 
@@ -308,7 +308,7 @@ to_integer(_list@1) -> _list@1.
 
 Althought I've never seen earlang code we see that there is a suspicious line where there is an operation made with `num@1` wich I guess is part of the input:
 
-```earlang
+```erlang
     (_num@1 + 5) * 9 - 1 == 971;
 ```
 
@@ -317,7 +317,7 @@ But using `103` as the input on the server doesn't work why?
 
 Looking more closely to the code we see that the check is for `num@1` and `"bananas"`. So maybe my input as to be `103 bananas`...
 
-Yes! That was it using this input the server returns the flag
+Yes! That was it, using this input the server returns the flag
 
 🏁 _actf{baaaaannnnananananas_yum}_{: .spoiler}
 
