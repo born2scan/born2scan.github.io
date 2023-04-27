@@ -212,8 +212,11 @@ conn.close()
 > _nc challs.actf.co xxxxx_<br>
 > _Attachments: queue_
 
-Connecting to the challenge we are asked: "What did you learn in class today?" so we can send a string. We can submit a format string like "%p" to see that it returns "Oh nice, 0x7ffe79e8d120". We can also access directly some parameters in this way:
-"%<number_of_parameter>$<format>" for exemple: "%14$llx,%15$llx,%16$llx"; it returns: "Oh nice, 3474737b66746361,75715f74695f6b63,615f74695f657565".
+Connecting to the challenge we are asked: `What did you learn in class today?` so we can send a string. We can submit a format string like `%p` to see that it returns `Oh nice, 0x7ffe79e8d120`. We can also access directly some parameters in this way:
+
+`%<number_of_parameter>$<format>` for exemple: `%14$llx,%15$llx,%16$llx`; it returns: 
+
+`Oh nice, 3474737b66746361,75715f74695f6b63,615f74695f657565`.
 We can see with some tries that the flag is here in the stack. So we can script the solution.
 
 ```python
