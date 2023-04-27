@@ -178,7 +178,53 @@ conn.close()
 > _RSA strikes strikes strikes strikes again again again again!_<br>
 > _Attachments: rsa.py, out.txt_
 
-🏁 _<FLAG_HERE>_{: .spoiler}
+We are given a python program and the corresponding output. The python program looks like this:
+
+```python
+from Crypto.Util.number import getStrongPrime, bytes_to_long
+f = open("flag.txt").read()
+m = bytes_to_long(f.encode())
+p = getStrongPrime(512)
+q = getStrongPrime(512)
+n = p*q
+e = 65537
+c = pow(m,e,n)
+print("n =",n)
+print("e =",e)
+print("c =",c)
+print("(p-2)*(q-1) =", (p-2)*(q-1))
+print("(p-1)*(q-2) =", (p-1)*(q-2))
+```
+
+Other than `n,e` and `c` there are also `(p-2)(q-1)` and `(p-1)(q-2)` so we have two equations where we know the results. To decrypt RSA we need `p` and `q` so we can get them by solving a system of equation like so:
+
+$$
+\begin{equation}
+    \begin{cases}
+      (p-2)(q-1) = \text{number given}\\
+      (p-1)(q-2) =\text{number given}\\
+      p\cdot q = n
+    \end{cases}
+\end{equation}
+$$
+
+Solving this simple system with `sagemath` will give us `p` and `q`.
+After that we can decrypt the message with:
+
+$$
+d = e^{-1} \mod (p-1)(q-1)
+$$
+
+and the flag:
+
+$$
+m = c^{d} \mod n
+$$
+
+converting `m` from long to bytes_string will give us the flag!
+
+🏁 _actf{tw0_equ4ti0ns_in_tw0_unkn0wns_d62507431b7e7087}
+_{: .spoiler}
 
 # Rev
 
@@ -202,7 +248,124 @@ conn.close()
 > _nc challs.actf.co xxxxx_<br>
 > _Attachments: Elixir.Bananas.beam_
 
-🏁 _<FLAG_HERE>_{: .spoiler}
+If we connect to the trhough netcat the server will ask `How many bananas do I have?` so we have to find how many bananas he needs.
+
+We are given an `Elixir.Banans.beam` and if you are a little bit familiar with Elixir you will see that this is a compiled Earlang file for the Earlang VM.
+The first thing I did was trying to execute the file, but strangely, it returns an error for the encoding when running it like so:
+
+```shell
+elixir Elixir.Bananas.beam
+```
+
+I tried running it with other strategies without success using the interactive elixir shell:
+
+```shell
+iex Elixir.Bananas.beam
+```
+
+So I had to use another strategy, maybe decompiling it?
+Because of the fact that it's a beam bytecode I thought it will be a tool to decompile it so I found [this](https://elixirforum.com/t/need-help-decompiling-beam-file/45441/15) post from the elixir forum using the `niahoo/decompilerl`.
+
+I created a new elixir project with
+
+```shell
+mix new myproject
+```
+
+And added in the `mix.exs` file I added the dependency:
+
+```elixir
+  defp deps do
+    [
+      {:decompilerl, github: "niahoo/decompilerl"}
+      # {:dep_from_hexpm, "~> 0.3.0"},
+      # {:dep_from_git, git: "https://github.com/elixir-lang/my_dep.git", tag: "0.1.0"}
+    ]
+  end
+```
+
+After that i created a file `tt.exs` in the root of the project and used the following code:
+
+{:.linenumber}
+```elixir
+Code.append_path(File.cwd!())
+Decompilerl.decompile(:Elixir_Bananas)
+System.halt()
+```
+
+Note that in the second line we have to specify the file name so I had to rename `Elixir.Bananas.beam` to `Elixir_Bananas.beam` because with dots doesn't work.
+
+Running the `tt.exs` file will return the decompiled earlang file:
+
+```erlang
+Retrieving code for Elixir_Bananas
+-file("lib/bananas.ex", 1).
+
+-module('Elixir.Bananas').
+
+-compile([no_auto_import]).
+
+-export(['__info__'/1, main/0, main/1]).
+
+-spec '__info__'(attributes |
+                 compile |
+                 functions |
+                 macros |
+                 md5 |
+                 exports_md5 |
+                 module |
+                 deprecated |
+                 struct) -> any().
+
+'__info__'(module) -> 'Elixir.Bananas';
+'__info__'(functions) -> [{main, 0}, {main, 1}];
+'__info__'(macros) -> [];
+'__info__'(struct) -> nil;
+'__info__'(exports_md5) ->
+    <<"TÀ}ÏÚ|º6þ\020Í\f\035\005\222\203">>;
+'__info__'(Key = attributes) ->
+    erlang:get_module_info('Elixir.Bananas', Key);
+'__info__'(Key = compile) ->
+    erlang:get_module_info('Elixir.Bananas', Key);
+'__info__'(Key = md5) ->
+    erlang:get_module_info('Elixir.Bananas', Key);
+'__info__'(deprecated) -> [].
+
+check([_num@1, <<"bananas">>]) ->
+    (_num@1 + 5) * 9 - 1 == 971;
+check(__asdf@1) -> false.
+
+convert_input(_string@1) ->
+    to_integer('Elixir.String':split('Elixir.String':trim(_string@1))).
+
+main() -> main([]).
+
+main(_args@1) ->
+    print_flag(check(convert_input('Elixir.IO':gets(<<"How many bananas do I have?\n">>)))).
+
+print_flag(false) -> 'Elixir.IO':puts(<<"Nope">>);
+print_flag(true) ->
+    'Elixir.IO':puts('Elixir.File':'read!'(<<"flag.txt">>)).
+
+to_integer([_num@1, _string@1]) ->
+    [erlang:binary_to_integer(_num@1), _string@1];
+to_integer(_list@1) -> _list@1.
+```
+
+Althought I've never seen earlang code we see that there is a suspicious line where there is an operation made with `num@1` wich I guess is part of the input:
+
+```erlang
+    (_num@1 + 5) * 9 - 1 == 971;
+```
+
+it will return true only if the operation returns `971` so using my math super skills I reversed the equation and got `103`.
+But using `103` as the input on the server doesn't work why?
+
+Looking more closely to the code we see that the check is for `num@1` and `"bananas"`. So maybe my input as to be `103 bananas`...
+
+Yes! That was it, using this input the server returns the flag
+
+🏁 _actf{baaaaannnnananananas_yum}_{: .spoiler}
 
 # Pwn
 
