@@ -32,7 +32,55 @@ ctf_categories:
 > _This guy named Simon gave me a bunch of tasks to complete and not a lot of time. He wants to run a unique zoo but needs the names for his animals. Can you help me?_<br>
 > _nc challs.actf.co xxxxx_
 
-🏁 _<FLAG_HERE>_{: .spoiler}
+Connecting to the challenge presented you with a series of prompts like these, the entirety of which you had to solve before a global 3s timeout closed the connection:
+
+```plaintext
+Combine the first 3 letters of zebra with the last 3 letters of donkey
+> zebkey
+Combine the first 3 letters of wombat with the last 3 letters of bear
+> womear
+[...]
+```
+
+With a little help from pwntools to automate the connection this was an easy task:
+
+```python
+import re
+from pwn import *
+
+conn = remote('challs.actf.co', xxxxx)
+
+while True:
+    prompt = conn.recvline().decode('ascii')
+    if 'actf{' in prompt:
+        print(f"!!! {prompt.strip()}")
+        break
+    else:
+        print(f">>> {prompt.strip()}")
+
+    tokens = re.search(r"Combine the first ([0-9]+) letters of ([a-z]+) with the last ([0-9]+) letters of ([a-z]+)", prompt)
+    if len(tokens.groups()) != 4:
+        break
+
+    reply = f'{tokens.group(2)[:int(tokens.group(1))]}{tokens.group(4)[-int(tokens.group(3)):]}'
+    print(f"<<< {reply}")
+    conn.send((reply + '\n').encode('ascii'))
+
+conn.close()
+```
+
+```plaintext
+[+] Opening connection to challs.actf.co on port xxxxx: Done
+>>> Combine the first 3 letters of fish with the last 3 letters of lion
+<<< fision
+[...]
+>>> Combine the first 3 letters of vulture with the last 3 letters of lion
+<<< vulion
+!!! actf{simon_says_you_win}
+[*] Closed connection to challs.actf.co port xxxxx
+```
+
+🏁 _actf{simon_says_you_win}_{: .spoiler}
 
 ## better me
 
