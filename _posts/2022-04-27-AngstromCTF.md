@@ -178,7 +178,53 @@ conn.close()
 > _RSA strikes strikes strikes strikes again again again again!_<br>
 > _Attachments: rsa.py, out.txt_
 
-🏁 _<FLAG_HERE>_{: .spoiler}
+We are given a python program and the corresponding output. The python program looks like this:
+
+```python
+from Crypto.Util.number import getStrongPrime, bytes_to_long
+f = open("flag.txt").read()
+m = bytes_to_long(f.encode())
+p = getStrongPrime(512)
+q = getStrongPrime(512)
+n = p*q
+e = 65537
+c = pow(m,e,n)
+print("n =",n)
+print("e =",e)
+print("c =",c)
+print("(p-2)*(q-1) =", (p-2)*(q-1))
+print("(p-1)*(q-2) =", (p-1)*(q-2))
+```
+
+Other than `n,e` and `c` there are also `(p-2)(q-1)` and `(p-1)(q-2)` so we have two equations where we know the results. To decrypt RSA we need `p` and `q` so we can get them by solving a system of equation like so:
+
+$$
+\begin{equation}
+    \begin{cases}
+      (p-2)(q-1) = \text{number given}\\
+      (p-1)(q-2) =\text{number given}\\
+      p\cdot q = n
+    \end{cases}
+\end{equation}
+$$
+
+Solving this simple system with `sagemath` will give us `p` and `q`.
+After that we can decrypt the message with:
+
+$$
+d = e^{-1} \mod (p-1)(q-1)
+$$
+
+and the flag:
+
+$$
+m = c^{d} \mod n
+$$
+
+converting `m` from long to bytes_string will give us the flag!
+
+🏁 _actf{tw0_equ4ti0ns_in_tw0_unkn0wns_d62507431b7e7087}
+_{: .spoiler}
 
 # Rev
 
