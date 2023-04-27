@@ -248,7 +248,7 @@ _{: .spoiler}
 > _nc challs.actf.co xxxxx_<br>
 > _Attachments: Elixir.Bananas.beam_
 
-If we connnect to the trhough netcat the server will ask `How many bananas do I have?` so we have to find how many bananas he needs.
+If we connect to the trhough netcat the server will ask `How many bananas do I have?` so we have to find how many bananas he needs.
 
 We are given an `Elixir.Banans.beam` and if you are a little bit familiar with Elixir you will see that this is a compiled Earlang file for the Earlang VM.
 The first thing I did was trying to execute the file, but strangely, it returns an error for the encoding when running it like so:
