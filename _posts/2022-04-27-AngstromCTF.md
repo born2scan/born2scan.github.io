@@ -163,7 +163,59 @@ conn.close()
 > _nc challs.actf.co xxxxx_<br>
 > _Attachments: impossible.py_
 
-🏁 _<FLAG_HERE>_{: .spoiler}
+If we interact with the server, it will ask:
+"Supply positive x and y such that x < y and x > y".
+We can understand how the check is done by looking at the source code:
+
+```python
+if len(fake_psi(one_encoding(x, 64), zero_encoding(y, 64))) == 0 and x > y and x > 0 and y > 0:
+	print(open("flag.txt").read())
+```
+
+Let's breakdown this code:
+
+```python
+def one_encoding(x, n): # encodes x
+	ret = []
+	for i in range(n):
+		if x & 1:
+			ret.append(x)
+		
+		x >>= 1
+	return ret
+```
+
+```python
+def zero_encoding(x, n): # encodes y
+	ret = []
+	for i in range(n):
+		if (x & 1) == 0: 
+			ret.append(x | 1)
+		x >>= 1
+	return ret
+```
+
+```python
+def fake_psi(a, b):
+	return [i for i in a if i in b]
+```
+
+A bitwise AND between our input and 1 is done n times and every time our input is shifted by one bit on the right (removing the LSB).
+
+-> 64 is the number of bits that will be checked.
+
+Our solution was to find a way to make both one_encoding and zero_encoding return empty lists, so that also fake_psy returns an empty list.
+
+How do we find x?
+We have to choose an x that has got the last 64 bits = 0 so that the condition ``if x & 1:`` is always false.
+The candidate for x is 2 ** 64, since this is its binary representation:
+``10000000000000000000000000000000000000000000000000000000000000000``
+
+Then, we find y using a similar approach: the last 64 binary digit must be = 1, so that the condition ``if (x & 1) == 0`` will always be false.
+y will be (2 ** 64)-1, since its binary representation is:
+``01111111111111111111111111111111111111111111111111111111111111111``
+
+🏁 _actf{se3ms_pretty_p0ssible_t0_m3_7623fb7e33577b8a}_{: .spoiler}
 
 ## Lazy Lagrange
 
@@ -232,7 +284,12 @@ _{: .spoiler}
 
 > _Attachments: checkers_
 
-🏁 _<FLAG_HERE>_{: .spoiler}
+A way to solve this challenge is to use the command "strings" on the binary file; the flag is not encoded in the binary.
+
+-> Another solution is to open the file with Ghidra. In the main function we can see that a function ``strncmp`` is called, comparing our input with the flag. 
+In this way, we can see the flag looking at the decompiled code.
+
+🏁 _actf{ive_be3n_checkm4ted_21d1b2cebabf983f}_{: .spoiler}
 
 ## zaza
 
@@ -240,7 +297,90 @@ _{: .spoiler}
 > _nc challs.actf.co xxxxx_<br>
 > _Attachments: zaza_
 
-🏁 _<FLAG_HERE>_{: .spoiler}
+If we interact with the remote service, it says: "I'm going to sleep. Count me some sheep: " 
+It seems like it wants a specific number. Let's try to open it with Ghidra to understand better.
+
+In the main function:
+First input (must be 4919 to continue with the execution):
+```c
+  printf("I\'m going to sleep. Count me some sheep: ");
+  __isoc99_scanf(&%d,&input1);
+  if (input1 != 4919) {
+    puts("That\'s not enough sheep!");
+    exit(1);
+  }
+```
+
+Second input (we can send any number as long as it is not the inverse of 4919 (= input1):
+```c
+  printf("Nice, now reset it. Bet you can\'t: ");
+  __isoc99_scanf(&%d,&input2);
+  if (input2 * input1 == 1) {
+    printf("%d %d",(ulong)local_5c,(ulong)(local_60 + local_5c));
+    puts("Not good enough for me.");
+                    /* WARNING: Subroutine does not return */
+    exit(1);
+  }
+```
+
+Now the program asks us the magic word:
+```c
+  puts("Okay, what\'s the magic word?");
+  getchar();
+  fgets(input,64,stdin);
+  sVar2 = strcspn(input,"\n");
+  input[sVar2] = '\0';
+  xor_((long)input);
+  iVar1 = strncmp(input,"2& =$!-( <*+*( ?!&$$6,. )\' $19 , #9=!1 <*=6 <6;66#",0x32);
+  if (iVar1 != 0) {
+    puts("Nope");
+    exit(1);
+  }
+  win();
+```
+
+If after the function ``xor_`` our input is equal to the string in the strncmp, the function win is called and we get the flag!
+Let's breakdown the xor_ function:
+```c
+void xor_(char *param_1)
+{
+  size_t lenght;
+  int i;
+  i = 0;
+  while( true ) {
+    lenght = strlen("anextremelycomplicatedkeythatisdefinitelyuselessss");
+    if (lenght <= (ulong)(long)i) break;
+    input[i] = input[i] ^ "anextremelycomplicatedkeythatisdefinitelyuselessss"[i];
+    i = i + 1;
+  }
+  return;
+}
+```
+
+I reversed this function in python and found the correct word we must give to the program.
+
+Here's the python script used to solve this challenge:
+```python
+from pwn import *
+r = remote("challs.actf.co", 32760)
+r.sendline(b'4919') # input1
+r.sendline(b'1') # input2
+
+s = "anextremelycomplicatedkeythatisdefinitelyuselessss"
+target = "2& =$!-( <*+*( ?!&$$6,. )\' $19 , #9=!1 <*=6 <6;66#" 
+magic_word = ""
+target = target.encode()
+s = s.encode()
+
+# reversed xor_ function
+for i in range(len(s)):
+	magic_word += chr(target[i] ^ s[i])
+	
+r.sendline(magic_word.encode()) # input3
+r.interactive()
+```
+
+🏁 _actf{g00dnight_c7822fb3af92b949}_{: .spoiler}
 
 ## Bananas
 
