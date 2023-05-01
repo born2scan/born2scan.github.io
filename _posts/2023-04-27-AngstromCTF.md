@@ -118,6 +118,8 @@ conn.close()
 > _Bzzt_<br>
 > _https://xxxxx.actf.co/_
 
+🏁 _<FLAG_HERE>_{: .spoiler}
+
 ## directory
 
 > _This is one of the directories of all time, and I would definitely rate it out of 10._<br>
@@ -130,6 +132,8 @@ conn.close()
 > _Welcome to the tunnels!! Have fun!_<br>
 > _https://xxxxx.tailxxxxx.ts.net/_<br>
 > _Attachments: server.py_
+
+🏁 _<FLAG_HERE>_{: .spoiler}
 
 ## Hallmark
 
