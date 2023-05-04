@@ -1456,11 +1456,3 @@ if __name__ == "__main__":
 ```
 
 🏁 _actf{very_133k_of_y0u_777522a2c32b7dd6}_{: .spoiler}
-
-## widget
-
-> _I seem to have lost my gadgets._<br>
-> _nc challs.actf.co xxxxx_<br>
-> _Attachments: widget, Dockerfile_
-
-🏁 _<FLAG_HERE>_{: .spoiler}
