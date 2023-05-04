@@ -7,6 +7,8 @@ ctf_categories:
   - web
 ---
 
+<script src="{{ "/assets/vendor/highlightjs/build/languages/http.min.js" | prepend: site.baseurl }}"></script>
+
 # Web
 
 ## JAR
@@ -454,7 +456,7 @@ By submitting the following payload we can see the bot is pinging back our webho
 data = {"score" : "123", "name" : '<img src="https://8c68790a251f.ngrok.io"/>'}
 ```
 
-```bash
+```http
 Connection from 127.0.0.1:58110
 GET / HTTP/1.1
 Host: 8c68790a251f.ngrok.io
