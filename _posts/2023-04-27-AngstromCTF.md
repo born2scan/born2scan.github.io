@@ -1464,6 +1464,7 @@ if __name__ == "__main__":
 > _Attachments: widget, Dockerfile_
 
 After decompiling the binary with Ghidra we have the following functions:
+
 ```c:source
 void win(char *param_1,char *param_2)
 
@@ -1528,10 +1529,12 @@ void main(void)
   exit(1);
 }
 ```
+
 We note that in the `main` function there is buffer overflow because we can control the number of bytes we can input with `read`. There is also a format string vulnerability but we will not use it here.
+
 The idea is to exploit the buffer overflow to redirect the execution to the function `win`.
-To properly call `win` we need to pass it two arguments, but we do not have enough gadgets in our binary. This is not a problem because we can directly jump in the middle of `win`, just after
-the parameter checks (address `win+117`) provided that we set up the `rbp` register to a valid address, for instance, an address in the data section.
+
+To properly call `win` we need to pass it two arguments, but we do not have enough gadgets in our binary. This is not a problem because we can directly jump in the middle of `win`, just after the parameter checks (address `win+117`) provided that we set up the `rbp` register to a valid address, for instance, an address in the data section.
 
 ```python:solve.py
 #!/usr/bin/env python3
@@ -1570,4 +1573,3 @@ p.interactive()
 ```
 
 🏁 _actf{y0u_f0und_a_usefu1_widg3t!_30db5c45a07ac981}_{: .spoiler}
-
