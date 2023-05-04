@@ -6,6 +6,11 @@
         {% include meta_tags/rss.html %}
 
         {% include externals/styling.html %}
+
+        {% comment %}
+            This is required before content loading, otherwise custom hljs languages in posts would be loaded before the global hljs object.
+        {% endcomment %}
+        {% include externals/scripting.html %}
     </head>
 
     <body>
@@ -15,7 +20,6 @@
             {{ content }}
         </div>
 
-        {% include externals/scripting.html %}
         {% include externals/analytics.html %}
         {% include externals/cheet.html %}
     </body>

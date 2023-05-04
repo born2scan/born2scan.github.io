@@ -683,6 +683,7 @@ pre.linenumber > code {
 pre > span.hljs.codeblock-tag {
     margin: 0;
     padding: 6px 0px 2px 12px;
+    display: block;
 
     span {
         background-color: whitesmoke;

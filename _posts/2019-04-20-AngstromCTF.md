@@ -12,6 +12,8 @@ ctf_categories:
   - binary
 ---
 
+<script src="{{ "/assets/vendor/highlightjs/build/languages/lisp.min.js" | prepend: site.baseurl }}"></script>
+
 # Misc
 
 ## The Mueller Report
@@ -138,8 +140,7 @@ an analysis of the program shows the following:
 
 Knowing how the program works, is just a matter of writing a script that does all this backwards.
 
-{% highlight python %}
-
+```python
 from string import printable
 
 encrypted = [8930, 15006, 8930, 10302, 11772, 13806, 13340, 11556, 12432, 13340, 10712, 10100, 11556, 12432, 9312, 10712, 10100, 10100, 8930, 10920, 8930, 5256, 9312, 9702, 8930, 10712, 15500, 9312]
@@ -158,8 +159,7 @@ for counter, index in enumerate(reorder):
 ### decode
 
 flag = "".join([ key_dict[char] for char in tmp ])
-
-{% endhighlight %}
+```
 
 🏁 _actf{help_me_I_have_a_lithp}_{: .spoiler}
 
