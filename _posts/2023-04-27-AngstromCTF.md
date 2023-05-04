@@ -11,6 +11,9 @@ ctf_categories:
   - pwn
 ---
 
+<script src="{{ "/assets/vendor/highlightjs/build/languages/erlang.min.js" | prepend: site.baseurl }}"></script>
+<script src="{{ "/assets/vendor/highlightjs/build/languages/elixir.min.js" | prepend: site.baseurl }}"></script>
+
 # Misc
 
 ## Physics HW
@@ -131,6 +134,7 @@ else:
 ```
 
 We can only use lowercase letters and these `()=:'` symbols. Moreover we do not have any builtins except for \_\_import\_\_. So we need to overcome three main constraints:
+
 - Get access again to the builtins (or find another way around)
 - Execute multiple instructions without `;` or `\n`
 - Get a RCE without using the `.` to call functions
@@ -569,7 +573,6 @@ else:
 > _https://brokenlogin.web.actf.co/, https://admin-bot.actf.co/brokenlogin_<br>
 > _Attachments: app.py, brokenlogin.js_
 
-
 From `app.py` we know that `message` argument can be printed if we pass it to the main page, but only if its content is no longer than 25 characters.
 
 ```python
@@ -734,35 +737,35 @@ We can understand how the check is done by looking at the source code:
 
 ```python
 if len(fake_psi(one_encoding(x, 64), zero_encoding(y, 64))) == 0 and x > y and x > 0 and y > 0:
-	print(open("flag.txt").read())
+    print(open("flag.txt").read())
 ```
 
 Let's breakdown this code:
 
 ```python
 def one_encoding(x, n): # encodes x
-	ret = []
-	for i in range(n):
-		if x & 1:
-			ret.append(x)
+    ret = []
+    for i in range(n):
+        if x & 1:
+            ret.append(x)
 
-		x >>= 1
-	return ret
+        x >>= 1
+    return ret
 ```
 
 ```python
 def zero_encoding(x, n): # encodes y
-	ret = []
-	for i in range(n):
-		if (x & 1) == 0:
-			ret.append(x | 1)
-		x >>= 1
-	return ret
+    ret = []
+    for i in range(n):
+        if (x & 1) == 0:
+            ret.append(x | 1)
+        x >>= 1
+    return ret
 ```
 
 ```python
 def fake_psi(a, b):
-	return [i for i in a if i in b]
+    return [i for i in a if i in b]
 ```
 
 A bitwise AND between our input and 1 is done n times and every time our input is shifted by one bit on the right (removing the LSB).
@@ -860,6 +863,7 @@ while True:
 ```
 
 We can perform two queries:
+
 - Query1: allow us to send one (or more) integer `x` and it computes the value of $$p(x)=\Sigma_{i=0}^{17} a_i \cdot x^i
 $$
   where the $a_i$ are the ascii decimal values of the flag's characters.
@@ -994,6 +998,7 @@ It seems like it wants a specific number. Let's try to open it with Ghidra to un
 
 In the main function:
 First input (must be 4919 to continue with the execution):
+
 ```c
   printf("I\'m going to sleep. Count me some sheep: ");
   __isoc99_scanf(&%d,&input1);
@@ -1004,6 +1009,7 @@ First input (must be 4919 to continue with the execution):
 ```
 
 Second input (we can send any number as long as it is not the inverse of 4919 (= input1):
+
 ```c
   printf("Nice, now reset it. Bet you can\'t: ");
   __isoc99_scanf(&%d,&input2);
@@ -1016,6 +1022,7 @@ Second input (we can send any number as long as it is not the inverse of 4919 (=
 ```
 
 Now the program asks us the magic word:
+
 ```c
   puts("Okay, what\'s the magic word?");
   getchar();
@@ -1031,8 +1038,9 @@ Now the program asks us the magic word:
   win();
 ```
 
-If after the function ``xor_`` our input is equal to the string in the strncmp, the function win is called and we get the flag!
+If after the function `xor_` our input is equal to the string in the strncmp, the function win is called and we get the flag!
 Let's breakdown the xor_ function:
+
 ```c
 void xor_(char *param_1)
 {
@@ -1052,6 +1060,7 @@ void xor_(char *param_1)
 I reversed this function in python and found the correct word we must give to the program.
 
 Here's the python script used to solve this challenge:
+
 ```python
 from pwn import *
 r = remote("challs.actf.co", 32760)
@@ -1066,7 +1075,7 @@ s = s.encode()
 
 # reversed xor_ function
 for i in range(len(s)):
-	magic_word += chr(target[i] ^ s[i])
+    magic_word += chr(target[i] ^ s[i])
 
 r.sendline(magic_word.encode()) # input3
 r.interactive()
@@ -1242,8 +1251,8 @@ for i in range (14, 19, 1):
 flag = flag.replace('\'b\'', '')
 print(flag)
 ```
-If the input string is too long it overwrite the flag in the stack, so we have to take it piece by piece. The code above take 8 chars of the flag at every iteration and put them in the variable flag. At the end we only clean the output.
 
+If the input string is too long it overwrite the flag in the stack, so we have to take it piece by piece. The code above take 8 chars of the flag at every iteration and put them in the variable flag. At the end we only clean the output.
 
 🏁 _actf{st4ck_it_queue_it_a619ad974c864b22}_{: .spoiler}
 

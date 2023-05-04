@@ -10,6 +10,7 @@
 [submodule "assets/vendor/highlightjs"]
 	path = assets/vendor/highlightjs
 	url = https://github.com/highlightjs/cdn-release
+	branch = 11-stable
 [submodule "assets/vendor/materialdesignicons"]
 	path = assets/vendor/materialdesignicons
 	url = https://github.com/Templarian/MaterialDesign-Webfont.git
