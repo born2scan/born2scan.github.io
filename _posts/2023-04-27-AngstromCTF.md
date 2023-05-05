@@ -1091,7 +1091,7 @@ r.interactive()
 
 If we connect to the trhough netcat the server will ask `How many bananas do I have?` so we have to find how many bananas he needs.
 
-We are given an `Elixir.Banans.beam` and if you are a little bit familiar with Elixir you will see that this is a compiled Earlang file for the Earlang VM.
+We are given an `Elixir.Banans.beam` and if you are a little bit familiar with Elixir you will see that this is a compiled Erlang file for the Erlang VM.
 The first thing I did was trying to execute the file, but strangely, it returns an error for the encoding when running it like so:
 
 ```shell
@@ -1136,7 +1136,7 @@ System.halt()
 
 Note that in the second line we have to specify the file name so I had to rename `Elixir.Bananas.beam` to `Elixir_Bananas.beam` because with dots doesn't work.
 
-Running the `tt.exs` file will return the decompiled earlang file:
+Running the `tt.exs` file will return the decompiled erlang file:
 
 ```erlang
 Retrieving code for Elixir_Bananas
@@ -1193,7 +1193,7 @@ to_integer([_num@1, _string@1]) ->
 to_integer(_list@1) -> _list@1.
 ```
 
-Althought I've never seen earlang code we see that there is a suspicious line where there is an operation made with `num@1` wich I guess is part of the input:
+Althought I've never seen erlang code we see that there is a suspicious line where there is an operation made with `num@1` wich I guess is part of the input:
 
 ```erlang
     (_num@1 + 5) * 9 - 1 == 971;
