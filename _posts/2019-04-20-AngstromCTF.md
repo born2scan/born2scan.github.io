@@ -9,7 +9,6 @@ ctf_categories:
   - rev
   - web
   - crypto
-  - binary
 ---
 
 <script src="{{ "/assets/vendor/highlightjs/build/languages/lisp.min.js" | prepend: site.baseurl }}"></script>
