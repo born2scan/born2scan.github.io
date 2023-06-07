@@ -40,31 +40,45 @@
   }
 
   let previousScrollUpdate = 100;
-  function tocUpdateStatus(tocElements, tocPointedElements) {
+  function tocUpdateStatus(tocNavbar, tocElements, tocPointedElements) {
     // if the screen didn't scroll too much, skip the update. Homemade de-bounce
     let windowScroll = document.scrollingElement.scrollTop;
     if (windowScroll > previousScrollUpdate - 100 && windowScroll < previousScrollUpdate + 100) return;
     previousScrollUpdate = windowScroll;
 
+    let lastElementActive = -1;
     tocPointedElements.forEach((el, idx) => {
       let elTopDistance = el.getBoundingClientRect().top;
       if (elTopDistance <= 150) {
         tocElements[idx].classList.add('toc-element-active');
+        lastElementActive = idx;
       } else {
         tocElements[idx].classList.remove('toc-element-active');
       }
     });
+
+    // The last active element should always be visibile in the nav sidebar
+    if (lastElementActive >= 0) {
+      // Scroll amount to ensure last element is visible in navbar
+      let scrollOffset = tocElements[lastElementActive].getBoundingClientRect().top - window.innerHeight + 150;
+      tocNavbar.scrollBy({
+        // if end of the page, don't scroll a negative amount
+        top: (lastElementActive == tocPointedElements.length-1) ? Math.max(0, scrollOffset) : scrollOffset,
+        behavior: 'smooth'
+      });
+    }
   }
 
   document.onreadystatechange = function() {
     if (this.readyState === "complete") {
       generateToc();
 
+      let tocNavbar = document.querySelector('#toc nav');
       let tocElements = document.querySelectorAll('#toc .nav a');
       let tocPointedElements = [];
       tocElements.forEach(el => tocPointedElements.push(document.querySelector('#' + CSS.escape(el.attributes.href.value.substr(1)))));
-      window.addEventListener("scroll", () => { tocUpdateStatus(tocElements, tocPointedElements); });
-      tocUpdateStatus(tocElements, tocPointedElements);
+      window.addEventListener("scroll", () => { tocUpdateStatus(tocNavbar, tocElements, tocPointedElements); });
+      tocUpdateStatus(tocNavbar, tocElements, tocPointedElements);
     }
   };
 </script>
