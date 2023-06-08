@@ -3,7 +3,12 @@ $mdi-font-path: "/assets/vendor/materialdesignicons/fonts";
 
 /* =Base */
 html {
-    scroll-behavior: smooth;
+    /* For tocUpdateStatus() to work on chrome, auto is required */
+    scroll-behavior: auto;
+}
+
+:root {
+    color-scheme: light dark;
 }
 
 body {
