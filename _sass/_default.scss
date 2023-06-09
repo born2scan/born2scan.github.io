@@ -545,15 +545,21 @@ li pre {
                 margin-bottom: 25px;
 
                 .post-teaser__title {
-                    font-size: 18px;
+                    font-size: 19px;
                     @include centered-block();
                 }
 
                 .post-teaser__date {
-                    font-size: 16px;
+                    font-size: 15px;
                     float: none;
                     @include centered-block();
                 }
+
+                .post-teaser__subtitle {
+                    font-size: 12px;
+                    @include centered-block();
+                }
+
             }
         }
 
