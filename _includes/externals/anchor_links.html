@@ -20,8 +20,8 @@
     }
   };
 
-  document.onreadystatechange = function () {
-    if (this.readyState === "complete") {
+  document.addEventListener('readystatechange', function (evt) {
+    if (evt.target.readyState === "complete") {
       let contentBlocks = document.getElementsByClassName("content");
       for (const contentBlock of contentBlocks) {
         for (var level = 1; level <= 3; level++) {
@@ -29,5 +29,5 @@
         }
       }
     }
-  };
+  }, false);
 </script>

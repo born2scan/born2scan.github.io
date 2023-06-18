@@ -69,8 +69,8 @@
     }
   }
 
-  document.onreadystatechange = function() {
-    if (this.readyState === "complete") {
+  document.addEventListener('readystatechange', function (evt) {
+    if (evt.target.readyState === "complete") {
       generateToc();
 
       let tocNavbar = document.querySelector('#toc nav');
@@ -80,5 +80,5 @@
       window.addEventListener("scroll", () => { tocUpdateStatus(tocNavbar, tocElements, tocPointedElements); });
       tocUpdateStatus(tocNavbar, tocElements, tocPointedElements);
     }
-  };
+  }, false);
 </script>
