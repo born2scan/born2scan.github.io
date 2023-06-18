@@ -1,6 +1,6 @@
 <header class="grid-center">
     <div class="header">
-        <div class="navigation">
+        <div class="site-title">
             <a href="/" id="logo-text" class="logo narrow-glitch" onmouseenter="logoMouseOver(true)" onmouseleave="logoMouseOver(false)" data-text="b0rn25c4n">{{ site.title }}</a>
             <script>
             setTimeout(function() {  // Intermittently animate logo after 6s
@@ -36,24 +36,29 @@
                 animateLogo(yn, yn ? null : 500);
             }
             </script>
+        </div>
 
+        <div class="site-navbar">
             <ul class="menu">
                 <li class="menu__entry{% if page.title == 'About' %} menu__selected{% endif %}"><a href="{{ '/about' | prepend: site.baseurl }}">About</a></li>
                 <li class="menu__entry{% if page.title == 'Writeups' or page.categories contains 'writeups' %} menu__selected{% endif %}"><a href="{{ '/' | prepend: site.baseurl }}">Writeups</a></li>
                 <li class="menu__entry{% if page.title == 'Articles' or page.categories contains 'articles' %} menu__selected{% endif %}"><a href="{{ '/articles' | prepend: site.baseurl }}">Articles</a></li>
+                <li class="menu__entry{% if page.title == 'Events' %} menu__selected{% endif %}"><a href="{{ '/events' | prepend: site.baseurl }}">Events</a></li>
             </ul>
+
+            <div class="social-links">
+                {% if site.author.github %}
+                    <a href="https://github.com/{{ site.author.github }}" class="social-links__entry" target="_blank">
+                        <span class="mdi mdi-github" ></span>
+                    </a>
+                {% endif %}
+
+                <a href="/feed.xml" class="social-links__entry" target="_blank">
+                    <span class="mdi mdi-rss" ></span>
+                </a>
+            </div>
         </div>
 
-        <ul class="social-links">
-            {% if site.author.github %}
-                <a href="https://github.com/{{ site.author.github }}" class="social-links__entry" target="_blank">
-                    <span class="mdi mdi-github" ></span>
-                </a>
-            {% endif %}
-
-            <a href="/feed.xml" class="social-links__entry" style="margin-left: 5px;" target="_blank">
-                <span class="mdi mdi-rss" ></span>
-            </a>
-        </ul>
+        <span class="mobile-header-divider"></span>
     </div>
 </header>
