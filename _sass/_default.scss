@@ -538,7 +538,7 @@ strong {
             align-items: center;
 
             .mdi {
-                color: #c19a72;
+                color: $accent;
 
                 &:not(:first-child) {
                     margin-left: 5px;

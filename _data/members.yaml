@@ -1,7 +1,7 @@
 founders:
   - name: Lorenzo Coppi
     tag: beryxz
-    phrase: Never gonna give you up
+    phrase: 'Pwning things for fun and profit'
     skillset:
       - web
     links:
@@ -9,7 +9,7 @@ founders:
         url: 'https://github.com/beryxz'
   - name: Niccolò Maggioni
     tag: synack
-    phrase:
+    phrase: 'Oh, good. My slow-clap processor made it into this thing'
     skillset:
       - network
       - hardware
@@ -37,44 +37,48 @@ founders:
 residents:
   - name: Angelo Rosa
     tag: Virgula
-    phrase:
+    phrase: 'Pwning my own bugs'
     skillset:
       - web
     links:
-      -
+      - icon: 'github'
+        url: 'https://github.com/Virgula0'
   - name: Cosimo Giraldi
     tag: cocsx
     phrase:
     skillset:
-      -
+      - binary
     links:
       -
   - name: Giacomo
     tag: mashtrishke
     phrase:
     skillset:
-      -
+      - binary
     links:
       -
   - name: Gianmarco Pastore
     tag: GB1
-    phrase:
+    phrase: 'Just hanging around'
     skillset:
       - binary
       - crypto
     links:
-      -
+      - icon: 'github'
+        url: 'https://github.com/Giamm9998'
   - name: Gioele Dimilta
     tag: lonixon
     phrase:
     skillset:
       - web
     links:
-      -
+      - icon: 'github'
+        url: 'https://github.com/pklone'
   - name: Romeo Biancalani
     tag: Rom7x
-    phrase:
+    phrase: 'HACKED!'
     skillset:
       - web
     links:
-      -
+      - icon: 'github'
+        url: 'https://github.com/RomeoBiancalani'
