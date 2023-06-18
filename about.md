@@ -18,11 +18,11 @@ This is our shared blog that we'll use to write detailed CTF writeups of challen
 
 ### Founders
 
-<span class="mdi mdi-cookie"></span> Ion Farima `ionno`
-<br>
-<span class="mdi mdi-matrix"></span> Lorenzo Coppi `beryxz`
-<br>
-<span class="mdi mdi-server-network"></span> Niccolò Maggioni `synack`
+{% include mixins/users_container.html users=site.data.members.founders %}
+
+### Residents
+
+{% include mixins/users_container.html users=site.data.members.residents %}
 
 ### Members
 

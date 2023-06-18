@@ -1,0 +1,26 @@
+<div class="user-card">
+    <span class="user-tag">{{ include.tag }}</span>
+    <span class="user-name">{{ include.name }}</span>
+    <span class="user-skillset">
+        {%- for skill in include.skillset -%}
+            {%- case skill -%}
+                {%- when 'web' -%}
+                    <span class="mdi mdi-cookie"><span class="tooltip">Web</span></span>
+                {%- when 'binary' -%}
+                    <span class="mdi mdi-matrix"><span class="tooltip">Binary</span></span>
+                {%- when 'crypto' -%}
+                    <span class="mdi mdi-key-chain"><span class="tooltip">Crypto</span></span>
+                {%- when 'hardware' -%}
+                    <span class="mdi mdi-chip"><span class="tooltip">Hardware</span></span>
+                {%- when 'network' -%}
+                    <span class="mdi mdi-server-network"><span class="tooltip">Network</span></span>
+            {%- endcase -%}
+        {%- endfor -%}
+    </span>
+    <span class="user-phrase">{{ include.phrase }}</span>
+    <span class="user-links">
+        {%- for link in include.links -%}
+            <a href="{{ link.url }}" target="_blank"><span class="mdi mdi-{{ link.icon }}"></span></a>
+        {%- endfor -%}
+    </span>
+</div>

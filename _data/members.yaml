@@ -1,0 +1,80 @@
+founders:
+  - name: Lorenzo Coppi
+    tag: beryxz
+    phrase: Never gonna give you up
+    skillset:
+      - web
+    links:
+      - icon: 'github'
+        url: 'https://github.com/beryxz'
+  - name: Niccolò Maggioni
+    tag: synack
+    phrase:
+    skillset:
+      - network
+      - hardware
+    links:
+      - icon: 'link-variant'
+        url: 'https://nmaggioni.xyz/'
+      - icon: 'github'
+        url: 'https://github.com/nmaggioni'
+  - name: Ion Farima
+    tag: ionno
+    phrase:
+    skillset:
+      - web
+    links:
+      - icon: 'github'
+        url: 'https://github.com/ionfarima'
+  - name: Letterio Galletta
+    tag: lillo
+    phrase:
+    skillset:
+      - binary
+      - crypto
+    links:
+      -
+residents:
+  - name: Angelo Rosa
+    tag: Virgula
+    phrase:
+    skillset:
+      - web
+    links:
+      -
+  - name: Cosimo Giraldi
+    tag: cocsx
+    phrase:
+    skillset:
+      -
+    links:
+      -
+  - name: Giacomo
+    tag: mashtrishke
+    phrase:
+    skillset:
+      -
+    links:
+      -
+  - name: Gianmarco Pastore
+    tag: GB1
+    phrase:
+    skillset:
+      - binary
+      - crypto
+    links:
+      -
+  - name: Gioele Dimilta
+    tag: lonixon
+    phrase:
+    skillset:
+      - web
+    links:
+      -
+  - name: Romeo Biancalani
+    tag: Rom7x
+    phrase:
+    skillset:
+      - web
+    links:
+      -

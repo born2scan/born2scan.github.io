@@ -1,0 +1,12 @@
+<div class="users-container">
+
+    {% assign users = include.users | sort: 'name' %}
+    {%- for user in users -%}
+      {%- include mixins/user_card.html tag=user.tag
+                                        name=user.name
+                                        phrase=user.phrase
+                                        skillset=user.skillset
+                                        links=user.links -%}
+    {%- endfor -%}
+
+</div>

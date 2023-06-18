@@ -90,26 +90,68 @@ strong {
     .header {
         overflow: hidden;
 
-        .navigation {
-            float:left;
-        }
-
-        .social-links {
-            float:right;
-            font-size: 32px;
+        .logo {
+            font-size: 50px;
+            font-weight: 700;
             color: $intermediate;
-            list-style-type: none;
+            display: block;
+            text-decoration: none;
         }
-        .social-links__entry {
-            display: inline-block;
-            font-size: inherit;
 
-            &:not(:first-child) {
-                margin-left: 10px;
+        .site-title {
+            display: block;
+            text-align: left;
+        }
+
+        .site-navbar {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: nowrap;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 6px;
+
+            .social-links {
+                font-size: 32px;
+                color: $intermediate;
+            }
+            .social-links__entry {
+                display: inline-block;
+                font-size: inherit;
+
+                &:not(:first-child) {
+                    margin-left: 5px;
+                }
+
+                span.mdi {
+                    font-size: inherit;
+                }
+            }
+        }
+
+        .menu {
+            color: $intermediate;
+            font-size: 18px;
+            margin:0px;
+            padding: 0px;
+            list-style-type: none;
+
+            .menu__entry {
+                display: inline-block;
+                font-size: 20px;
+
+                &:not(:last-child)::after {
+                    content: ' / ';
+                }
+
+                &.menu__selected a {
+                    text-decoration: underline;
+                }
             }
 
-            span.mdi {
-                font-size: inherit;
+            .menu__entry a {
+                font-weight: 400;
+                text-decoration: none;
             }
         }
     }
@@ -311,6 +353,7 @@ strong {
         }
     }
 
+    /* Used in about page */
     .team-logo {
         margin: auto;
         padding: 30px 0 20px;
@@ -393,41 +436,7 @@ strong {
     }
 }
 
-.logo {
-    font-size: 50px;
-    font-weight: 700;
-    color: $intermediate;
-    display: block;
-    text-decoration: none;
-}
-
-.menu {
-    color: $intermediate;
-    font-size: 18px;
-    margin:0px;
-    margin-top: 6px;
-    padding: 0px;
-    list-style-type: none;
-
-    .menu__entry {
-        display: inline-block;
-        font-size: 20px;
-
-        &:not(:last-child)::after {
-            content: ' / ';
-        }
-
-        &.menu__selected a {
-            text-decoration: underline;
-        }
-    }
-
-    .menu__entry a {
-        font-weight: 400;
-        text-decoration: none;
-    }
-}
-
+/* TODO: used in posts? */
 .categories {
     list-style-type: none;
     margin-top: 15px;
@@ -453,6 +462,151 @@ strong {
         content: "";
         margin-left: 0px;
     }
+}
+
+
+.users-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 20px;
+
+    .user-card {
+        display: grid;
+        grid-template-rows: auto;
+        grid-template-columns: auto auto auto;
+        grid-template-areas:
+            "user_tag . user_links"
+            "user_name . user_skillset"
+            "user_phrase user_phrase user_phrase";
+        place-items: stretch;
+        background-color: rgba(100,100,100,0.8);
+        padding: 10px;
+        border-radius: 10px;
+        row-gap: 6px;
+        width: 350px;
+        color: white;
+        align-self: stretch;
+
+        .user-tag {
+            grid-area: user_tag;
+            font-size: 1.45em;
+            font-weight: bold;
+            align-self: center;
+            justify-self: start;
+        }
+
+        .user-links {
+            grid-area: user_links;
+            align-self: center;
+            justify-self: end;
+
+            a {
+                .mdi {
+                    color: $intermediate;
+                }
+                &:not(:first-child) .mdi {
+                    margin-left: 5px;
+                }
+            }
+        }
+
+        .user-name {
+            grid-area: user_name;
+            align-self: center;
+            justify-self: start;
+            font-size: 1.05em;
+        }
+
+        .user-phrase {
+            grid-area: user_phrase;
+            align-self: center;
+            justify-self: stretch;
+            font-size: 0.9em;
+            color: $intermediate;
+        }
+
+        .user-skillset {
+            grid-area: user_skillset;
+            align-self: center;
+            justify-self: end;
+            display: flex;
+            flex-wrap: nowrap;
+            flex-direction: row;
+            align-items: center;
+
+            .mdi {
+                color: #c19a72;
+
+                &:not(:first-child) {
+                    margin-left: 5px;
+                }
+
+                /* Skill icon tooltip */
+                position: relative;
+                .tooltip {
+                    visibility: hidden;
+                    width: auto;
+                    background-color: #aaa;
+                    color: #fff;
+                    text-align: center;
+                    padding: 3px 10px;
+                    border-radius: 6px;
+
+                    /* Position the tooltip text - see examples below! */
+                    position: absolute;
+                    z-index: 1;
+                    font-size: 0.7em;
+                    top: 100%;
+                    left: 45%;
+                    transform: translateX(-50%);
+                    margin-top: 6px;
+                }
+                /* little triangle on top of tooltip */
+                .tooltip::before {
+                    content: '';
+                    width: 0;
+                    height: 0;
+                    border-left: 5px solid transparent;
+                    border-right: 5px solid transparent;
+                    border-bottom: 6px solid #aaa;
+                    position: absolute;
+                    top: calc(-6px + 1px);
+                    left: calc(50% - 3px);
+                }
+                &:hover .tooltip {
+                    visibility: visible;
+                }
+            }
+        }
+    }
+}
+
+
+.dante-container-main {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: stretch;
+    gap: 20px;
+
+    .dante-logo img {
+        margin: 0;
+    }
+
+    .dante-paragraph {
+        flex: 1;
+        text-align: left;
+        margin: 0;
+    }
+}
+.dante-timestamp {
+    color: #c2c2c2;
+    font-style: italic;
+    font-size: 1.05em;
 }
 
 
@@ -514,6 +668,60 @@ li pre {
     }
 
     .wrapper {
+        .header {
+            width: $content-width-mobile;
+
+            .site-title {
+                @include centered-block();
+            }
+
+            .site-navbar {
+                display: flex;
+                flex-wrap: nowrap;
+                justify-content: space-between;
+                align-items: stretch;
+                flex-direction: column;
+                margin-top: 10px;
+
+                .social-links {
+                    font-size: 30px;
+                    display: flex;
+                    flex-wrap: nowrap;
+                    flex-direction: row;
+                    justify-content: center;
+                    margin-top: 20px;
+                }
+                .social-links__entry:not(:first-child) {
+                    margin-left: 15px;
+                }
+            }
+
+            .menu {
+                .menu__entry {
+                    display: block;
+                    font-size: 22px;
+                    line-height: 1.6;
+                    text-align: center;
+
+                    &::after {
+                        content: '' !important;
+                    }
+
+                    &.menu__selected a {
+                        text-decoration: underline;
+                    }
+                }
+            }
+
+            .mobile-header-divider {
+                display: block;
+                background: linear-gradient(90deg, transparent, rgb(127, 127, 127) 40%, rgb(127, 127, 127) 60%, transparent);
+                width: $content-width-mobile;
+                height: 2px !important;
+                margin: 30px auto 60px;
+            }
+        }
+
         .content-head, .content-page, .content-post {
             .content {
                 width: $content-width-mobile;
@@ -528,7 +736,7 @@ li pre {
         }
 
         .page-title {
-            margin-top: 80px;
+            margin-top: 0;
             margin-bottom: 60px;
 
             .page-title__text {
@@ -561,16 +769,6 @@ li pre {
                 }
 
             }
-        }
-
-        .navigation,
-        .social-links {
-            @include centered-block();
-        }
-
-        .social-links {
-            font-size: 30px;
-            margin-top: 35px;
         }
 
         .post-title {
@@ -609,6 +807,24 @@ li pre {
     }
     code:not(.hljs) {
         font-size: 0.86rem;
+    }
+
+    .users-container {
+        .user-card {
+            max-width: 350px;
+            flex: 1 1 38vw;
+
+            /* Skill icon tooltip */
+            .user-skillset .mdi .tooltip {
+                left: 100%;
+                transform: translateX(-98%);
+
+                &::before {
+                    right: 7px;
+                    left: unset;
+                }
+            }
+        }
     }
 }
 
