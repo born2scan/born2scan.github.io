@@ -7,7 +7,7 @@
 1. Clone the repo and its submodules: `git clone --recurse-submodules git@github.com:born2scan/born2scan.github.io.git`
 2. Create a new post or edit an existing one in [_posts](_posts).
     + Check [below](#conventions) and refer to [Jekyll's docs](https://jekyllrb.com/docs/posts/) for more infos.
-3. Run `docker run --rm -it -v "$(pwd):/srv/jekyll" -p 4000:4000 jekyll/jekyll:4.2.0 -- jekyll serve` to preview your changes locally at [localhost:4000](http://localhost:4000).
+3. Run `docker run --rm -it -e "TZ=Europe/Rome" -v "$(pwd):/srv/jekyll" -p 4000:4000 jekyll/jekyll:4.2.0 -- jekyll serve` to preview your changes locally at [localhost:4000](http://localhost:4000).
 
 ## Conventions
 
