@@ -420,7 +420,7 @@ print(r.text)
 > _https://hallmark.web.actf.co/, https://admin-bot.actf.co/hallmark_<br>
 > _Attachments: dist.tar.gz_
 
-Starting with the description of the challenge, we know what the goal is to create some cards and send them to the admin. There's the possibility to put images into them, choosing from a predefined list of 4. Otherwise, a custom text is accepted. Moreover, from app source code we see that `/flag` is accessible only from admin. XSS flavour around here, do you feel it?
+Starting with the description of the challenge, we know the goal is to create some cards and send them to the admin. There's the possibility to put images into them, choosing from a predefined list of 4. Otherwise, a custom text is accepted. Moreover, from app source code we see that `/flag` is accessible only from admin. XSS flavour around here, do you feel it?
 
 ```javascript
 // the admin bot will be able to access this
