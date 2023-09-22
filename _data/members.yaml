@@ -52,7 +52,7 @@ residents:
       -
   - name: Giacomo
     tag: mashtrishke
-    phrase:
+    phrase: ''
     skillset:
       - binary
     links:
@@ -68,7 +68,7 @@ residents:
         url: 'https://github.com/Giamm9998'
   - name: Gioele Dimilta
     tag: lonixon
-    phrase:
+    phrase: ''
     skillset:
       - web
     links:
@@ -82,3 +82,11 @@ residents:
     links:
       - icon: 'github'
         url: 'https://github.com/RomeoBiancalani'
+  - name: Giulia Aloia
+    tag: daisy
+    phrase: ''
+    skillset:
+      - binary
+    links:
+      - icon: 'github'
+        url: 'https://github.com/daisydaisyyy'
