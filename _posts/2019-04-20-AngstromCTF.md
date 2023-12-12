@@ -193,6 +193,7 @@ GCLSGCLSGCLS...
 |    **C**    | Sets register 3 to the value of register 1          |
 |    **L**    | Outputs a character to the screen                   |
 |    **S**    | Adds 1 to the register                              |
+{:.inner-borders}
 
 ### (Bonus) Hacky way:
 
@@ -211,6 +212,7 @@ KGCLShxZYSZOZUSSSS
 |    **Y**    | Sets the register to 0                                                              |
 |    **O**    | If register 1 does not equal register 2, goto the position at the position register |
 |    **U**    | Adds 10 to the register                                                             |
+{:.inner-borders}
 
 ### Right way:
 
@@ -225,6 +227,7 @@ GCLShyZYZOZUSSS
 | Instruction | Description       |
 | ----------- | ----------------- |
 |    **y**    | Clears register 2 |
+{:.inner-borders}
 
 🏁 _actf{esolangs_sure_are_fun!}_{: .spoiler}
 
